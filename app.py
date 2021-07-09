@@ -11,7 +11,7 @@ import requests
 ##############################
 # Instantiate the App
 
-#app = Flask(__name__)
+app = Flask(__name__)
 #app.config['JSON_SORT_KEYS'] = False
 
 #pip install -U flask-cors
