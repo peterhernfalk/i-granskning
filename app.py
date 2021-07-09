@@ -11,8 +11,8 @@ import requests
 ##############################
 # Instantiate the App
 
-app = Flask(__name__)
-app.config['JSON_SORT_KEYS'] = False
+#app = Flask(__name__)
+#app.config['JSON_SORT_KEYS'] = False
 
 #pip install -U flask-cors
 #CORS(app)
@@ -22,6 +22,7 @@ app.config['JSON_SORT_KEYS'] = False
 ##############################
 # App Endpoints
 ##############################
+app = Flask(__name__)
 @app.route('/granskningsinfo')
 #@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def reponse2request():
@@ -268,19 +269,6 @@ def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_par
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
-    """
-    # Session Settings
-    debugExecution = True
-
-    # Execute_after_startup()
-    chatbot.loadkeywords()
-    chatbot.loadblogdata()
-
-    parser = ArgumentParser()
-    parser.add_argument('-p', '--port', default=4001, type=int, help='port to listen on')
-    args = parser.parse_args()
-    """
-
     port = 4001
     usedHost = 'https://callistabackend.herokuapp.com'
     instance_address = "http://" + usedHost + ":" + str(port)
@@ -288,27 +276,3 @@ if __name__ == '__main__':
     usedHost = '127.0.0.1'
     app.run(host=usedHost, port=port)
 
-"""
-    TKB, but not IS (unexpected IS-name)   http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.healthcond.actoutcome&tag=4.0.1
-    OK (with is-name)    http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.healthcond.actoutcome&tag=4.0.1&is=IS_clinicalprocess_healthcond_actoutcome_getLaboratoryOrderOutcome.docx
-
-    http://127.0.0.1:4001/granskningsinfo?domain=supportprocess.logistics.carelisting&tag=2.0_RC1
-    http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.activity.request&tag=1.0.2
-    
-    TKB, but not IS ("." in IS-pagelink)   http://127.0.0.1:4001/granskningsinfo?domain=strategicresourcemanagement.persons.person&tag=3.3.1
-    OK (with is-name)    http://127.0.0.1:4001/granskningsinfo?domain=strategicresourcemanagement.persons.person&tag=3.3.1&is=IS_strategicresourcemanagement.persons.person.docx
-    
-    http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.logistics.cervixscreening&tag=1.0_RC4
-    http://127.0.0.1:4001/granskningsinfo?domain=informationsecurity.authorization.blocking&tag=4.0.3
-    http://127.0.0.1:4001/granskningsinfo?domain=informationsecurity.authorization.consent&tag=2.0.2
-    http://127.0.0.1:4001/granskningsinfo?domain=crm.requeststatus&tag=2.0_RC5
-
-    OK, TKB, but not IS (no IS for this tag)   http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.activity.actions&tag=1.0.6
-
-    http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.activity.actions&tag=2.0_RC4
-
-    OK, Neither IS nor TKB (appspecifific domain)     http://127.0.0.1:4001/granskningsinfo?domain=supportprocess.logistics.complaintsandfeedback&tag=1.0_BETA3
-
-    http://127.0.0.1:4001/granskningsinfo?domain=clinicalprocess.healthcond.certificate&tag=4.0.5
-    http://127.0.0.1:4001/granskningsinfo?domain=supportprocess.serviceprovisioning.healthcareoffering&tag=2.0_RC6
-"""

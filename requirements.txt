@@ -1,4 +1,4 @@
 Flask==1.1.2
 gunicorn
 Flask-Cors==3.0.10
-docx==0.2.4
+python-docx==0.8.10
