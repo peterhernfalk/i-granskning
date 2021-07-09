@@ -1,0 +1,11 @@
+docx_IS_document = ""
+docx_TKB_document = ""
+granskningsresultat = ""
+HTML_3_SPACES = "&nbsp;&nbsp;&nbsp;"
+IS = "IS"
+IS_document_exists = False
+IS_document_name = ""
+tag = ""
+TKB = "TKB"
+TKB_document_exists = False
+TKB_document_name = ""
