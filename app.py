@@ -1,6 +1,8 @@
 
 from docx import Document
 from flask import Flask, request    # jsonify
+from flask_cors import CORS
+
 import globals
 from INFO_inspection_information import *
 import io
@@ -10,13 +12,12 @@ import requests
 # Startup settings
 ##############################
 # Instantiate the App
-
 app = Flask(__name__)
-#app.config['JSON_SORT_KEYS'] = False
+app.config['JSON_SORT_KEYS'] = False
 
 #pip install -U flask-cors
-#CORS(app)
-#2app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 ##############################
