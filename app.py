@@ -24,6 +24,15 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # App Endpoints
 ##############################
 app = Flask(__name__)
+@app.route('/')
+def emptyrequest():
+    html = ""
+    html = "<br><h1>Webbadressen är inte korrekt!</h1>"
+    html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
+    html += "<br><br>Ange dem i adressraden enligt följande exempel: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
+
+    return html
+
 @app.route('/granskningsinfo')
 #@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def reponse2request():
@@ -266,6 +275,11 @@ def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_par
         '''.format(riv_domain, globals.granskningsresultat)
 
     return html
+
+def __get_summary_in_html_format():
+    summary = ""
+
+    return summary
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
