@@ -29,7 +29,8 @@ def emptyrequest():
     html = ""
     html = "<br><h1>Webbadressen är inte korrekt!</h1>"
     html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
-    html += "<br><br>Ange dem i adressraden enligt följande exempel: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
+    html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
+    html += "<br><br>Exempelvis: <i>https://i-granskning.herokuapp.com/granskningsinfo?domain=clinicalprocess.healthcond.certificate&tag=4.0.5</i>"
 
     return html
 
@@ -68,7 +69,7 @@ def reponse2request():
     else:
         html = "<br><h1>Webbadressen är inte korrekt!</h1>"
         html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
-        html += "<br><br>Ange dem i adressraden enligt följande exempel: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
+        html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
 
     return html
 
