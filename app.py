@@ -26,6 +26,13 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app = Flask(__name__)
 @app.route('/')
 def emptyrequest():
+    """
+    Tar emot anrop för endpoint: "/"
+
+    Sätter ihop och returnerar text som ska underlätta för användaren att förstå hur anropet ska utformas.
+
+    Returnerar: en sträng med html-innehåll
+    """
     html = ""
     html = "<br><h1>Webbadressen är inte korrekt!</h1>"
     html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
@@ -42,7 +49,7 @@ def reponse2request():
 
     Verifierar att obligatoriska inparametrar finns, samt anropar då metoder för att granska infospec och TKB
 
-    Returnerar: html
+    Returnerar: en sträng med html-innehåll
     """
     domain = request.args.get('domain', default="")
     domain_prefix_param = request.args.get('domainprefix', default="")
@@ -273,12 +280,34 @@ def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_par
     html = '''
         <h1>I-granskningsstöd för: {}</h1>
         <br>{}
-        '''.format(riv_domain, globals.granskningsresultat)
+        <br>{}
+        '''.format(riv_domain, __get_summary_in_html_format(), globals.granskningsresultat)
 
     return html
 
 def __get_summary_in_html_format():
+    """
+    Sammanställer övergripande information om resultatet av granskning av Infospec och TKB.
+
+    Returnerar: en sträng med html-innehåll
+    """
     summary = ""
+    if globals.IS_exists == False and globals.TKB_exists == False:
+        summary = "<h2>Inga granskningskontroller har utförts på grund av att varken Infospec eller TKB kunnat hittas.</h2><br>"
+    if globals.IS_exists == True:
+        summary = "<h2>Sammanfattning: granskningsresultat för Infospec</h2>"
+        if globals.IS_antal_brister_revisionshistorik == 0:
+            summary += "Revisionshistoriken är <b>korrekt</b>"
+        else:
+            summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
+        summary += "<br><b>" + str(globals.IS_antal_brister_referenslänkar) + "</b> felaktiga länkar i referenstabellen"
+        summary += "<br><b>" + str(globals.IS_antal_brister_klassbeskrivning) + "</b> saknade klassbeskrivningar"
+        summary += "<br><b>" + str(globals.IS_antal_brister_multiplicitet) + "</b> saknade multipliciteter i klasstabeller"
+        summary += "<br><b>" + str(globals.IS_antal_brister_datatyper) + "</b> fel för datatyper"
+        summary += "<br><b>" + str(globals.IS_antal_brister_referensinfomodell) + "</b> saknade referenser till RIM i klasstabeller"
+        summary += "<br><b>" + str(globals.IS_antal_brister_tomma_tabellceller) + "</b> tomma celler i klasstabeller"
+        summary += "<br>"
+
 
     return summary
 

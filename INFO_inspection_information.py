@@ -86,6 +86,7 @@ def __inspect_IS():
     write_output("Krav: om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     write_output("---------------------------------------------------------------------------------------------------")
     DOCX_prepare_inspection("IS_*.doc*")
+    globals.docx_document = globals.IS
     IS_init_infomodel_classes_list()
     write_output("\n---------------------------------------------------------------------------------------------------------------------")
     write_output("Krav: revisionshistoriken ska vara uppdaterad för samma version som domänen")
@@ -135,6 +136,7 @@ def __inspect_TKB():
     write_output("Granskningsstöd: alla interaktionser ska vara beskrivna i TKB")
     write_output("----------------------------------------------------------------------------------------------------------------------")
     DOCX_prepare_inspection("TKB_*.doc*")
+    globals.docx_document = globals.TKB
     write_output("<br>--------------------------------------------------------------------------------------------------------------------")
     write_output("Krav: revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_output("Granskningsstöd: om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")

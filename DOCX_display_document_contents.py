@@ -47,6 +47,10 @@ def DOCX_inspect_revision_history():
 
     if str(table.cell(i, 0).text) != globals.tag:
         write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        if globals.docx_document == globals.IS:
+            globals.IS_antal_brister_revisionshistorik = 1
+        elif globals.docx_document == globals.TKB:
+            globals.TKB_antal_brister_revisionshistorik = 1
     else:
         write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
     write_output("Revisionshistorikens sista rad: " + str(text))
@@ -94,6 +98,10 @@ def DOCX_inspect_reference_links(table_num):
         status_code = verify_url_exists(link)
         if status_code == 400:
             write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
+            if globals.docx_document == globals.IS:
+                globals.IS_antal_brister_referenslänkar += 1
+            elif globals.docx_document == globals.TKB:
+                globals.TKB_antal_brister_referenslänkar += 1
         elif status_code < 404:
             write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
         else:
