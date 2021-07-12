@@ -52,11 +52,11 @@ def __show_missing_files():
     write_output("-----------------------------------")
     write_output("Krav: domänen måste innehålla TKB-dokumentet, annars ska de underkännas. Infospecen bör finnas, men är inte obligatorisk")
     write_output("--------------------------------------------------------------------------------------------------------------------------------")
-    if check_if_file_exists(globals.domain_folder_name+"/docs/", "IS_*.docx") == False:
-        globals.IS_exists = False
+    globals.IS_exists = check_if_file_exists(globals.domain_folder_name+"/docs/", "IS_*.docx")
+    if globals.IS_exists == False:
         write_output("Saknad obligatorisk fil: docs/IS_*.docx")
-    if check_if_file_exists(globals.domain_folder_name+"/docs/", "TKB_*.docx") == False:
-        globals.TKB_exists = False
+    globals.TKB_exists = check_if_file_exists(globals.domain_folder_name+"/docs/", "TKB_*.docx")
+    if globals.TKB_exists == False:
         write_output("Saknad obligatorisk fil: docs/TKB_*.docx")
 
 """def __inspect_AB():
@@ -82,6 +82,7 @@ def __inspect_IS():
     #write_output("<br><br><b>--------------------------------------------")
     #write_output("--- Kontrollerar IS-dokumentet ---")
     #write_output("--------------------------------------------</b>")
+    write_output("<br><br>")
     write_output("<h2>Kontroll av IS-dokumentet</h2>")
     write_output("Krav: om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     write_output("---------------------------------------------------------------------------------------------------")
@@ -129,6 +130,7 @@ def __inspect_TKB():
     #write_output("<br><br><b>------------------------------------------------")
     #write_output("--- Kontrollerar TKB-dokumentet ---")
     #write_output("-----------------------------------------------</b>")
+    write_output("<br><br>")
     write_output("<br><h2>Kontroll av TKB-dokumentet</h2>")
     write_output("Krav: ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     write_output("Krav: för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")

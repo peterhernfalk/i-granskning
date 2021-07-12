@@ -17,10 +17,16 @@ local_test = False
 ### Not in use yet ###
 def check_if_file_exists(path, search_pattern):
     file_exist = False
-    if os.path.exists(path):
+    """if os.path.exists(path):
         os.chdir(path)
         for file in glob.glob(search_pattern):
-            file_exist = True
+            file_exist = True"""
+
+    if search_pattern == globals.IS:
+        file_exist = globals.IS_exists
+    elif search_pattern == globals.TKB:
+        file_exist = globals.TKB_exists
+
     return file_exist
 
 def __extract_urls_from_table(document, table_number):

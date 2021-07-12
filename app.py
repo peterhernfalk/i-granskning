@@ -51,6 +51,7 @@ def reponse2request():
 
     Returnerar: en sträng med html-innehåll
     """
+    __init_variables()
     domain = request.args.get('domain', default="")
     domain_prefix_param = request.args.get('domainprefix', default="")
     tag = request.args.get('tag', default="")
@@ -83,6 +84,31 @@ def reponse2request():
 ##############################
 # Internal methods
 ##############################
+def __init_variables():
+    globals.docx_document = ""
+    globals.docx_IS_document = ""
+    globals.docx_TKB_document = ""
+    globals.granskningsresultat = ""
+
+    globals.IS_antal_brister_datatyper = 0
+    globals.IS_antal_brister_klassbeskrivning = 0
+    globals.IS_antal_brister_multiplicitet = 0
+    globals.IS_antal_brister_referensinfomodell = 0
+    globals.IS_antal_brister_referenslänkar = 0
+    globals.IS_antal_brister_revisionshistorik = 0
+    globals.IS_antal_brister_tomma_tabellceller = 0
+    globals.IS_document_exists = False
+    globals.IS_document_name = ""
+    globals.IS_exists = False
+
+    globals.tag = ""
+
+    globals.TKB_antal_brister_referenslänkar = 0
+    globals.TKB_antal_brister_revisionshistorik = 0
+    globals.TKB_document_exists = False
+    globals.TKB_document_name = ""
+    globals.TKB_exists = False
+
 def __inspect_IS_document(domain, tag, alt_document_name):
     """
     Beräknar url till infospecdokumentet för angiven domain och tag.
@@ -108,12 +134,14 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     else:
         globals.docx_IS_document = __get_docx_document(downloaded_IS_document)
         globals.IS_document_exists = True
+        globals.IS_exists = True
         ### dev test ###
         for paragraph in globals.docx_IS_document.paragraphs:
             if paragraph.text.strip() != "":
                 IS_document_paragraphs += paragraph.text + "<br>"
         ### dev test ###
         INFO_inspect_document(globals.IS)
+
 
 def __inspect_TKB_document(domain, tag, alt_document_name):
     """
@@ -140,6 +168,7 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
     else:
         globals.docx_TKB_document = __get_docx_document(downloaded_TKB_document)
         globals.TKB_document_exists = True
+        globals.TKB_exists = True
         ### dev test ###
         for paragraph in globals.docx_TKB_document.paragraphs:
             if paragraph.text.strip() != "":
@@ -293,20 +322,29 @@ def __get_summary_in_html_format():
     """
     summary = ""
     if globals.IS_exists == False and globals.TKB_exists == False:
-        summary = "<h2>Inga granskningskontroller har utförts på grund av att varken Infospec eller TKB kunnat hittas.</h2><br>"
-    if globals.IS_exists == True:
-        summary = "<h2>Sammanfattning: granskningsresultat för Infospec</h2>"
-        if globals.IS_antal_brister_revisionshistorik == 0:
-            summary += "Revisionshistoriken är <b>korrekt</b>"
-        else:
-            summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
-        summary += "<br><b>" + str(globals.IS_antal_brister_referenslänkar) + "</b> felaktiga länkar i referenstabellen"
-        summary += "<br><b>" + str(globals.IS_antal_brister_klassbeskrivning) + "</b> saknade klassbeskrivningar"
-        summary += "<br><b>" + str(globals.IS_antal_brister_multiplicitet) + "</b> saknade multipliciteter i klasstabeller"
-        summary += "<br><b>" + str(globals.IS_antal_brister_datatyper) + "</b> fel för datatyper"
-        summary += "<br><b>" + str(globals.IS_antal_brister_referensinfomodell) + "</b> saknade referenser till RIM i klasstabeller"
-        summary += "<br><b>" + str(globals.IS_antal_brister_tomma_tabellceller) + "</b> tomma celler i klasstabeller"
-        summary += "<br>"
+        summary = "<h1>Sammanfattning</h1>"
+        summary += "<h2>Inga granskningskontroller har utförts på grund av att varken Infospec eller TKB kunnat hittas.</h2><br>"
+    else:
+        summary += "<h1>Sammanfattning</h1>"
+        if globals.IS_exists == True:
+            summary += "<h2>Granskningsresultat för Infospec</h2>"
+            if globals.IS_antal_brister_revisionshistorik == 0:
+                summary += "Revisionshistoriken är <b>korrekt</b>"
+            else:
+                summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
+            summary += "<br><b>" + str(globals.IS_antal_brister_referenslänkar) + "</b> felaktiga länkar i referenstabellen"
+            summary += "<br><b>" + str(globals.IS_antal_brister_klassbeskrivning) + "</b> saknade klassbeskrivningar"
+            summary += "<br><b>" + str(globals.IS_antal_brister_multiplicitet) + "</b> saknade multipliciteter i klasstabeller"
+            summary += "<br><b>" + str(globals.IS_antal_brister_datatyper) + "</b> fel för datatyper"
+            summary += "<br><b>" + str(globals.IS_antal_brister_referensinfomodell) + "</b> saknade referenser till RIM i klasstabeller"
+            summary += "<br><b>" + str(globals.IS_antal_brister_tomma_tabellceller) + "</b> tomma celler i klasstabeller"
+            summary += "<br>"
+        if globals.TKB_exists == True:
+            summary += "<h2>Granskningsresultat för TKB</h2>"
+            if globals.TKB_antal_brister_revisionshistorik == 0:
+                summary += "Revisionshistoriken är <b>korrekt</b>"
+            else:
+                summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
 
 
     return summary
