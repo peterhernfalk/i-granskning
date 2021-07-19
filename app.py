@@ -56,6 +56,7 @@ def reponse2request():
     """
     __init_variables()
     domain = request.args.get('domain', default="")
+    domain = domain.replace("riv.","")
     globals.domain_name = domain
     domain_prefix_param = request.args.get('domainprefix', default="")
     tag = request.args.get('tag', default="")
