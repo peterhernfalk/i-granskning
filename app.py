@@ -3,6 +3,9 @@ from docx import Document
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
+import html_dashboard
+from html_dashboard import *
+
 import globals
 from INFO_inspection_information import *
 import io
@@ -53,11 +56,14 @@ def reponse2request():
     """
     __init_variables()
     domain = request.args.get('domain', default="")
+    globals.domain_name = domain
     domain_prefix_param = request.args.get('domainprefix', default="")
     tag = request.args.get('tag', default="")
     globals.tag = tag
     alt_IS_name = request.args.get('is', default="")
     alt_TKB_name = request.args.get('tkb', default="")
+    globals.IS_detail_box_contents = ""
+    globals.TKB_detail_box_contents = ""
 
     globals.granskningsresultat = ""
 
@@ -70,10 +76,14 @@ def reponse2request():
             riv_domain = "riv."+domain
             domain_prefix = "riv."
 
+        globals.docx_document = globals.IS
         __inspect_IS_document(domain, tag, alt_IS_name)
+
+        globals.docx_document = globals.TKB
         __inspect_TKB_document(domain, tag, alt_TKB_name)
 
-        html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
+        #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
+        html = html_dashboard.get_page_html()
     else:
         html = "<br><h1>Webbadressen är inte korrekt!</h1>"
         html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"

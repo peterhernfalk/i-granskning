@@ -2,7 +2,8 @@ from docx import Document
 import glob
 import globals
 import os
-from utilities import write_output, write_output_without_newline, __extract_urls_from_table, verify_url_exists
+from utilities import *
+#from utilities import write_output, write_output_without_newline, __extract_urls_from_table, verify_url_exists
 
 from docx.document import Document as _Document
 from docx.table import _Cell, Table, _Row
@@ -47,13 +48,16 @@ def DOCX_inspect_revision_history():
 
     if str(table.cell(i, 0).text) != globals.tag:
         write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         if globals.docx_document == globals.IS:
             globals.IS_antal_brister_revisionshistorik = 1
         elif globals.docx_document == globals.TKB:
             globals.TKB_antal_brister_revisionshistorik = 1
     else:
         write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
+        write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
     write_output("Revisionshistorikens sista rad: " + str(text))
+    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
 
 def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_paragraph_title, display_initial_newline, display_keylevel_text, display_tables):
     """
@@ -67,6 +71,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
     if display_paragraph_title == True and display_tables == False:
         if display_initial_newline == True:
             write_output("<br>")
+            write_detail_box_html("<br>")
         __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
     else:
         for block in __iter_block_items(document,searched_paragraph_level):
@@ -83,6 +88,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                     if display_tables == True:
                         if display_paragraph_title == False:
                             write_output("<br>")
+                            write_detail_box_html("<br>")
                         __table_print(block)
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
@@ -91,21 +97,25 @@ def DOCX_inspect_reference_links(table_num):
     """
     Kollar om länkarna i dokumentets referenstabell fungerar eller ej.
     """
-    links = __extract_urls_from_table(document, table_num)
+    links = extract_urls_from_table(document, table_num)
     if len(links) == 0:
         write_output("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
+        write_detail_box_content("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
     for link in links:
         status_code = verify_url_exists(link)
         if status_code == 400:
             write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
+            write_detail_box_content("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             if globals.docx_document == globals.IS:
                 globals.IS_antal_brister_referenslänkar += 1
             elif globals.docx_document == globals.TKB:
                 globals.TKB_antal_brister_referenslänkar += 1
         elif status_code < 404:
             write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
+            write_detail_box_content("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
         else:
             write_output("Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
+            write_detail_box_content("Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
 
 
 def DOCX_display_paragragh_title(searched_title_name):
@@ -214,9 +224,11 @@ def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display
                 if this_key_level == previous_key:
                     if display_keylevel_text == True:
                         write_output(globals.HTML_3_SPACES + key.strip()[key_level_length+1:])
+                        write_detail_box_content(globals.HTML_3_SPACES + key.strip()[key_level_length+1:])
                 else:
                     key = key.replace("\n"," ")
                     write_output(globals.HTML_3_SPACES + key)
+                    write_detail_box_content(globals.HTML_3_SPACES + key)
                 previous_key = key.strip()[0:key_level_length]
 
 def DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
@@ -282,8 +294,10 @@ def __table_print(table):
                 #print("paragraph",paragraph.style)
                 #output_text = remove_hyperlink_tags(paragraph.text)
                 write_output_without_newline(globals.HTML_3_SPACES + output_text)
+                write_detail_box_html(globals.HTML_3_SPACES + output_text)
         #write_output_without_newline("\t" + output_text)
         write_output("")
+        write_detail_box_html("<br>")
 
 def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, _Document):

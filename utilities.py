@@ -29,7 +29,7 @@ def check_if_file_exists(path, search_pattern):
 
     return file_exist
 
-def __extract_urls_from_table(document, table_number):
+def extract_urls_from_table(document, table_number):
     table = document.tables[table_number]
     links = []
     for row in table.rows:
@@ -61,6 +61,19 @@ def write_output(text):
         print(text)
     elif globals.output_channel == globals.WORD:
         print(text)"""
+
+def write_detail_box_content(text):
+    detail_box_content = "<li>" + text + "</li>"
+    if globals.docx_document == globals.IS:
+        globals.IS_detail_box_contents += detail_box_content
+    elif globals.docx_document == globals.TKB:
+        globals.TKB_detail_box_contents += detail_box_content
+
+def write_detail_box_html(html_text):
+    if globals.docx_document == globals.IS:
+        globals.IS_detail_box_contents += html_text
+    elif globals.docx_document == globals.TKB:
+        globals.TKB_detail_box_contents += html_text
 
 
 def write_output_without_newline(text):

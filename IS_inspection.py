@@ -7,7 +7,7 @@ from DOCX_display_document_contents import *
 import glob
 import globals
 import os
-from utilities import write_output, __extract_urls_from_table, verify_url_exists
+from utilities import write_output, extract_urls_from_table, verify_url_exists
 
 local_test = False
 
@@ -40,8 +40,10 @@ def IS_inspect_class_description():
 
     if result == True:
         write_output("<b>Resultat:</b> alla infomodellklasser har beskrivning")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har beskrivning")
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
 
 def IS_inspect_attribute_multiplicity():
     all_results = True
@@ -56,12 +58,15 @@ def IS_inspect_attribute_multiplicity():
             tbl_no = index + infomodel_table_indexes[0]
             table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
             write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
+            write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             globals.IS_antal_brister_multiplicitet += 1
             all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
 
 ### Data Types ###
 def IS_inspect_usage_of_defined_datatypes():
@@ -84,12 +89,17 @@ def IS_inspect_usage_of_defined_datatypes():
                 write_output(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
                         table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
                         table.cell(i, table_column_index).text.strip().lower())
+                write_detail_box_content(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
+                        table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
+                        table.cell(i, table_column_index).text.strip().lower())
                 globals.IS_antal_brister_datatyper += 1
                 all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
 
 def IS_inspect_usage_of_reference_infomodel():
     all_results = True
@@ -103,12 +113,15 @@ def IS_inspect_usage_of_reference_infomodel():
                 tbl_no = index+infomodel_table_indexes[0]
                 table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
                 write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
+                write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 globals.IS_antal_brister_referensinfomodell += 1
                 all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
 
 
 ################################################## local methods
@@ -350,12 +363,15 @@ def IS_find_empty_table_cells():
                     tbl_no = table_index + infomodel_table_indexes[0]
                     table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
                     write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
                     globals.IS_antal_brister_tomma_tabellceller += 1
 
     if result == True:
         write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
         write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
 
     if local_test == True:
         print("\ndoamin:", globals.domain)
