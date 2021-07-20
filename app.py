@@ -70,13 +70,12 @@ def reponse2request():
     globals.granskningsresultat = ""
 
     if domain != "" and tag != "":
-        global domain_prefix
         if domain_prefix_param.strip() != "":
             riv_domain = "riv-application." + domain
-            domain_prefix = "riv-application."
+            globals.domain_prefix = "riv-application."
         else:
             riv_domain = "riv."+domain
-            domain_prefix = "riv."
+            globals.domain_prefix = "riv."
 
         globals.docx_document = globals.IS
         __inspect_IS_document(domain, tag, alt_IS_name)
@@ -140,8 +139,8 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     IS_document_link = __get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
     downloaded_IS_document = __get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
-        IS_document_paragraphs = __text_document_not_found(globals.IS,domain,tag)
-        globals.granskningsresultat += "<br><h2>Infospec</h2>" + __text_document_not_found(globals.IS,domain,tag)
+        IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
+        globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
         docx_IS_document = ""
     else:
         globals.docx_IS_document = __get_docx_document(downloaded_IS_document)
@@ -174,8 +173,8 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
     TKB_document_link = __get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
     downloaded_TKB_document = __get_downloaded_document(TKB_document_link)
     if downloaded_TKB_document.status_code == 404:
-        TKB_document_paragraphs = __text_document_not_found(globals.TKB,domain,tag)
-        globals.granskningsresultat += "<br><br><h2>TKB</h2>" + __text_document_not_found(globals.TKB,domain,tag)
+        TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
+        globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
         docx_TKB_document = ""
     else:
         globals.docx_TKB_document = __get_docx_document(downloaded_TKB_document)
@@ -196,8 +195,7 @@ def __get_document_page_link(domainname, tag, document):
     Returenar: länk till dokumentsidan
     """
     url_prefix = "https://bitbucket.org/rivta-domains/"
-    global domain_prefix
-    url_domain = domain_prefix + domainname + "/"
+    url_domain = globals.domain_prefix + domainname + "/"
     url_src = "src/"
     url_tag = tag + "/"
     url_docs = "docs/"
@@ -214,8 +212,7 @@ def __get_domain_docs_link(domainname, tag):
     Returenar: länk till dokumentsidan
     """
     url_prefix = "https://bitbucket.org/rivta-domains/"
-    global domain_prefix
-    url_domain = domain_prefix + domainname + "/"
+    url_domain = globals.domain_prefix + domainname + "/"
     url_src = "src/"
     url_tag = tag + "/"
     url_docs = "docs/"
@@ -285,7 +282,7 @@ def __get_docx_document(downloaded_document):
 
     return docx_document
 
-def __text_document_not_found(doc, domain, tag):
+def APP_text_document_not_found(doc, domain, tag):
     """
     Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
 
@@ -351,6 +348,8 @@ def __get_summary_in_html_format():
             summary += "<br><b>" + str(globals.IS_antal_brister_referensinfomodell) + "</b> saknade referenser till RIM i klasstabeller"
             summary += "<br><b>" + str(globals.IS_antal_brister_tomma_tabellceller) + "</b> tomma celler i klasstabeller"
             summary += "<br>"
+        #else:
+            #summary += __text_document_not_found(globals.IS,domain,globals.tag)
         if globals.TKB_exists == True:
             summary += "<h2>Granskningsresultat för TKB</h2>"
             if globals.TKB_antal_brister_revisionshistorik == 0:

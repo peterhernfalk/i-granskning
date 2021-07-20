@@ -1,3 +1,4 @@
+import app
 import globals
 
 def get_page_html():
@@ -324,6 +325,8 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
+    else:
+        html += app.APP_text_document_not_found(globals.IS, globals.domain_name, globals.tag)
     html += '''
     </div>
     </ul>

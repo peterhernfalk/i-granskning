@@ -3,6 +3,7 @@ docx_document = ""
 docx_IS_document = ""
 docx_TKB_document = ""
 domain_name = ""
+domain_prefix = ""
 granskningsresultat = ""
 HTML_3_SPACES = "&nbsp;&nbsp;&nbsp;"
 
