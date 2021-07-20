@@ -16,6 +16,7 @@ IS_antal_brister_referenslänkar = 0
 IS_antal_brister_revisionshistorik = 0
 IS_antal_brister_tomma_tabellceller = 0
 IS_detail_box_contents = ""
+IS_felmeddelande = ""
 IS_document_exists = False
 IS_document_name = ""
 IS_exists = False
@@ -29,4 +30,6 @@ TKB_detail_box_contents = ""
 TKB_document_exists = False
 TKB_document_name = ""
 TKB_exists = False
+TKB_felmeddelande = ""
+
 

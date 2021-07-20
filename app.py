@@ -66,6 +66,8 @@ def reponse2request():
     alt_TKB_name = request.args.get('tkb', default="")
     globals.IS_detail_box_contents = ""
     globals.TKB_detail_box_contents = ""
+    globals.IS_felmeddelande = ""
+    globals.TKB_felmeddelande = ""
 
     globals.granskningsresultat = ""
 
@@ -141,6 +143,8 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     if downloaded_IS_document.status_code == 404:
         IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
         globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
+        #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
+        globals.IS_exists = False
         docx_IS_document = ""
     else:
         globals.docx_IS_document = __get_docx_document(downloaded_IS_document)
@@ -176,6 +180,8 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
         TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
         globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
         docx_TKB_document = ""
+        #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
+        globals.TKB_exists = False
     else:
         globals.docx_TKB_document = __get_docx_document(downloaded_TKB_document)
         globals.TKB_document_exists = True
@@ -293,12 +299,14 @@ def APP_text_document_not_found(doc, domain, tag):
     if doc == globals.TKB:
         document_name = globals.TKB
 
-    document_info = document_name + " saknas eller har annat namn än det förväntade: <i>" + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
+    document_info = "<div><li>"
+    document_info += document_name + " saknas eller har annat namn än det förväntade: <i>" + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
     docs_link = __get_domain_docs_link(domain, tag)
     document_info += "<br>Kontrollera dokumentnamn här: <a href='" + docs_link + "'" + " target='_blank'>" + docs_link + "</a>"
     document_info += "<br>Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
     document_info += "I så fall kan du ange det namnet som en url-parameter enligt: <i>url...</i><b>&is=dokumentnamn</b>"
     document_info += "<br>Om detta är en applikationsspecifik domän kan du ange det i en url-parameter enligt: <i>url...</i><b>&domainprefix=true</b>"
+    document_info += "<div><li>"
 
     return document_info
 

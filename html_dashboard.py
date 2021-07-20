@@ -325,8 +325,9 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
-    #else:
-    #    html += app.APP_text_document_not_found(globals.IS, globals.domain_name, globals.tag)
+    else:
+        #html = globals.IS_felmeddelande
+        html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
     html += '''
     </div>
     </ul>
