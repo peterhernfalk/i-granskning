@@ -283,6 +283,7 @@ def __get_docx_document(downloaded_document):
     return docx_document
 
 def APP_text_document_not_found(doc, domain, tag):
+
     """
     Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
 
