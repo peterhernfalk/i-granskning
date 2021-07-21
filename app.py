@@ -9,6 +9,7 @@ from html_dashboard import *
 import globals
 from INFO_inspection_information import *
 import io
+from repo import *
 import requests
 
 ##############################
@@ -54,7 +55,7 @@ def reponse2request():
 
     Returnerar: en sträng med html-innehåll
     """
-    __init_variables()
+    globals.GLOBALS_init()
     domain = request.args.get('domain', default="")
     domain = domain.replace("riv.","")
     domain = domain.replace("riv-application.","")
@@ -64,12 +65,6 @@ def reponse2request():
     globals.tag = tag
     alt_IS_name = request.args.get('is', default="")
     alt_TKB_name = request.args.get('tkb', default="")
-    globals.IS_detail_box_contents = ""
-    globals.TKB_detail_box_contents = ""
-    globals.IS_felmeddelande = ""
-    globals.TKB_felmeddelande = ""
-
-    globals.granskningsresultat = ""
 
     if domain != "" and tag != "":
         if domain_prefix_param.strip() != "":
@@ -97,31 +92,6 @@ def reponse2request():
 ##############################
 # Internal methods
 ##############################
-def __init_variables():
-    globals.docx_document = ""
-    globals.docx_IS_document = ""
-    globals.docx_TKB_document = ""
-    globals.granskningsresultat = ""
-
-    globals.IS_antal_brister_datatyper = 0
-    globals.IS_antal_brister_klassbeskrivning = 0
-    globals.IS_antal_brister_multiplicitet = 0
-    globals.IS_antal_brister_referensinfomodell = 0
-    globals.IS_antal_brister_referenslänkar = 0
-    globals.IS_antal_brister_revisionshistorik = 0
-    globals.IS_antal_brister_tomma_tabellceller = 0
-    globals.IS_document_exists = False
-    globals.IS_document_name = ""
-    globals.IS_exists = False
-
-    globals.tag = ""
-
-    globals.TKB_antal_brister_referenslänkar = 0
-    globals.TKB_antal_brister_revisionshistorik = 0
-    globals.TKB_document_exists = False
-    globals.TKB_document_name = ""
-    globals.TKB_exists = False
-
 def __inspect_IS_document(domain, tag, alt_document_name):
     """
     Beräknar url till infospecdokumentet för angiven domain och tag.
@@ -211,12 +181,12 @@ def __get_document_page_link(domainname, tag, document):
 
     return document_page_link
 
-def __get_domain_docs_link(domainname, tag):
-    """
-    Beräknar url till docs-sidan för vald domän och tag i Bitbucket-repot.
-
-    Returenar: länk till dokumentsidan
-    """
+"""def __get_domain_docs_link(domainname, tag):
+    #
+    #Beräknar url till docs-sidan för vald domän och tag i Bitbucket-repot.
+    #
+    #Returenar: länk till dokumentsidan
+    #
     url_prefix = "https://bitbucket.org/rivta-domains/"
     url_domain = globals.domain_prefix + domainname + "/"
     url_src = "src/"
@@ -224,7 +194,7 @@ def __get_domain_docs_link(domainname, tag):
     url_docs = "docs/"
     document_page_link = url_prefix+url_domain+url_src+url_tag+url_docs
 
-    return document_page_link
+    return document_page_link"""
 
 def __get_document_link(domainname, tag, document, head_hash, alt_document_name):
     """
@@ -301,7 +271,7 @@ def APP_text_document_not_found(doc, domain, tag):
 
     document_info = "<div><li>"
     document_info += document_name + " saknas eller har annat namn än det förväntade: <i>" + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
-    docs_link = __get_domain_docs_link(domain, tag)
+    docs_link = REPO_get_domain_docs_link(domain, tag)
     document_info += "<br>Kontrollera dokumentnamn här: <a href='" + docs_link + "'" + " target='_blank'>" + docs_link + "</a>"
     document_info += "<br>Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
     document_info += "I så fall kan du ange det namnet som en url-parameter enligt: <i>url...</i><b>&is=dokumentnamn</b>"

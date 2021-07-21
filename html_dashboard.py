@@ -1,5 +1,6 @@
 import app
 import globals
+from repo import *
 
 def get_page_html():
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name)
@@ -327,12 +328,35 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
     else:
         #html = globals.IS_felmeddelande
-        html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
+        #html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
+        html += __text_document_not_found(globals.IS, globals.domain_name, globals.tag)
     html += '''
     </div>
     </ul>
     '''
     return html
+
+def __text_document_not_found(doc, domain, tag):
+
+    """
+    Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
+
+    Returenar: information i html-format
+    """
+    document_name = "Infospec"
+    if doc == globals.TKB:
+        document_name = globals.TKB
+
+    document_info = globals.HTML_2_SPACES
+    document_info += document_name + " saknas eller har annat namn än det förväntade: <i><br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
+    docs_link = REPO_get_domain_docs_link(domain, tag)
+    document_info += "<br><br>" + globals.HTML_2_SPACES + "Kontrollera dokumentnamn här: <a href='" + docs_link + "'" + " target='_blank'>" + docs_link + "</a>"
+    document_info += "<br><br>" + globals.HTML_2_SPACES + "Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
+    document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&is=dokumentnamn</b>"
+    document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
+
+    return document_info
+
 
 def __get_infospec_summary(topic):
     html = ""
