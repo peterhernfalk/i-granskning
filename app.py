@@ -56,6 +56,7 @@ def reponse2request():
     Returnerar: en sträng med html-innehåll
     """
     globals.GLOBALS_init()
+    detail_box_content = ""
     domain = request.args.get('domain', default="")
     domain = domain.replace("riv.","")
     domain = domain.replace("riv-application.","")
