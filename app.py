@@ -76,9 +76,11 @@ def reponse2request():
             globals.domain_prefix = "riv."
 
         globals.docx_document = globals.IS
+        globals.IS_detail_box_contents = ""
         __inspect_IS_document(domain, tag, alt_IS_name)
 
         globals.docx_document = globals.TKB
+        globals.TKB_detail_box_contents = ""
         __inspect_TKB_document(domain, tag, alt_TKB_name)
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
