@@ -3,7 +3,7 @@ import globals
 from repo import *
 
 def get_page_html():
-    html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name)
+    html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name, globals.tag)
     html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end()
 
     html += __html_detail_section_begin("Infospec")
@@ -296,14 +296,14 @@ def __html_sidebar():
     '''
     return html
 
-def __html_overview_start(domain_name):
+def __html_overview_start(domain_name, tag):
     html = '''
       <section class="home-section">
     <nav>
       <div class="sidebar-button">
         <i></i>
         <span class="dashboard">I-granskning av: &nbsp '''
-    html += domain_name + '</span>'
+    html += domain_name + ' (' + tag + ')</span>'
     html += '''
     </div>
     </nav>
