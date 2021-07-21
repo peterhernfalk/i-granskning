@@ -4,13 +4,13 @@ from repo import *
 
 def get_page_html():
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name)
-    html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end() + __html_detail_section_begin("Infospec")
-    #html += __html_recent_inspection_box_begin("Infospec-granskning") + __demo_add_box_content_IS() + __html_recent_inspection_box_end()
+    html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end()
+
+    html += __html_detail_section_begin("Infospec")
     html += __html_recent_inspection_box_begin("Infospec-granskning") + globals.IS_detail_box_contents + __html_recent_inspection_box_end()
-    #html += __html_br()+__html_detail_box_begin_TKB()+__demo_add_box_content_TKB()+__box_content_end()
+
     html += __html_br()+__html_detail_box_begin_TKB()+globals.TKB_detail_box_contents+__box_content_end()
     html += __html_section_end()+__html_br()+__html_br()+__html_body_end()+__html_end()
-    #print(html)
     return html
 
 def __html_start():
@@ -433,6 +433,7 @@ def __html_section_end():
     return html
 
 def __html_recent_inspection_box_begin(title):
+    html = ""
     if title.strip() != "":
         html = '''
         <div class="recent-inspection box">
@@ -441,7 +442,7 @@ def __html_recent_inspection_box_begin(title):
         <ul class="details">
         <li class="topic">
         '''
-        return html
+    return html
 
 def __html_recent_inspection_box_end():
     html = '''
