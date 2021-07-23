@@ -33,6 +33,32 @@ TKB_document_name = ""
 TKB_exists = False
 
 def GLOBALS_init():
+    global docx_document
+    global docx_IS_document
+    global docx_TKB_document
+    global domain_name
+    global domain_prefix
+    global granskningsresultat
+    global IS_antal_brister_datatyper
+    global IS_antal_brister_klassbeskrivning
+    global IS_antal_brister_multiplicitet
+    global IS_antal_brister_referensinfomodell
+    global IS_antal_brister_referenslänkar
+    global IS_antal_brister_revisionshistorik
+    global IS_antal_brister_tomma_tabellceller
+    global IS_detail_box_contents
+    global IS_felmeddelande
+    global IS_document_exists
+    global IS_document_name
+    global IS_exists
+    global tag
+    global TKB_antal_brister_referenslänkar
+    global TKB_antal_brister_revisionshistorik
+    global TKB_detail_box_contents
+    global TKB_document_exists
+    global TKB_document_name
+    global TKB_exists
+
     docx_document = ""
     docx_IS_document = ""
     docx_TKB_document = ""

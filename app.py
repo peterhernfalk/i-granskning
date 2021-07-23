@@ -76,20 +76,9 @@ def reponse2request():
             globals.domain_prefix = "riv."
 
         globals.docx_document = globals.IS
-        globals.IS_detail_box_contents = ""
-        globals.IS_antal_brister_datatyper = 0
-        globals.IS_antal_brister_klassbeskrivning = 0
-        globals.IS_antal_brister_multiplicitet = 0
-        globals.IS_antal_brister_referensinfomodell = 0
-        globals.IS_antal_brister_referenslänkar = 0
-        globals.IS_antal_brister_revisionshistorik = 0
-        globals.IS_antal_brister_tomma_tabellceller = 0
         __inspect_IS_document(domain, tag, alt_IS_name)
 
         globals.docx_document = globals.TKB
-        globals.TKB_detail_box_contents = ""
-        globals.TKB_antal_brister_referenslänkar = 0
-        globals.TKB_antal_brister_revisionshistorik = 0
         __inspect_TKB_document(domain, tag, alt_TKB_name)
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
@@ -293,7 +282,7 @@ def __get_docx_document(downloaded_document):
     return document_info"""
 
 
-def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs):
+#def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs):
     """
     Sammanställer ett meddelande till användaren med granskningsresultat
 
@@ -306,13 +295,13 @@ def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_par
         <br><h2><b>TKB-paragrafer:</b></h2> {}
         '''.format(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)"""
 
-    html = '''
+    """html = '''
         <h1>I-granskningsstöd för: {}</h1>
         <br>{}
         <br>{}
         '''.format(riv_domain, __get_summary_in_html_format(), globals.granskningsresultat)
 
-    return html
+    return html"""
 
 def __get_summary_in_html_format():
     """
