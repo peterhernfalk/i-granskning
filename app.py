@@ -123,8 +123,8 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     IS_document_link = __get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
     downloaded_IS_document = __get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
-        IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
-        globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
+        ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
+        ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
         #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
         globals.IS_exists = False
         docx_IS_document = ""
@@ -159,8 +159,8 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
     TKB_document_link = __get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
     downloaded_TKB_document = __get_downloaded_document(TKB_document_link)
     if downloaded_TKB_document.status_code == 404:
-        TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
-        globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
+        ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
+        ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
         docx_TKB_document = ""
         #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
         globals.TKB_exists = False
@@ -270,14 +270,14 @@ def __get_docx_document(downloaded_document):
 
     return docx_document
 
-def APP_text_document_not_found(doc, domain, tag):
+#def APP_text_document_not_found(doc, domain, tag):
 
     """
     Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
 
     Returenar: information i html-format
     """
-    document_name = "Infospec"
+    """document_name = "Infospec"
     if doc == globals.TKB:
         document_name = globals.TKB
 
@@ -290,7 +290,7 @@ def APP_text_document_not_found(doc, domain, tag):
     document_info += "<br>Om detta är en applikationsspecifik domän kan du ange det i en url-parameter enligt: <i>url...</i><b>&domainprefix=true</b>"
     document_info += "<div><li>"
 
-    return document_info
+    return document_info"""
 
 
 def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs):
