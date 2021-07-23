@@ -352,8 +352,9 @@ def __text_document_not_found(doc, domain, tag):
     docs_link = REPO_get_domain_docs_link(domain, tag)
     document_info += "<br><br>" + globals.HTML_2_SPACES + "Kontrollera dokumentnamn här: <a href='" + docs_link + "'" + " target='_blank'>" + docs_link + "</a>"
     document_info += "<br><br>" + globals.HTML_2_SPACES + "Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
-    document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&is=dokumentnamn</b>"
-    document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
+    if doc == globals.IS:
+        document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES + globals.HTML_2_SPACES + "<i>url...</i><b>&is=dokumentnamn</b>"
+        document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
 
     return document_info
 
@@ -389,6 +390,8 @@ def __html_summary_TKB():
     #html += "<div><li>" + __get_TKB_summary() + "</li></div>"
     if globals.TKB_exists == True:
         html += __get_TKB_summary()
+    else:
+        html += __text_document_not_found(globals.TKB, globals.domain_name, globals.tag)
 
     html += '''
     </div>
