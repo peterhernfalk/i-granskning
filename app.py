@@ -37,12 +37,14 @@ def emptyrequest():
 
     Returnerar: en sträng med html-innehåll
     """
+    ##### PREPARE #####
     html = ""
     html = "<br><h1>Webbadressen är inte korrekt!</h1>"
     html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
     html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
     html += "<br><br>Exempelvis: <i><a href='https://i-granskning.herokuapp.com/granskningsinfo?domain=clinicalprocess.healthcond.certificate&tag=4.0.5'>https://i-granskning.herokuapp.com/granskningsinfo?domain=clinicalprocess.healthcond.certificate&tag=4.0.5</a></i>"
 
+    ##### REPLY #####
     return html
 
 @app.route('/granskningsinfo')
@@ -55,8 +57,10 @@ def reponse2request():
 
     Returnerar: en sträng med html-innehåll
     """
+
+    ##### PREPARE #####
     globals.GLOBALS_init()
-    detail_box_content = ""
+    #detail_box_content = ""
     domain = request.args.get('domain', default="")
     domain = domain.replace("riv.","")
     domain = domain.replace("riv-application.","")
@@ -75,6 +79,7 @@ def reponse2request():
             riv_domain = "riv."+domain
             globals.domain_prefix = "riv."
 
+        ##### INSPECT #####
         globals.docx_document = globals.IS
         __inspect_IS_document(domain, tag, alt_IS_name)
 
@@ -88,6 +93,7 @@ def reponse2request():
         html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
         html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
 
+    ##### REPLY #####
     return html
 
 ##############################
