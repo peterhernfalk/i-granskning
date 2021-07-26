@@ -175,7 +175,7 @@ def __get_document_page_link(domainname, tag, document):
     """
     Beräknar url till sidan som innehåller länk till angivet dokument för vald domän och tag i Bitbucket-repot.
 
-    Returenar: länk till dokumentsidan
+    Returnerar: länk till dokumentsidan
     """
     url_prefix = "https://bitbucket.org/rivta-domains/"
     url_domain = globals.domain_prefix + domainname + "/"
@@ -192,7 +192,7 @@ def __get_document_page_link(domainname, tag, document):
     #
     #Beräknar url till docs-sidan för vald domän och tag i Bitbucket-repot.
     #
-    #Returenar: länk till dokumentsidan
+    #Returnerar: länk till dokumentsidan
     #
     url_prefix = "https://bitbucket.org/rivta-domains/"
     url_domain = globals.domain_prefix + domainname + "/"
@@ -207,10 +207,10 @@ def __get_document_link(domainname, tag, document, head_hash, alt_document_name)
     """
     Beräknar url till angivet dokument för vald domän och tag i Bitbucket-repot.
 
-    Returenar: länk som kan användas vid nerladdning av angivet dokument
+    Returnerar: länk som kan användas vid nerladdning av angivet dokument
     """
     url_prefix = "https://bitbucket.org/rivta-domains/"
-    url_domain = "riv." + domainname + "/"
+    url_domain = globals.domain_prefix + domainname + "/"
     url_raw = "raw/"
     url_docs = "docs/"
     domain_name = domainname.replace(".","_")
@@ -231,7 +231,7 @@ def __get_downloaded_document(document_link):
     """
     Laddar ner dokument från angiven länk.
 
-    Returenar: nerladdat dokument
+    Returnerar: nerladdat dokument
     """
     downloaded_doc = requests.get(document_link, stream=True)
 
@@ -246,7 +246,7 @@ def __get_head_hash(document_page):
     """
     hämtar head-hash för det dokument som ska laddas ner. Hashen finns i den Bitbucketsida som innehåller länk till dokumentet.
 
-    Returenar: head-hash
+    Returnerar: head-hash
     """
     hash_start = document_page.text.find('{"hash":')
     hash_end = hash_start+17
@@ -258,7 +258,7 @@ def __get_docx_document(downloaded_document):
     """
     Läser in angivet dokuments innehåll i ett docx-Document.
 
-    Returenar: docx-Documentet
+    Returnerar: docx-Documentet
     """
     with io.BytesIO(downloaded_document.content) as inmemoryfile:
         docx_document = Document(inmemoryfile)
@@ -270,7 +270,7 @@ def __get_docx_document(downloaded_document):
     """
     Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
 
-    Returenar: information i html-format
+    Returnerar: information i html-format
     """
     """document_name = "Infospec"
     if doc == globals.TKB:
@@ -292,7 +292,7 @@ def __get_docx_document(downloaded_document):
     """
     Sammanställer ett meddelande till användaren med granskningsresultat
 
-    Returenar: information i html-format
+    Returnerar: information i html-format
     """
     """html = '''
         <h1>I-granskningsstöd för: {}</h1>
