@@ -1,4 +1,4 @@
-#current_document = ""
+COMMENTS_detail_box_contents = ""
 docx_document = ""
 docx_IS_document = ""
 docx_TKB_document = ""
@@ -33,6 +33,7 @@ TKB_document_name = ""
 TKB_exists = False
 
 def GLOBALS_init():
+    global COMMENTS_detail_box_contents
     global docx_document
     global docx_IS_document
     global docx_TKB_document
@@ -59,6 +60,7 @@ def GLOBALS_init():
     global TKB_document_name
     global TKB_exists
 
+    COMMENTS_detail_box_contents = ""
     docx_document = ""
     docx_IS_document = ""
     docx_TKB_document = ""

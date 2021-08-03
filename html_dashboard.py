@@ -10,6 +10,10 @@ def get_page_html():
     html += __html_recent_inspection_box_begin("Infospec-granskning") + globals.IS_detail_box_contents + __html_recent_inspection_box_end()
 
     html += __html_br()+__html_detail_box_begin_TKB()+globals.TKB_detail_box_contents+__box_content_end()
+
+    globals.COMMENTS_detail_box_contents = "Här ska förslag till granskningskommentarer visas, inklusive färgkodning och i samma struktur som granskningsrapporten"
+    html += __html_br() + __html_detail_box_begin_COMMENTS() + globals.COMMENTS_detail_box_contents + __box_content_end()
+
     html += __html_section_end()+__html_br()+__html_br()+__html_body_end()+__html_end()
     return html
 
@@ -294,6 +298,12 @@ def __html_sidebar():
             <span class="links_name">TKB-granskning</span>
           </a>
         </li>
+        <li>
+          <a href="#Comments">
+            <i></i>
+            <span class="links_name">Granskningskommentarer</span>
+          </a>
+        </li>
         </div>
     '''
     return html
@@ -396,6 +406,12 @@ def __html_summary_TKB():
         html += __text_document_not_found(globals.TKB, globals.domain_name, globals.tag)
 
     html += '''
+        <br><div class="box-topic">Sammanfattning: granskningskommentarer</div>
+        <div><li><b>0  &nbsp</b>förslag till granskningskommentarer</div></li>
+    '''
+
+
+    html += '''
     </div>
     </ul>
     </div>
@@ -467,6 +483,17 @@ def __html_detail_box_begin_TKB():
     <ul class="details">
     '''
     return html
+
+def __html_detail_box_begin_COMMENTS():
+    html = '''
+    <div id = "Comments" class="detail-boxes">
+	<div class="recent-inspection box">
+    <div class="title">Förslag till granskningskommentarer</div>
+    <div class="inspection-details">
+    <ul class="details">
+    '''
+    return html
+
 
 def __demo_add_box_content_IS():
     html = '''
