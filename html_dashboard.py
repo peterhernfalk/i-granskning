@@ -379,7 +379,7 @@ def __get_infospec_summary(topic):
         else:
             html += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
     elif topic == "referenslänkar":
-        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen"
+        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen <i>(kontroll under utveckling)</i>"
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
     elif topic == "multiplicitet":
