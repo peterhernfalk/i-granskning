@@ -42,6 +42,14 @@ def extract_urls_from_table(document, table_number):
                     if "<w:t xml:" not in str(wt_list[0]):
                         hyperlink = str(wt_list[0]).replace("<w:t>","").replace("</w:t>","")
                         links.append(hyperlink)
+                elif paragraph.text.lower().find("http") >= 0:
+                    paragraph_links = paragraph.text.split("\n")
+                    for paragraph_link in paragraph_links:
+                        if paragraph.text.lower().strip().find("http") >= 0:
+                            if paragraph_link.strip() != "":
+                                links.append(paragraph_link)
+                                print("extract_urls_from_table, link", paragraph_link)
+
     return links
 
 
