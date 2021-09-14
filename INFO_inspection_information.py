@@ -36,9 +36,11 @@ def __execute_command(command):
         write_output("Saknad obligatorisk fil: docs/TKB_*.docx")"""
 
 def __inspect_IS():
-    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     DOCX_prepare_inspection("IS_*.doc*")
     IS_init_infomodel_classes_list()
+    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    # 2do: kontrollera dokumentegenskaper avseende versionsnummer
+    # 2do: kontrollera versionsnummer på dokumentets första sida
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
@@ -46,9 +48,18 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
+    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn
+    # 2do: kontrollera att begreppsmodellens paragraf finns och har innehåll (ingen koll av vad innehållet består av)
+    # 2do: kontrollera att begreppsavsnittet innehåller tabellen "Beskrivning av begrepp"
+    # 2do: kontrollera att det finns en begreppslista i slutet av dokumentet
+    # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
+    # 2do: kontrollera att begreppbeskrivningstabellens alla celler har innehåll
+    # 2do: kontrollera att infomodellens paragraf finns och har innehåll (ingen koll av vad innehållet består av)
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
+    write_detail_box_content("Kontroll att infomodellklassernas attributnamn börjar med liten bokstav")
+    # 2do: Kontrollera att infomodellklassernas attributnamn börjar med liten bokstav
     DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     IS_inspect_document_contents()
@@ -61,6 +72,8 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
     IS_inspect_usage_of_defined_datatypes()
+    # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
+    # 2do: visa innehåll i dokumentets kodverkstabell (manuell granskning)
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
     IS_inspect_usage_of_reference_infomodel()
@@ -69,19 +82,25 @@ def __inspect_IS():
     IS_find_empty_table_cells()
 
 def __inspect_TKB():
+    DOCX_prepare_inspection("TKB_*.doc*")
+    write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     write_detail_box_content("<b>Granskningsstöd:</b> alla interaktionser ska vara beskrivna i TKB")
-    DOCX_prepare_inspection("TKB_*.doc*")
-    write_detail_box_html("<br>")
+    # 2do: kontrollera dokumentegenskaper avseende versionsnummer
+    # 2do: kontrollera versionsnummer på dokumentets första sida
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     DOCX_inspect_revision_history()
+    # 2do: kontrollera att revisionshistoriktabellens alla celler har innehåll
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
+    # 2do: kontrollera att referenstabellens alla celler har innehåll
+    # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
+    # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
@@ -100,6 +119,9 @@ def __inspect_TKB():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> felhantering ska vara korrekt beskriven")
     DOCX_display_paragraph_text_and_tables("felhantering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
+    # 2do: kontrollera att det finns en paragraf för meddelandemodell och att den har innehåll
+    # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
+    # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
 
 
 ##########################
