@@ -83,9 +83,9 @@ def __inspect_IS():
 
 def __inspect_TKB():
     DOCX_prepare_inspection("TKB_*.doc*")
-    write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
-    write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
+    #write_detail_box_html("<br>")
+    #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
+    #write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     write_detail_box_content("<b>Granskningsstöd:</b> alla interaktionser ska vara beskrivna i TKB")
@@ -105,7 +105,7 @@ def __inspect_TKB():
     write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
     DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
-    write_detail_box_html("<br>")
+    """write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> adressering ska vara beskriven och korrekt")
     DOCX_display_paragraph_text_and_tables("adressering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
     write_detail_box_html("<br>")
@@ -118,7 +118,7 @@ def __inspect_TKB():
     DOCX_display_paragraph_text_and_tables("sla krav",TITLE,NO_INITIAL_NEWLINE,TEXT,TABLES)
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> felhantering ska vara korrekt beskriven")
-    DOCX_display_paragraph_text_and_tables("felhantering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
+    DOCX_display_paragraph_text_and_tables("felhantering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)"""
     # 2do: kontrollera att det finns en paragraf för meddelandemodell och att den har innehåll
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
