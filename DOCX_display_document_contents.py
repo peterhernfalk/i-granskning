@@ -76,6 +76,8 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
     Skriver ut titlar och innehåll i paragrafer och tabeller i enlighet med angivna parametrar.
 
     Utskrift sker via metoden: write_output
+
+    Förbättringsförslag: lägg till en inparameter för att kunna välja om searched_paragraph_title ska matchas exakt eller ingå i hittad titel
     """
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
     searched_paragraph_found = False
@@ -101,6 +103,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                         if display_paragraph_title == False:
                             write_output("<br>")
                             write_detail_box_html("<br>")
+                        print("block",block)
                         __table_print(block)
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
