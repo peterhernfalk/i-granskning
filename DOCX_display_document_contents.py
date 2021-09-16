@@ -58,6 +58,18 @@ def DOCX_inspect_revision_history():
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
     write_output("Revisionshistorikens sista rad: " + str(text))
     write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
+    #print(document.core_properties.author)
+
+    # 2do: kolla om dokumentet har eftersökta custom properties
+    # Custom properties finns i custom.xml i Wordfilen
+    try:
+        print(document.custom_properties)
+        #print("Version",document.CustomDocumentProperties('Version').value)
+    except AttributeError:
+        print(globals.docx_document, "has no custom properties")    # Hittills kommer alla anrop hit
+    #for paragraph in document.paragraphs:
+    #    print(globals.docx_document,"paragraph",paragraph.text)
+
 
 def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_paragraph_title, display_initial_newline, display_keylevel_text, display_tables):
     """

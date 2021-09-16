@@ -39,8 +39,19 @@ def __inspect_IS():
     DOCX_prepare_inspection("IS_*.doc*")
     IS_init_infomodel_classes_list()
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
-    # 2do: kontrollera dokumentegenskaper avseende versionsnummer
-    # 2do: kontrollera versionsnummer på dokumentets första sida
+    # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
+    """
+        Exempel på Core properties:
+            Title, Subject, Author
+            
+        Exempel på Custom properties:
+            datepublished, datumpubliserad, Publisheddate
+            domain_1,_2,_3
+            svekortnamn
+            svename, svenamn, SvensktDomänNamn
+            Version, version, Version_1,_2,_3, Version_RC, version1,2,3
+    """
+    # 2do: kontrollera versionsnummer på dokumentets första sida: förekomst av "Version" med efterföljande versionsnummer
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
@@ -49,12 +60,21 @@ def __inspect_IS():
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn
-    # 2do: kontrollera att begreppsmodellens paragraf finns och har innehåll (ingen koll av vad innehållet består av)
+        # Avsnittsrubrik: "Referensmodellsförteckning (RIM)", Kolumnrubrik: "Version"
+    # 2do: kontrollera att begreppsmodellens paragraf finns och har innehåll
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell")
+    DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     # 2do: kontrollera att begreppsavsnittet innehåller tabellen "Beskrivning av begrepp"
     # 2do: kontrollera att det finns en begreppslista i slutet av dokumentet
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
     # 2do: kontrollera att begreppbeskrivningstabellens alla celler har innehåll
-    # 2do: kontrollera att infomodellens paragraf finns och har innehåll (ingen koll av vad innehållet består av)
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
+    DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
