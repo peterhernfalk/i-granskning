@@ -1,3 +1,4 @@
+import IS_inspection
 from IS_inspection import *
 from TKB_inspection import *
 #from utilities import write_output, write_detail_box_content, verify_url_exists, check_if_file_exists
@@ -102,14 +103,10 @@ def __inspect_IS():
     IS_inspect_usage_of_reference_infomodel()
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
-    IS_find_empty_table_cells()
-    # 2do: ta reda på tabellnumret för klasstabellerna (for-loop)
-    global infomodel_table_indexes
-    #print(infomodel_table_indexes)
-    """for table_index in range(len(infomodel_table_indexes)):
-        table_number = infomodel_table_indexes[table_index]
-        #table = document.tables[table_number]
-        DOCX_find_empty_table_cells(document.tables[table_number])"""
+    #IS_find_empty_table_cells()
+    for table_index in range(len(IS_inspection.infomodel_table_indexes)):
+        table_number = IS_inspection.infomodel_table_indexes[table_index]
+        DOCX_find_empty_table_cells(table_number)
 
 def __inspect_TKB():
     DOCX_prepare_inspection("TKB_*.doc*")
