@@ -27,6 +27,7 @@ tag = ""
 TKB = "TKB"
 TKB_antal_brister_referenslänkar = 0
 TKB_antal_brister_revisionshistorik = 0
+TKB_antal_brister_tomma_tabellceller = 0
 TKB_detail_box_contents = ""
 TKB_document_exists = False
 TKB_document_name = ""
@@ -55,6 +56,7 @@ def GLOBALS_init():
     global tag
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
+    global TKB_antal_brister_tomma_tabellceller
     global TKB_detail_box_contents
     global TKB_document_exists
     global TKB_document_name
@@ -82,6 +84,7 @@ def GLOBALS_init():
     tag = ""
     TKB_antal_brister_referenslänkar = 0
     TKB_antal_brister_revisionshistorik = 0
+    TKB_antal_brister_tomma_tabellceller = 0
     TKB_detail_box_contents = ""
     TKB_document_exists = False
     TKB_document_name = ""

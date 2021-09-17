@@ -73,6 +73,7 @@ def __inspect_IS():
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
     # 2do: kontrollera att begreppbeskrivningstabellens alla celler har innehåll
+    #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för begreppstabellen
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
     DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
@@ -102,6 +103,13 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
     IS_find_empty_table_cells()
+    # 2do: ta reda på tabellnumret för klasstabellerna (for-loop)
+    global infomodel_table_indexes
+    #print(infomodel_table_indexes)
+    """for table_index in range(len(infomodel_table_indexes)):
+        table_number = infomodel_table_indexes[table_index]
+        #table = document.tables[table_number]
+        DOCX_find_empty_table_cells(document.tables[table_number])"""
 
 def __inspect_TKB():
     DOCX_prepare_inspection("TKB_*.doc*")
@@ -121,6 +129,7 @@ def __inspect_TKB():
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
     # 2do: kontrollera att referenstabellens alla celler har innehåll
+    #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för referenstabellen
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
     write_detail_box_html("<br>")
@@ -141,7 +150,6 @@ def __inspect_TKB():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> felhantering ska vara korrekt beskriven")
     DOCX_display_paragraph_text_and_tables("felhantering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)"""
-    # 2do: kontrollera att det finns en paragraf för meddelandemodell och att den har innehåll
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> TKB ska innehålla ett avsnitt för meddelandemodeller")
     DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)

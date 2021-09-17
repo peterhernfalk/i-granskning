@@ -334,6 +334,47 @@ def __iter_block_items(parent,searched_paragraph_level):
         elif isinstance(child, CT_Tbl):
             yield Table(child, parent)
 
+def DOCX_find_empty_table_cells(table_number):
+    result = False
+    """for table_index in range(len(infomodel_table_indexes)):
+        table_number = infomodel_table_indexes[table_index]
+        table = document.tables[table_number]
+        for row in range(1, len(table.rows)):
+            column_count = len(table.row_cells(0))
+            for column in range(0, column_count):
+                if table.cell(row, column).text.strip() == "":
+                    result = True
+                    #table_title = __get_title_by_table_number(table_index + 1)
+                    tbl_no = table_index + infomodel_table_indexes[0]
+                    table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+                    write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    globals.IS_antal_brister_tomma_tabellceller += 1"""
+
+    table = document.tables[table_number]
+    for row in range(1, len(table.rows)):
+        column_count = len(table.row_cells(0))
+        for column in range(0, column_count):
+            if table.cell(row, column).text.strip() == "":
+                result = True
+                #tbl_no = table_index + infomodel_table_indexes[0]
+                #table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+                #write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                #write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_number) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                print(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_number) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                if globals.docx_document == globals.IS:
+                    globals.IS_antal_brister_tomma_tabellceller += 1
+                elif globals.docx_document == globals.TKB:
+                    globals.TKB_antal_brister_tomma_tabellceller += 1
+
+
+    if result == True:
+        write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+    else:
+        write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
 
 
 if local_test == True:
