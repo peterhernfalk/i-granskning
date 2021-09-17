@@ -103,10 +103,10 @@ def __inspect_IS():
     IS_inspect_usage_of_reference_infomodel()
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
-    #IS_find_empty_table_cells()
-    for table_index in range(len(IS_inspection.infomodel_table_indexes)):
+    IS_find_empty_table_cells()
+    """for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
-        DOCX_find_empty_table_cells(table_number)
+        DOCX_find_empty_table_cells(table_number)"""
 
 def __inspect_TKB():
     DOCX_prepare_inspection("TKB_*.doc*")
