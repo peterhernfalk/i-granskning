@@ -103,11 +103,18 @@ def __inspect_IS():
     IS_inspect_usage_of_reference_infomodel()
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
-    IS_find_empty_table_cells()
+    #IS_find_empty_table_cells()
 
-    """for table_index in range(len(IS_inspection.infomodel_table_indexes)):
+    empty_cells_found = False
+    for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
-        DOCX_find_empty_table_cells(table_number)"""
+        if DOCX_find_empty_table_cells(table_number, False) == True:
+            empty_cells_found = True
+    if empty_cells_found == True:
+        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+    else:
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+
 
 def __inspect_TKB():
     DOCX_prepare_inspection("TKB_*.doc*")
