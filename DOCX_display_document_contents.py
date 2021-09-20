@@ -338,20 +338,6 @@ def __iter_block_items(parent,searched_paragraph_level):
 
 def DOCX_find_empty_table_cells(table_number, display_result):
     result = False
-    """for table_index in range(len(infomodel_table_indexes)):
-        table_number = infomodel_table_indexes[table_index]
-        table = document.tables[table_number]
-        for row in range(1, len(table.rows)):
-            column_count = len(table.row_cells(0))
-            for column in range(0, column_count):
-                if table.cell(row, column).text.strip() == "":
-                    result = True
-                    #table_title = __get_title_by_table_number(table_index + 1)
-                    tbl_no = table_index + infomodel_table_indexes[0]
-                    table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
-                    write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    globals.IS_antal_brister_tomma_tabellceller += 1"""
 
     table = document.tables[table_number]
     for row in range(1, len(table.rows)):
@@ -359,28 +345,36 @@ def DOCX_find_empty_table_cells(table_number, display_result):
         for column in range(0, column_count):
             if table.cell(row, column).text.strip() == "":
                 result = True
-                #tbl_no = table_index + infomodel_table_indexes[0]
                 if globals.docx_document == globals.IS:
-                    table_title = IS_inspection.__get_infomodel_classname_from_table_number(table_number, True)
-                #write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                #write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    table_title = IS_inspection.IS_get_infomodel_classname_from_table_number(table_number, True)
+                    #table_title = __get_infomodel_classname_from_table_number(table_number, True)
+                elif globals.docx_document == globals.TKB:
+                    table_title = "TKB-tabell nummer " + str(table_number)
                 write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                #print(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_number) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
                 if globals.docx_document == globals.IS:
                     globals.IS_antal_brister_tomma_tabellceller += 1
                 elif globals.docx_document == globals.TKB:
                     globals.TKB_antal_brister_tomma_tabellceller += 1
 
-
     if display_result == True:
         if result == True:
-            write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
-            write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+            write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
         else:
-            write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-            write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+            write_detail_box_content("<b>Resultat:</b> alla granskade tabellers alla celler har innehåll")
 
     return result
+
+"""def __get_infomodel_classname_from_table_number(table_number, include_level):
+    #global infomodel_classes_list
+    result_classtitle = ""
+    for obj in IS_inspection.infomodel_classes_list:
+        if obj.classtable_number == table_number:
+            if include_level == True:
+                result_classtitle = obj.document_level + " " + obj.classtitle
+            else:
+                result_classtitle = obj.classtitle
+            break
+    return result_classtitle"""
 
 
 if local_test == True:

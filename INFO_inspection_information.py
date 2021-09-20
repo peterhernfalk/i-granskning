@@ -129,7 +129,10 @@ def __inspect_TKB():
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     DOCX_inspect_revision_history()
-    # 2do: kontrollera att revisionshistoriktabellens alla celler har innehåll
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
+    # 2do: hämta tqbellnummer från en variabel som sätts vid init av dokumentet
+    DOCX_find_empty_table_cells(1, True)
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)

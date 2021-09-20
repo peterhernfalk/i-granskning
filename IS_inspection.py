@@ -56,7 +56,7 @@ def IS_inspect_attribute_multiplicity():
         # 2do
         if result == False:
             tbl_no = index + infomodel_table_indexes[0]
-            table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+            table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
             write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             globals.IS_antal_brister_multiplicitet += 1
@@ -111,7 +111,7 @@ def IS_inspect_usage_of_reference_infomodel():
         for i in range(1, len(table.rows)):
             if table.cell(i, 1).text.strip() == "":
                 tbl_no = index+infomodel_table_indexes[0]
-                table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+                table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
                 write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 globals.IS_antal_brister_referensinfomodell += 1
@@ -125,7 +125,7 @@ def IS_inspect_usage_of_reference_infomodel():
 
 
 ################################################## local methods
-def __get_infomodel_classname_from_table_number(table_number, include_level):
+def IS_get_infomodel_classname_from_table_number(table_number, include_level):
     global infomodel_classes_list
     result_classtitle = ""
     for obj in infomodel_classes_list:
@@ -233,7 +233,7 @@ def __get_title_by_table_number(table_number):
     ###############################################
     ### 2do: get paragraph title for this table ###
     tbl_no = table_number + infomodel_table_indexes[0]
-    table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+    table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
     if table_title.strip() == "":
         table_title = str(table_number)
     ###############################################
@@ -253,7 +253,7 @@ def __infomodel_classes_verify_multiplicity(table_number):
     for i in range(1,len(table.rows)):
         if any(cell_multiplicity in table.cell(i, table_column_index).text for cell_multiplicity in allowed_multiplicities) == False:
             tbl_no = table_number #+ infomodel_table_indexes[0]
-            table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+            table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
             write_output(globals.HTML_3_SPACES + globals.HTML_3_SPACES + "Klass: " + table_title + " saknar multiplicitet för: " + table.cell(i, 0).text)
             result = False
     return result
@@ -361,7 +361,7 @@ def IS_find_empty_table_cells():
                     result = True
                     #table_title = __get_title_by_table_number(table_index + 1)
                     tbl_no = table_index + infomodel_table_indexes[0]
-                    table_title = __get_infomodel_classname_from_table_number(tbl_no, True)
+                    table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
                     write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
                     write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
                     globals.IS_antal_brister_tomma_tabellceller += 1
