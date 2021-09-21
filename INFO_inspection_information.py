@@ -13,6 +13,7 @@ NO_TEXT = False
 TABLES = True
 NO_TABLES = False
 
+TABLE_NUM_REVISION = 1   #Hard coded, assuming that the reference table is number 1 in the document
 TABLE_NUM_REF = 2   #Hard coded, assuming that the reference table is number 2 in the document
 
 local_test = False
@@ -132,7 +133,8 @@ def __inspect_TKB():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     # 2do: hämta tqbellnummer från en variabel som sätts vid init av dokumentet
-    DOCX_find_empty_table_cells(1, True)
+    DOCX_find_empty_table_cells(TABLE_NUM_REVISION, True)
+    globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)

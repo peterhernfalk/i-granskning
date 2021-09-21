@@ -421,9 +421,10 @@ def __html_summary_TKB():
 def __get_TKB_summary():
     html = ""
     if globals.TKB_antal_brister_revisionshistorik == 0:
-        html += "<div><li>Revisionshistoriken är <b>korrekt</b></li></div>"
+        html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
+    html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
 
