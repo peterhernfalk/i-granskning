@@ -338,6 +338,7 @@ def __iter_block_items(parent,searched_paragraph_level):
 
 def DOCX_find_empty_table_cells(table_number, display_result):
     result = False
+    globals.TKB_antal_brister_tomma_tabellceller = 0
 
     table = document.tables[table_number]
 

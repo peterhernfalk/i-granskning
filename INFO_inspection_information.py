@@ -140,6 +140,7 @@ def __inspect_TKB():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     DOCX_find_empty_table_cells(TABLE_NUM_REF, True)
+    globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
     #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för referenstabellen
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
