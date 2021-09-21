@@ -358,13 +358,11 @@ def DOCX_empty_table_cells_exists(table_number, display_result):
                 result = True
                 if globals.docx_document == globals.IS:
                     table_title = IS_inspection.IS_get_infomodel_classname_from_table_number(table_number, True)
-                elif globals.docx_document == globals.TKB:
-                    table_title = "TKB-tabell nummer " + str(table_number)
-                write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                if globals.docx_document == globals.IS:
                     globals.IS_antal_brister_tomma_tabellceller += 1
                 elif globals.docx_document == globals.TKB:
+                    table_title = "TKB-tabell nummer " + str(table_number)
                     globals.TKB_antal_brister_tomma_tabellceller += 1
+                write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
 
     if display_result == True:
         if result == True:

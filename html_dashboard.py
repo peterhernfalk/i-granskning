@@ -333,8 +333,10 @@ def __html_summary_infospec():
     if globals.IS_exists == True:
         html += '<div><li>' + __get_infospec_summary("revisionshistorik") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("revisionshistorik_cellinnehåll") + '</li></div>'
+        html += "<br>"
         html += '<div><li>' + __get_infospec_summary("referenslänkar") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referenslänkar_cellinnehåll") + '</li></div>'
+        html += "<br>"
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("multiplicitet") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
@@ -431,6 +433,7 @@ def __get_TKB_summary():
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    html += "<br>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
 

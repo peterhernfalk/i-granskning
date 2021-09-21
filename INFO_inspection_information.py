@@ -75,7 +75,7 @@ def __inspect_IS():
     globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn
-        # Avsnittsrubrik: "Referensmodellsförteckning (RIM)", Kolumnrubrik: "Version"
+    # Avsnittsrubrik: "Referensmodellsförteckning (RIM)", Kolumnrubrik: "Version"
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell")
