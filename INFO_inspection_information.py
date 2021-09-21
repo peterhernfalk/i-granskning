@@ -54,32 +54,51 @@ def __inspect_IS():
             Version, version, Version_1,_2,_3, Version_RC, version1,2,3
     """
     # 2do: kontrollera versionsnummer på dokumentets första sida: förekomst av "Version" med efterföljande versionsnummer
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     DOCX_inspect_revision_history()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
+    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True)
+    globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
+    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True)
+    globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
+
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn
         # Avsnittsrubrik: "Referensmodellsförteckning (RIM)", Kolumnrubrik: "Version"
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell")
     DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
     # 2do: kontrollera att begreppsavsnittet innehåller tabellen "Beskrivning av begrepp"
     # 2do: kontrollera att det finns en begreppslista i slutet av dokumentet
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
     DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
+
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
     # 2do: kontrollera att begreppbeskrivningstabellens alla celler har innehåll
     #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för begreppstabellen
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
     DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
@@ -88,20 +107,26 @@ def __inspect_IS():
     DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     IS_inspect_document_contents()
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
     IS_inspect_class_description()
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
     IS_inspect_attribute_multiplicity()
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
     IS_inspect_usage_of_defined_datatypes()
+
     # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
     # 2do: visa innehåll i dokumentets kodverkstabell (manuell granskning)
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
     IS_inspect_usage_of_reference_infomodel()
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
     #IS_find_empty_table_cells()
@@ -109,7 +134,7 @@ def __inspect_IS():
     empty_cells_found = False
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
-        if DOCX_find_empty_table_cells(table_number, False) == True:
+        if DOCX_empty_table_cells_exists(table_number, False) == True:
             empty_cells_found = True
     if empty_cells_found == True:
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
@@ -122,52 +147,44 @@ def __inspect_TKB():
     #write_detail_box_html("<br>")
     #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     #write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
-    write_detail_box_content("<b>Granskningsstöd:</b> alla interaktionser ska vara beskrivna i TKB")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer
     # 2do: kontrollera versionsnummer på dokumentets första sida
+    write_detail_box_content("<b>Granskningsstöd:</b> alla interaktioner ska vara beskrivna i TKB")
+    write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     DOCX_inspect_revision_history()
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    # 2do: hämta tqbellnummer från en variabel som sätts vid init av dokumentet
-    DOCX_find_empty_table_cells(TABLE_NUM_REVISION, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True)
     globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     DOCX_inspect_reference_links(TABLE_NUM_REF)
-    # 2do: kontrollera att referenstabellens alla celler har innehåll
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    DOCX_find_empty_table_cells(TABLE_NUM_REF, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True)
     globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
-    #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för referenstabellen
+
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
     DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
-    """write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> adressering ska vara beskriven och korrekt")
-    DOCX_display_paragraph_text_and_tables("adressering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
-    write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> endast domäner som behöver använda aggregering kan använda systemadressering. Beskrivningen ska vara korrekt")
-    write_detail_box_content("<b>Krav:</b> om EI används ska det vara beskrivet och de domänspecifika EI-elementen ska vara definierade i TKB")
-    write_detail_box_content("<b>Krav:</b> för domäner som INTE använder patientbunden aggregering ska algoritmen (hur aggregering ska göras) vara beskriven")
-    DOCX_display_paragraph_text_and_tables("aggregering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
-    write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> SLA-krav ska vara beskrivna")
-    DOCX_display_paragraph_text_and_tables("sla krav",TITLE,NO_INITIAL_NEWLINE,TEXT,TABLES)
-    write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> felhantering ska vara korrekt beskriven")
-    DOCX_display_paragraph_text_and_tables("felhantering",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)"""
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> TKB ska innehålla ett avsnitt för meddelandemodeller")
     DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
+
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
 

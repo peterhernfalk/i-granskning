@@ -15,6 +15,8 @@ IS_antal_brister_multiplicitet = 0
 IS_antal_brister_referensinfomodell = 0
 IS_antal_brister_referenslänkar = 0
 IS_antal_brister_revisionshistorik = 0
+IS_antal_brister_tomma_referenstabellceller = 0
+IS_antal_brister_tomma_revisionshistoriktabellceller = 0
 IS_antal_brister_tomma_tabellceller = 0
 IS_detail_box_contents = ""
 IS_felmeddelande = ""
@@ -49,6 +51,8 @@ def GLOBALS_init():
     global IS_antal_brister_referensinfomodell
     global IS_antal_brister_referenslänkar
     global IS_antal_brister_revisionshistorik
+    global IS_antal_brister_tomma_referenstabellceller
+    global IS_antal_brister_tomma_revisionshistoriktabellceller
     global IS_antal_brister_tomma_tabellceller
     global IS_detail_box_contents
     global IS_felmeddelande
@@ -79,6 +83,8 @@ def GLOBALS_init():
     IS_antal_brister_referensinfomodell = 0
     IS_antal_brister_referenslänkar = 0
     IS_antal_brister_revisionshistorik = 0
+    IS_antal_brister_tomma_referenstabellceller = 0
+    IS_antal_brister_tomma_revisionshistoriktabellceller = 0
     IS_antal_brister_tomma_tabellceller = 0
     IS_detail_box_contents = ""
     IS_felmeddelande = ""

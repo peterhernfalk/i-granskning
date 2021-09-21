@@ -336,8 +336,9 @@ def __iter_block_items(parent,searched_paragraph_level):
         elif isinstance(child, CT_Tbl):
             yield Table(child, parent)
 
-def DOCX_find_empty_table_cells(table_number, display_result):
+def DOCX_empty_table_cells_exists(table_number, display_result):
     result = False
+    globals.IS_antal_brister_tomma_tabellceller = 0
     globals.TKB_antal_brister_tomma_tabellceller = 0
 
     table = document.tables[table_number]

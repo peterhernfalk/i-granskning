@@ -332,7 +332,9 @@ def __html_summary_infospec():
     '''
     if globals.IS_exists == True:
         html += '<div><li>' + __get_infospec_summary("revisionshistorik") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("revisionshistorik_cellinnehåll") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referenslänkar") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("referenslänkar_cellinnehåll") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("multiplicitet") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
@@ -375,11 +377,15 @@ def __get_infospec_summary(topic):
     html = ""
     if topic == "revisionshistorik":
         if globals.IS_antal_brister_revisionshistorik == 0:
-            html += "Revisionshistoriken är <b>korrekt</b>"
+            html += "Revisionshistoriken har <b>korrekt</b> version angiven"
         else:
             html += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
+    elif topic == "revisionshistorik_cellinnehåll":
+        html += "<b>" + str(globals.IS_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken"
     elif topic == "referenslänkar":
-        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen <i>(kontroll under utveckling)</i>"
+        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen"
+    elif topic == "referenslänkar_cellinnehåll":
+        html += "<b>" + str(globals.IS_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen"
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
     elif topic == "multiplicitet":
