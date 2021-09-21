@@ -340,14 +340,22 @@ def DOCX_find_empty_table_cells(table_number, display_result):
     result = False
 
     table = document.tables[table_number]
+
     for row in range(1, len(table.rows)):
         column_count = len(table.row_cells(0))
         for column in range(0, column_count):
-            if table.cell(row, column).text.strip() == "":
+            cell_has_contents = False
+            if table.cell(row,column).text.strip() != "":
+                cell_has_contents = True
+            else:
+                for paragraph in table.cell(row, column).paragraphs:
+                    xml_str = str(paragraph.paragraph_format.element.xml)
+                    if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in  xml_str:
+                        cell_has_contents = True
+            if cell_has_contents == False:
                 result = True
                 if globals.docx_document == globals.IS:
                     table_title = IS_inspection.IS_get_infomodel_classname_from_table_number(table_number, True)
-                    #table_title = __get_infomodel_classname_from_table_number(table_number, True)
                 elif globals.docx_document == globals.TKB:
                     table_title = "TKB-tabell nummer " + str(table_number)
                 write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
@@ -360,7 +368,7 @@ def DOCX_find_empty_table_cells(table_number, display_result):
         if result == True:
             write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
         else:
-            write_detail_box_content("<b>Resultat:</b> alla granskade tabellers alla celler har innehåll")
+            write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
     return result
 
