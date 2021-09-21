@@ -328,7 +328,7 @@ def __html_summary_infospec():
     html = '''
     <ul class="recent-result box">
     <div>
-    <div class="box-topic">Sammanfattning: infospec</div>
+    <div class="box-topic">Sammanfattning: infospec-granskning</div>
     '''
     if globals.IS_exists == True:
         html += '<div><li>' + __get_infospec_summary("revisionshistorik") + '</li></div>'
@@ -404,7 +404,7 @@ def __html_summary_TKB():
     html = '''
     <ul class="recent-result box">
     <div>
-    <div class="box-topic">Sammanfattning: TKB</div>
+    <div class="box-topic">Sammanfattning: TKB-granskning</div>
     '''
 
     #html += "<div><li>" + __get_TKB_summary() + "</li></div>"
