@@ -127,6 +127,16 @@ def __inspect_IS():
 
     # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
     # 2do: visa innehåll i dokumentets kodverkstabell (manuell granskning)
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
+    globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Identifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_kodverkstabell_finns == False:
+        globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Identifierare och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+        if globals.IS_kodverkstabell_finns == False:
+            globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+            if globals.IS_kodverkstabell_finns == False:
+                write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")

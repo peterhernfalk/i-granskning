@@ -340,6 +340,7 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("referensinfomodell_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppsmodell_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppslista_finns") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("kodverkstabell_finns") + '</li></div>'
         html += "<br>"
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("multiplicitet") + '</li></div>'
@@ -407,6 +408,11 @@ def __get_infospec_summary(topic):
                 html += "Begreppslista <b>finns</b>"
           else:
                 html += "Begreppslista <b>saknas</b>"
+    elif topic == "kodverkstabell_finns":
+          if globals.IS_kodverkstabell_finns == True:
+                html += "Kodverkstabell <b>finns</b>"
+          else:
+                html += "Kodverkstabell <b>saknas</b>"
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
     elif topic == "multiplicitet":

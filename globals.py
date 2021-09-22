@@ -25,6 +25,7 @@ IS_document_exists = False
 IS_document_name = ""
 IS_exists = False
 IS_felmeddelande = ""
+IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
 
 tag = ""
@@ -64,6 +65,7 @@ def GLOBALS_init():
     global IS_document_name
     global IS_exists
     global IS_felmeddelande
+    global IS_kodverkstabell_finns
     global IS_referensinfomodell_finns
     global tag
     global TKB_antal_brister_referenslänkar
@@ -98,6 +100,7 @@ def GLOBALS_init():
     IS_document_exists = False
     IS_document_name = ""
     IS_exists = False
+    IS_kodverkstabell_finns = False
     IS_referensinfomodell_finns = False
     IS_felmeddelande = ""
     tag = ""
