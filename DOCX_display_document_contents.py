@@ -83,21 +83,25 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
     """
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
     searched_paragraph_found = False
+    paragraph_or_table_found = False
 
     if display_paragraph_title == True and display_tables == False:
         if display_initial_newline == True:
             write_output("<br>")
             write_detail_box_html("<br>")
-        __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+        paragraph_displayed = __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+        if paragraph_displayed == True:
+            paragraph_or_table_found = True
     else:
         for block in __iter_block_items(document,searched_paragraph_level):
             if isinstance(block, Paragraph):
                 this_paragraph_title = block.text.strip().lower()
                 if this_paragraph_title == searched_paragraph_title.strip().lower():
                     searched_paragraph_found = True
+                    paragraph_or_table_found = True
                     if display_paragraph_title == True:
-                        #write_output("\n")
                         __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+                    print("Block found:",this_paragraph_title,paragraph_or_table_found)
 
             elif isinstance(block, Table):
                 if searched_paragraph_found == True:
@@ -105,10 +109,11 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                         if display_paragraph_title == False:
                             write_output("<br>")
                             write_detail_box_html("<br>")
-                        print("block",block)
                         __table_print(block)
+                        paragraph_or_table_found = True
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
+    return paragraph_or_table_found
 
 def DOCX_inspect_reference_links(table_num):
     """
@@ -236,6 +241,7 @@ def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display
     """
     Hämtar paragraftext från dokumentstruktur-dictionaryt med rubriknivå som nyckel, och visar den funna texten
     """
+    paragraph_displayed = False
     previous_key = ""
     for key, value in document_paragraph_index_dict.items():
         if key[0:len(searched_paragraph_level)] == searched_paragraph_level:
@@ -246,11 +252,14 @@ def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display
                     if display_keylevel_text == True:
                         write_output(globals.HTML_3_SPACES + key.strip()[key_level_length+1:])
                         write_detail_box_content(globals.HTML_3_SPACES + key.strip()[key_level_length+1:])
+                        paragraph_displayed = True
                 else:
                     key = key.replace("\n"," ")
                     write_output(globals.HTML_3_SPACES + key)
                     write_detail_box_content(globals.HTML_3_SPACES + key)
+                    paragraph_displayed = True
                 previous_key = key.strip()[0:key_level_length]
+    return paragraph_displayed
 
 def DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
     """
