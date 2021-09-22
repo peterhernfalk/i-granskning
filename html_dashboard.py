@@ -337,6 +337,10 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("referenslänkar") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referenslänkar_cellinnehåll") + '</li></div>'
         html += "<br>"
+        html += '<div><li>' + __get_infospec_summary("referensinfomodell_finns") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("begreppsmodell_finns") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("begreppslista_finns") + '</li></div>'
+        html += "<br>"
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("multiplicitet") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
@@ -388,6 +392,21 @@ def __get_infospec_summary(topic):
         html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen"
     elif topic == "referenslänkar_cellinnehåll":
         html += "<b>" + str(globals.IS_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen"
+    elif topic == "referensinfomodell_finns":
+        if globals.IS_referensinfomodell_finns == True:
+            html += "Referensinformationsmodell (RIM) <b>finns</b>"
+        else:
+            html += "Referensinformationsmodell (RIM) <b>saknas</b>"
+    elif topic == "begreppsmodell_finns":
+          if globals.IS_begreppsmodell_finns == True:
+                html += "Begreppsmodell <b>finns</b>"
+          else:
+                html += "Begreppsmodell <b>saknas</b>"
+    elif topic == "begreppslista_finns":
+          if globals.IS_begreppslista_finns == True:
+                html += "Begreppslista <b>finns</b>"
+          else:
+                html += "Begreppslista <b>saknas</b>"
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
     elif topic == "multiplicitet":

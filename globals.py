@@ -9,6 +9,8 @@ HTML_2_SPACES = "&nbsp;&nbsp;"
 HTML_3_SPACES = "&nbsp;&nbsp;&nbsp;"
 
 IS = "IS"
+IS_begreppslista_finns = False
+IS_begreppsmodell_finns = False
 IS_antal_brister_datatyper = 0
 IS_antal_brister_klassbeskrivning = 0
 IS_antal_brister_multiplicitet = 0
@@ -19,10 +21,11 @@ IS_antal_brister_tomma_referenstabellceller = 0
 IS_antal_brister_tomma_revisionshistoriktabellceller = 0
 IS_antal_brister_tomma_tabellceller = 0
 IS_detail_box_contents = ""
-IS_felmeddelande = ""
 IS_document_exists = False
 IS_document_name = ""
 IS_exists = False
+IS_felmeddelande = ""
+IS_referensinfomodell_finns = False
 
 tag = ""
 
@@ -45,6 +48,8 @@ def GLOBALS_init():
     global domain_name
     global domain_prefix
     global granskningsresultat
+    global IS_begreppslista_finns
+    global IS_begreppsmodell_finns
     global IS_antal_brister_datatyper
     global IS_antal_brister_klassbeskrivning
     global IS_antal_brister_multiplicitet
@@ -55,10 +60,11 @@ def GLOBALS_init():
     global IS_antal_brister_tomma_revisionshistoriktabellceller
     global IS_antal_brister_tomma_tabellceller
     global IS_detail_box_contents
-    global IS_felmeddelande
     global IS_document_exists
     global IS_document_name
     global IS_exists
+    global IS_felmeddelande
+    global IS_referensinfomodell_finns
     global tag
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
@@ -77,6 +83,8 @@ def GLOBALS_init():
     domain_name = ""
     domain_prefix = ""
     granskningsresultat = ""
+    IS_begreppslista_finns = False
+    IS_begreppsmodell_finns = False
     IS_antal_brister_datatyper = 0
     IS_antal_brister_klassbeskrivning = 0
     IS_antal_brister_multiplicitet = 0
@@ -87,10 +95,11 @@ def GLOBALS_init():
     IS_antal_brister_tomma_revisionshistoriktabellceller = 0
     IS_antal_brister_tomma_tabellceller = 0
     IS_detail_box_contents = ""
-    IS_felmeddelande = ""
     IS_document_exists = False
     IS_document_name = ""
     IS_exists = False
+    IS_referensinfomodell_finns = False
+    IS_felmeddelande = ""
     tag = ""
     TKB_antal_brister_referenslänkar = 0
     TKB_antal_brister_revisionshistorik = 0
