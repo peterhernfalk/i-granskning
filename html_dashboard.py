@@ -339,6 +339,7 @@ def __html_summary_infospec():
         html += "<br>"
         html += '<div><li>' + __get_infospec_summary("referensinfomodell_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppsmodell_finns") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("begreppsmodellr_cellinnehåll") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppslista_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("kodverkstabell_finns") + '</li></div>'
         html += "<br>"
@@ -403,6 +404,8 @@ def __get_infospec_summary(topic):
                 html += "Begreppsmodell <b>finns</b>"
           else:
                 html += "Begreppsmodell <b>saknas</b>"
+    elif topic == "begreppsmodellr_cellinnehåll":
+        html += "<b>" + str(globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + " &nbsp</b>tomma celler i begreppsbeskrivningstabellen"
     elif topic == "begreppslista_finns":
           if globals.IS_begreppslista_finns == True:
                 html += "Begreppslista <b>finns</b>"

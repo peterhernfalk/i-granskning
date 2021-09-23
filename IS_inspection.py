@@ -174,6 +174,21 @@ def __find_all_document_tables():
             datatype_definitions_table.append(index)
         index += 1
 
+def IS_get_tableno_for_First_title_cell(title):
+    global document
+    global all_tables
+    table_number = 0
+    index = 0
+    for table in IS_inspection.all_tables:
+        if table.cell(0,0).text.strip().lower() == title:
+            #print("Tabellnummer för begreppstabellen: ",index)
+            table_number = index
+            break
+        #print(table.cell(0,0).text)
+        index += 1
+
+    return table_number
+
 ### Find and save a list of the paragraphs ###
 def __find_all_document_paragraphs():
     level_from_style_name = {f'Rubrik {i} Nr': i for i in range(10)}

@@ -40,6 +40,7 @@ def __execute_command(command):
 def __inspect_IS():
     DOCX_prepare_inspection("IS_*.doc*")
     IS_init_infomodel_classes_list()
+
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
     """
@@ -76,17 +77,23 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
+    write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
     globals.IS_referensinfomodell_finns = DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     if globals.IS_referensinfomodell_finns  == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
-    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn
-    # Avsnittsrubrik: "Referensmodellsförteckning (RIM)", Kolumnrubrik: "Version"
+    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
     globals.IS_begreppsmodell_finns = DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
+    table_number = IS_get_tableno_for_First_title_cell("begrepp")
+    DOCX_empty_table_cells_exists(table_number, True)
+    globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
@@ -96,8 +103,7 @@ def __inspect_IS():
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
-    # 2do: kontrollera att begreppbeskrivningstabellens alla celler har innehåll
-    #DOCX_find_empty_table_cells(2) #2do: ta reda på tabellnumret för begreppstabellen
+    #if globals.IS_begreppslista_finns == True:
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
@@ -125,17 +131,25 @@ def __inspect_IS():
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
     IS_inspect_usage_of_defined_datatypes()
 
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
+    search_phrase_kodverk = "Identifikationer och kodverk"
+    globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_kodverkstabell_finns == False:
+        search_phrase_kodverk = "Identifierare och kodverk"
+        globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+        if globals.IS_kodverkstabell_finns == False:
+            search_phrase_kodverk = "Begreppssystem, klassifikationer och kodverk"
+            globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+            if globals.IS_kodverkstabell_finns == False:
+                write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
     # 2do: visa innehåll i dokumentets kodverkstabell (manuell granskning)
     write_detail_box_html("<br>")
-    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
-    globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Identifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-    if globals.IS_kodverkstabell_finns == False:
-        globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Identifierare och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-        if globals.IS_kodverkstabell_finns == False:
-            globals.IS_kodverkstabell_finns = DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-            if globals.IS_kodverkstabell_finns == False:
-                write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
+    write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
+    if globals.IS_kodverkstabell_finns == True:
+        DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
@@ -145,7 +159,6 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
     #IS_find_empty_table_cells()
-
     empty_cells_found = False
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]

@@ -108,7 +108,8 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                         if display_paragraph_title == False:
                             write_output("<br>")
                             write_detail_box_html("<br>")
-                        __table_print(block)
+                        #__table_print(block)
+                        __table_print_beginning_columns(block)
                         paragraph_or_table_found = True
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
@@ -315,18 +316,22 @@ def remove_hyperlink_tags(xml):
 #####################
 
 def __table_print(table):
-    #table = block
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:
                 output_text = paragraph.text
-                #print("paragraph",paragraph.style)
-                #output_text = remove_hyperlink_tags(paragraph.text)
                 write_output_without_newline(globals.HTML_3_SPACES + output_text)
                 write_detail_box_html(globals.HTML_3_SPACES + output_text)
-        #write_output_without_newline("\t" + output_text)
         write_output("")
         write_detail_box_html("<br>")
+
+def __table_print_beginning_columns(table):
+    for row in table.rows:
+        output_text = ""
+        for cell in row.cells[0:3]:
+            for paragraph in cell.paragraphs:
+                output_text += paragraph.text + globals.HTML_3_SPACES + globals.HTML_3_SPACES + globals.HTML_3_SPACES
+        write_detail_box_html(globals.HTML_3_SPACES + output_text + "<br>")
 
 def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, _Document):
