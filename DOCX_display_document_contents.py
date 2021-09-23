@@ -109,7 +109,8 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                             write_output("<br>")
                             write_detail_box_html("<br>")
                         #__table_print(block)
-                        __table_print_beginning_columns(block)
+                        #__table_print_beginning_columns(block)
+                        __document_table_print_html_table(block)
                         paragraph_or_table_found = True
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
@@ -332,6 +333,47 @@ def __table_print_beginning_columns(table):
             for paragraph in cell.paragraphs:
                 output_text += paragraph.text + globals.HTML_3_SPACES + globals.HTML_3_SPACES + globals.HTML_3_SPACES
         write_detail_box_html(globals.HTML_3_SPACES + output_text + "<br>")
+
+
+def __document_table_print_html_table(table):
+    html_table = "<style> table, th, td { border:1px solid gray; empty-cells: show; } </style>"
+    html_table += "<table>"
+    row_number = 0
+    for row in table.rows:
+        row_number += 1
+        html_table += "<tr>"
+        for cell in row.cells:
+            header_text = ""
+            cell_data = ""
+            for paragraph in cell.paragraphs:
+                #print("paragraph.text",paragraph.text)
+                if row_number == 1:
+                    header_text += paragraph.text.strip()
+                else:
+                    cell_data += paragraph.text.strip()
+                    html_table += "<td>" + cell_data + "</td>"
+            if header_text != "":
+                html_table += "<th>" + header_text + "</th>"
+            header_text = ""
+        html_table += "</tr>"
+    html_table += "</table>"
+    write_detail_box_html(html_table)
+    #print(html_table)
+
+"""
+  <table>
+    <caption>Books I May or May Not Have Read</caption>
+    <tr>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Year</th>
+    </tr>
+    <tr>
+      <td>Miguel De Cervantes</td>
+      <td>The Ingenious Gentleman Don Quixote of La Mancha</td>
+      <td>1605</td>
+    </tr>
+  </table>"""
 
 def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, _Document):

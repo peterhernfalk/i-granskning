@@ -78,11 +78,11 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
     write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
+    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
     globals.IS_referensinfomodell_finns = DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     if globals.IS_referensinfomodell_finns  == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
-    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
@@ -145,9 +145,10 @@ def __inspect_IS():
                 write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
-    # 2do: visa innehåll i dokumentets kodverkstabell (manuell granskning)
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
+    write_detail_box_content("<b>Obs!</b> Kodverkstabellen är under utveckling och kan under tiden ha förskjutet innehåll!")
     if globals.IS_kodverkstabell_finns == True:
         DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
