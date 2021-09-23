@@ -148,7 +148,6 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
-    write_detail_box_content("<b>Obs!</b> Kodverkstabellen är under utveckling och kan under tiden ha förskjutet innehåll!")
     if globals.IS_kodverkstabell_finns == True:
         DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
