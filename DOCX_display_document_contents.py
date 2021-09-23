@@ -345,7 +345,17 @@ def __document_table_print_html_table(table):
         for cell in row.cells:
             header_text = ""
             cell_data = ""
-            for paragraph in cell.paragraphs:
+            #print("paragraph.text",paragraph.text)
+            if row_number == 1:
+                header_text += cell.text.strip()
+            else:
+                cell_data += cell.text.strip()
+                html_table += "<td>" + cell_data + "</td>"
+            if header_text != "":
+                html_table += "<th>" + header_text + "</th>"
+            header_text = ""
+
+            """for paragraph in cell.paragraphs:
                 #print("paragraph.text",paragraph.text)
                 if row_number == 1:
                     header_text += paragraph.text.strip()
@@ -354,7 +364,7 @@ def __document_table_print_html_table(table):
                     html_table += "<td>" + cell_data + "</td>"
             if header_text != "":
                 html_table += "<th>" + header_text + "</th>"
-            header_text = ""
+            header_text = "" """
         html_table += "</tr>"
     html_table += "</table>"
     write_detail_box_html(html_table)
