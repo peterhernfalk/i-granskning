@@ -338,6 +338,7 @@ def __table_print_beginning_columns(table):
 def __document_table_print_html_table(table):
     html_table = "<style> table, th, td { border:1px solid gray; empty-cells: show; } </style>"
     html_table += "<table>"
+    #html_table += "<caption>"+title+"</caption>"
     row_number = 0
     for row in table.rows:
         row_number += 1

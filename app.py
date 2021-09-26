@@ -7,7 +7,7 @@ import html_dashboard
 from html_dashboard import *
 
 import globals
-from INFO_inspection_information import *
+from INFO_document_inspection import *
 import io
 from repo import *
 import requests
