@@ -385,13 +385,17 @@ def __iter_block_items(parent,searched_paragraph_level):
 
 def DOCX_empty_table_cells_exists(table_number, display_result):
     result = False
-    globals.IS_antal_brister_tomma_tabellceller = 0
-    globals.TKB_antal_brister_tomma_tabellceller = 0
+    if globals.docx_document == globals.IS:
+        globals.IS_antal_brister_tomma_tabellceller = 0
+    else:
+        globals.TKB_antal_brister_tomma_tabellceller = 0
 
     table = document.tables[table_number]
 
     for row in range(1, len(table.rows)):
         column_count = len(table.row_cells(0))
+        cells_missing_content = ""
+        table_title = ""
         for column in range(0, column_count):
             cell_has_contents = False
             if table.cell(row,column).text.strip() != "":
@@ -409,7 +413,13 @@ def DOCX_empty_table_cells_exists(table_number, display_result):
                 elif globals.docx_document == globals.TKB:
                     table_title = "TKB-tabell nummer " + str(table_number)
                     globals.TKB_antal_brister_tomma_tabellceller += 1
-                write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                if cells_missing_content == "":
+                    cells_missing_content += str(column+1)
+                else:
+                    cells_missing_content += ", " + str(column+1)
+                #write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+        if cells_missing_content != "":
+            write_detail_box_content(globals.HTML_3_SPACES + "Tabellceller utan innehåll!  Tabell: " + table_title + ", Rad: " + str(row) + ", Kolumn: " + cells_missing_content)
 
     if display_result == True:
         if result == True:

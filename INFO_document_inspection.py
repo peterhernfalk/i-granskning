@@ -91,8 +91,8 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
-    table_number = IS_get_tableno_for_First_title_cell("begrepp")
-    DOCX_empty_table_cells_exists(table_number, True)
+    begreppsbeskrivning_tabell = IS_get_tableno_for_First_title_cell("begrepp")
+    DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True)
     globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
@@ -103,7 +103,12 @@ def __inspect_IS():
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
-    #if globals.IS_begreppslista_finns == True:
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
+    if begreppsbeskrivning_tabell > 0 and globals.IS_begreppslista_finns == True:
+        write_detail_box_content("<b>Resultat:</b> kontrollen är inte utvecklad än, så för närvarande kan inget resultat visas!")
+    else:
+        write_detail_box_content("<b>Resultat:</b> kravet är inte uppfyllt eftersom inte både begreppsbeskrivningstabellen och begreppslistan finns i dokumentet")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
@@ -160,14 +165,17 @@ def __inspect_IS():
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
     #IS_find_empty_table_cells()
     empty_cells_found = False
+    antal_tomma_klasstabellceller = 0
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
         if DOCX_empty_table_cells_exists(table_number, False) == True:
             empty_cells_found = True
+            antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
     if empty_cells_found == True:
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
         write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+    globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
 
 
 def __inspect_TKB():
