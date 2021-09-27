@@ -159,11 +159,13 @@ def __find_all_document_tables():
     global all_tables
     global datatype_definitions_table
     global document
+    ##global begreppslista
     global infomodel_table_indexes
     #document = Document(document_name)
     all_tables = document.tables
-    infomodel_table_indexes = []
+    ##begreppslista = []
     datatype_definitions_table = []
+    infomodel_table_indexes = []
     index = 0
     for table in all_tables:
         if table.cell(0,0).text.strip().lower() == "attribut":
@@ -174,17 +176,15 @@ def __find_all_document_tables():
             datatype_definitions_table.append(index)
         index += 1
 
-def IS_get_tableno_for_First_title_cell(title):
+def IS_get_tableno_for_first_title_cell(title):
     global document
     global all_tables
     table_number = 0
     index = 0
     for table in IS_inspection.all_tables:
         if table.cell(0,0).text.strip().lower() == title:
-            #print("Tabellnummer för begreppstabellen: ",index)
             table_number = index
             break
-        #print(table.cell(0,0).text)
         index += 1
 
     return table_number
@@ -364,51 +364,6 @@ if local_test == True:
 
     #IS_inspect_reference_links()
 
-def IS_find_empty_table_cells():
-    result = False
-    for table_index in range(len(infomodel_table_indexes)):
-        table_number = infomodel_table_indexes[table_index]
-        table = document.tables[table_number]
-        for row in range(1, len(table.rows)):
-            column_count = len(table.row_cells(0))
-            for column in range(0, column_count):
-                if table.cell(row, column).text.strip() == "":
-                    result = True
-                    #table_title = __get_title_by_table_number(table_index + 1)
-                    tbl_no = table_index + infomodel_table_indexes[0]
-                    table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
-                    write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    globals.IS_antal_brister_tomma_tabellceller += 1
-
-    if result == True:
-        write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
-        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
-    else:
-        write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-
-    if local_test == True:
-        print("\ndoamin:", globals.domain)
-        #author = document.core_properties.author
-        #print("document.core_properties.author:",author)
-        print("class_paragraphs_title:", class_paragraphs_title)
-        print("class_paragraphs_number:", class_paragraphs_number)
-        print("infomodel_table_indexes:",infomodel_table_indexes)
-
-        print("\ninfomodel_classes_list:")
-        #global infomodel_classes_list
-        #infomodel_classes_list = []
-        #IS_init_infomodel_classes_list()
-
-        for obj in infomodel_classes_list:
-            print("\t", obj.document_level, obj.classtitle, obj.classtable_number, sep=' ')
-        #print("Infomodellklass för tabell 12:", __get_infomodel_classname_from_table_number(12))
-        #print("Infomodellklass för tabell 29:", __get_infomodel_classname_from_table_number(29))
-        #print("Infomodelltabell för delsvar:", __get_infomodel_table_number_from_classname("delsvar"))
-        #print("Infomodelltabell för svar:", __get_infomodel_table_number_from_classname("svar"))
-        #print("Infomodelltabell saknas för avsändare:", __get_infomodel_table_number_from_classname("avsändare"))
-        #print("Infomodelltabell saknas för mottagare:", __get_infomodel_table_number_from_classname("mottagare"))
 
 
 #################################################################################################
@@ -526,3 +481,50 @@ def __iter_block_items(parent,searched_paragraph_level):
             yield Table(child, parent)
 #################################################################################################
 #################################################################################################
+
+
+"""def IS_find_empty_table_cells():
+    result = False
+    for table_index in range(len(infomodel_table_indexes)):
+        table_number = infomodel_table_indexes[table_index]
+        table = document.tables[table_number]
+        for row in range(1, len(table.rows)):
+            column_count = len(table.row_cells(0))
+            for column in range(0, column_count):
+                if table.cell(row, column).text.strip() == "":
+                    result = True
+                    #table_title = __get_title_by_table_number(table_index + 1)
+                    tbl_no = table_index + infomodel_table_indexes[0]
+                    table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
+                    write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+                    globals.IS_antal_brister_tomma_tabellceller += 1
+
+    if result == True:
+        write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+    else:
+        write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+
+    if local_test == True:
+        print("\ndoamin:", globals.domain)
+        #author = document.core_properties.author
+        #print("document.core_properties.author:",author)
+        print("class_paragraphs_title:", class_paragraphs_title)
+        print("class_paragraphs_number:", class_paragraphs_number)
+        print("infomodel_table_indexes:",infomodel_table_indexes)
+
+        print("\ninfomodel_classes_list:")
+        #global infomodel_classes_list
+        #infomodel_classes_list = []
+        #IS_init_infomodel_classes_list()
+
+        for obj in infomodel_classes_list:
+            print("\t", obj.document_level, obj.classtitle, obj.classtable_number, sep=' ')
+        #print("Infomodellklass för tabell 12:", __get_infomodel_classname_from_table_number(12))
+        #print("Infomodellklass för tabell 29:", __get_infomodel_classname_from_table_number(29))
+        #print("Infomodelltabell för delsvar:", __get_infomodel_table_number_from_classname("delsvar"))
+        #print("Infomodelltabell för svar:", __get_infomodel_table_number_from_classname("svar"))
+        #print("Infomodelltabell saknas för avsändare:", __get_infomodel_table_number_from_classname("avsändare"))
+        #print("Infomodelltabell saknas för mottagare:", __get_infomodel_table_number_from_classname("mottagare"))"""

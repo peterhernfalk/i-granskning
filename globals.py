@@ -1,4 +1,6 @@
 COMMENTS_detail_box_contents = ""
+DISPLAY_TYPE_TABLE = "display_type_table"
+DISPLAY_TYPE_TEXT = "display_type_text"
 docx_document = ""
 docx_IS_document = ""
 docx_TKB_document = ""

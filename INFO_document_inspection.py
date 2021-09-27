@@ -63,7 +63,7 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
     globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
@@ -72,7 +72,7 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
     globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
@@ -91,8 +91,8 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
-    begreppsbeskrivning_tabell = IS_get_tableno_for_First_title_cell("begrepp")
-    DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True)
+    begreppsbeskrivning_tabell = IS_get_tableno_for_first_title_cell("begrepp")
+    DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
     globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
@@ -103,6 +103,7 @@ def __inspect_IS():
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
+    # tolkning: jämför begreppskolumnen med beskrivningskolumnen i begreppsbeskrivningstabellen
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
     if begreppsbeskrivning_tabell > 0 and globals.IS_begreppslista_finns == True:
@@ -149,7 +150,8 @@ def __inspect_IS():
             if globals.IS_kodverkstabell_finns == False:
                 write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
-    # 2do: jämför klasstabellernas datakolumn med dokumentets kodverkstabell
+    # 2do: jämför klasstabellernas med dokumentets kodverkstabell
+    # Kolumner: data, kodverk/format/regler, kodverk
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
@@ -163,12 +165,11 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
-    #IS_find_empty_table_cells()
     empty_cells_found = False
     antal_tomma_klasstabellceller = 0
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
-        if DOCX_empty_table_cells_exists(table_number, False) == True:
+        if DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT) == True:
             empty_cells_found = True
             antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
     if empty_cells_found == True:
@@ -196,7 +197,7 @@ def __inspect_TKB():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
     globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
@@ -205,7 +206,7 @@ def __inspect_TKB():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True)
+    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TABLE)
     globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)

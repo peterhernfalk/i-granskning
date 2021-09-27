@@ -383,24 +383,40 @@ def __iter_block_items(parent,searched_paragraph_level):
         elif isinstance(child, CT_Tbl):
             yield Table(child, parent)
 
-def DOCX_empty_table_cells_exists(table_number, display_result):
+def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
     result = False
     if globals.docx_document == globals.IS:
         globals.IS_antal_brister_tomma_tabellceller = 0
-    else:
+    elif globals.docx_document == globals.TKB:
         globals.TKB_antal_brister_tomma_tabellceller = 0
+
+    html_table = ""
+    if display_type == globals.DISPLAY_TYPE_TABLE:
+        #html_table += "<table><caption><b><i>Tabellrader där en eller flera celler saknar innehåll</i></b></caption>"
+        html_table += "<table>"
 
     table = document.tables[table_number]
 
-    for row in range(1, len(table.rows)):
+    row_number = 0
+    for row in range(0, len(table.rows)):
+        row_number += 1
         column_count = len(table.row_cells(0))
         cells_missing_content = ""
+        cell_contents_html = ""
         table_title = ""
         for column in range(0, column_count):
             cell_has_contents = False
+            if row_number == 1:
+                html_table += "<th>" + table.cell(row, column).text.strip() + "</th>"
             if table.cell(row,column).text.strip() != "":
                 cell_has_contents = True
+                if cell_contents_html == "":
+                    cell_contents_html += "<tr>"
+                cell_contents_html += "<td>" + table.cell(row,column).text + "</td>"
             else:
+                if cell_contents_html == "":
+                    cell_contents_html += "<tr>"
+                cell_contents_html += "<td>" + table.cell(row,column).text + "</td>"
                 for paragraph in table.cell(row, column).paragraphs:
                     xml_str = str(paragraph.paragraph_format.element.xml)
                     if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in  xml_str:
@@ -418,11 +434,22 @@ def DOCX_empty_table_cells_exists(table_number, display_result):
                 else:
                     cells_missing_content += ", " + str(column+1)
                 #write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+        cell_contents_html += "</tr>"
+
         if cells_missing_content != "":
-            write_detail_box_content(globals.HTML_3_SPACES + "Tabellceller utan innehåll!  Tabell: " + table_title + ", Rad: " + str(row) + ", Kolumn: " + cells_missing_content)
+            if display_type == globals.DISPLAY_TYPE_TEXT:
+                write_detail_box_content(globals.HTML_3_SPACES + "Tabellceller utan innehåll!  Tabell: " + table_title + ", Rad: " + str(row) + ", Kolumn: " + cells_missing_content)
+            elif display_type == globals.DISPLAY_TYPE_TABLE and result == True:
+                #html_table += "<tr><td>"+table_title + "</td><td>Rad/kolumn" + str(row) + " " + cells_missing_content + "</td>" + cell_contents_html + "</tr>"
+                html_table += cell_contents_html
 
     if display_result == True:
         if result == True:
+            if display_type == globals.DISPLAY_TYPE_TABLE:
+                html_table += "</table>"
+                #write_detail_box_content(globals.HTML_3_SPACES + html_table)
+                #print(html_table)
+                write_detail_box_html(html_table)
             write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
