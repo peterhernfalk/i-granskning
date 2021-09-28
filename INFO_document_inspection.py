@@ -118,12 +118,15 @@ def __inspect_IS():
 
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
-    write_detail_box_content("Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
-    write_detail_box_content("Kontroll att infomodellklassernas attributnamn börjar med liten bokstav")
+    write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
     # 2do: Kontrollera att infomodellklassernas attributnamn börjar med liten bokstav
     DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
-    IS_inspect_document_contents()
+    ##IS_inspect_document_contents()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> Infomodellklassernas attributnamn ska ha liten begynnelsebokstav")
+    IS_inspect_attribute_case()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")

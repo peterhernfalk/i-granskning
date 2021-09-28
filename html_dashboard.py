@@ -344,6 +344,7 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("kodverkstabell_finns") + '</li></div>'
         html += "<br>"
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("attributnamn") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("multiplicitet") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
@@ -418,6 +419,8 @@ def __get_infospec_summary(topic):
                 html += "Kodverkstabell <b>saknas</b>"
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
+    elif topic == "attributnamn":
+        html += "<b>" + str(globals.IS_antal_brister_attributnamn) + " &nbsp</b>klassattribut med fel skiftläge"
     elif topic == "multiplicitet":
         html += "<b>" + str(globals.IS_antal_brister_multiplicitet) + " &nbsp</b>saknade multipliciteter i klasstabeller"
     elif topic == "datatyper":

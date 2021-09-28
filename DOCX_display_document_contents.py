@@ -416,7 +416,7 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
             else:
                 if cell_contents_html == "":
                     cell_contents_html += "<tr>"
-                cell_contents_html += "<td>" + table.cell(row,column).text + "</td>"
+                cell_contents_html += "<td>" + table.cell(row,column).text + "&nbsp;</td>"
                 for paragraph in table.cell(row, column).paragraphs:
                     xml_str = str(paragraph.paragraph_format.element.xml)
                     if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in  xml_str:

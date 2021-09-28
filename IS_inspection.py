@@ -45,6 +45,24 @@ def IS_inspect_class_description():
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
 
+def IS_inspect_attribute_case():
+    all_attributes_approved = True
+    for index in range(len(infomodel_table_indexes)):
+        table_num = index + infomodel_table_indexes[0]
+        table = document.tables[table_num]
+        for row in table.rows[1:]:
+            if row.cells[0].text[0:1] != row.cells[0].text[0:1].lower():
+                table_title = IS_get_infomodel_classname_from_table_number(table_num, True)
+                write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": har fel skiftläge på attributnamn" +
+                        ". Attribut: " + row.cells[0].text.strip())
+                all_attributes_approved = False
+                globals.IS_antal_brister_attributnamn += 1
+    if all_attributes_approved == True:
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla attributnamn har liten begynnelsebokstav")
+    else:
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har attributnamn med stor begynnelsebokstav")
+
+
 def IS_inspect_attribute_multiplicity():
     all_results = True
     for index in range(len(infomodel_table_indexes)):

@@ -13,6 +13,7 @@ HTML_3_SPACES = "&nbsp;&nbsp;&nbsp;"
 IS = "IS"
 IS_begreppslista_finns = False
 IS_begreppsmodell_finns = False
+IS_antal_brister_attributnamn = 0
 IS_antal_brister_datatyper = 0
 IS_antal_brister_klassbeskrivning = 0
 IS_antal_brister_multiplicitet = 0
@@ -54,6 +55,7 @@ def GLOBALS_init():
     global granskningsresultat
     global IS_begreppslista_finns
     global IS_begreppsmodell_finns
+    global IS_antal_brister_attributnamn
     global IS_antal_brister_datatyper
     global IS_antal_brister_klassbeskrivning
     global IS_antal_brister_multiplicitet
@@ -91,6 +93,7 @@ def GLOBALS_init():
     granskningsresultat = ""
     IS_begreppslista_finns = False
     IS_begreppsmodell_finns = False
+    IS_antal_brister_attributnamn = 0
     IS_antal_brister_datatyper = 0
     IS_antal_brister_klassbeskrivning = 0
     IS_antal_brister_multiplicitet = 0
