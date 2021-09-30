@@ -53,7 +53,8 @@ def IS_inspect_attribute_case():
         for row in table.rows[1:]:
             if row.cells[0].text[0:1] != row.cells[0].text[0:1].lower():
                 table_title = IS_get_infomodel_classname_from_table_number(table_num, True)
-                write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": har fel skiftläge på attributnamn" +
+                write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " +
+                        table_title + ": har fel skiftläge på attributnamn" +
                         ". Attribut: " + row.cells[0].text.strip())
                 all_attributes_approved = False
                 globals.IS_antal_brister_attributnamn += 1
