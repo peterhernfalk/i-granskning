@@ -8,10 +8,16 @@ Granskningsflödet exekveras i sekvens per dokument.
 All kod är skriven i Python, som använder några bibliotek.
 Koden är skriven i form av funktioner som anropas i ett flöde per dokument. 
 Koden bör förenklas och renodlas innan slutleverans. 
-Vid refaktorering skulle det kunna skapas en klass per dokument, 
-innehållande de funktioner som idag finns i Python-filer.
+I samband med det kan antagligen någon eller några Pythonfiler arbetas bort.
 
-## Python-filer som används:
+Vid refaktorering skulle det kunna skapas en klass per dokument, 
+innehållande de metoder som idag finns som funktioner i Python-filer.
+
+### Runtime-stöd:
+Filerna requirements.txt och runtime.txt används av Heroku för att 
+installera eller uppdatera Python-version och beroenden.
+
+### Python-filer som används:
 ```
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
@@ -35,10 +41,23 @@ innehållande de funktioner som idag finns i Python-filer.
     - Exekverar granskningskontroller
     
 - DOCX_display_document_contents.py
+    - Funktioner som används vid granskning av docx-dokument
+    
 - IS_inspection.py
+    - Funktioner som är specifika för granskning av Infospec
+    
 - TKB_inspection.py
+    - Funktioner som är specifika för granskning av TKB
+
 - globals.py
+    - Globala variabler och konstanter samt en funktion för att initiera dem
+
 - html_dashboard.py
+    - Funktioner för att bygga den html som lämnas ut som svar på GET-anropet
+    
 - repo.py
+    - Innehåller funktionen REPO_get_domain_docs_link
+    
 - uilities.py
+    - Några funktioner som används både vid granskning av Infospec och TKB
 ```
