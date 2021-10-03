@@ -40,6 +40,7 @@ def DOCX_inspect_revision_history():
     Kollar att dokumentets tabell med revisionshistorik har en rad för aktuell tag.
     """
     table = document.tables[1]
+    antal_brister_revisionshistorik = 0
     # 2do: Display version number from page 1 in the document
 
     if table.cell(0,0).text == "Revisionshistorik mall":
@@ -52,9 +53,11 @@ def DOCX_inspect_revision_history():
         write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         if globals.docx_document == globals.IS:
-            globals.IS_antal_brister_revisionshistorik = 1
+            #globals.IS_antal_brister_revisionshistorik = 1
+            antal_brister_revisionshistorik = 1
         elif globals.docx_document == globals.TKB:
-            globals.TKB_antal_brister_revisionshistorik = 1
+            #globals.TKB_antal_brister_revisionshistorik = 1
+            antal_brister_revisionshistorik = 1
     else:
         write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
@@ -71,6 +74,8 @@ def DOCX_inspect_revision_history():
         print(globals.docx_document, "has no custom properties")    # Hittills kommer alla anrop hit
     #for paragraph in document.paragraphs:
     #    print(globals.docx_document,"paragraph",paragraph.text)"""
+
+    return antal_brister_revisionshistorik
 
 
 def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_paragraph_title, display_initial_newline, display_keylevel_text, display_tables):
@@ -115,6 +120,33 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
 
     return paragraph_or_table_found
+
+def DOCX_list_searched_paragraph_titles(searched_paragraph_title, delimiter):
+    searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
+    paragraph_title_list = []
+
+    for block in __iter_block_items(document, searched_paragraph_level):
+        if isinstance(block, Paragraph):
+            this_paragraph_title = block.text.strip()
+            if this_paragraph_title.lower() == searched_paragraph_title.strip().lower():
+
+                previous_key = ""
+                count = 0
+                for key, value in document_paragraph_index_dict.items():
+                    if key[0:len(searched_paragraph_level)] == searched_paragraph_level:
+                        key_level_length = key.find(" ")
+                        if len(key.strip()) > key_level_length:
+                            this_key_level = key.strip()[0:key_level_length]
+                            if this_key_level != previous_key:
+                                key = key.replace("\n", " ")
+                                key_extract = key[key.find(delimiter)+len(delimiter):]
+                                if key[key.find(" "):].lower().strip() != searched_paragraph_title.lower().strip():
+                                    if key[key.find(delimiter):].lower() != searched_paragraph_title.lower():
+                                        if key_extract[0] != key_extract[0].upper():
+                                            paragraph_title_list.append(key)
+                                            count += 1
+                            previous_key = key.strip()[0:key_level_length]
+    return paragraph_title_list, count
 
 def DOCX_inspect_reference_links(table_num):
     """
@@ -389,6 +421,8 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         globals.IS_antal_brister_tomma_tabellceller = 0
     elif globals.docx_document == globals.TKB:
         globals.TKB_antal_brister_tomma_tabellceller = 0
+    antal_brister_tomma_tabellceller = 0
+
 
     html_table = ""
     if display_type == globals.DISPLAY_TYPE_TABLE:
@@ -425,10 +459,12 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
                 result = True
                 if globals.docx_document == globals.IS:
                     table_title = IS_inspection.IS_get_infomodel_classname_from_table_number(table_number, True)
-                    globals.IS_antal_brister_tomma_tabellceller += 1
+                    #globals.IS_antal_brister_tomma_tabellceller += 1
+                    antal_brister_tomma_tabellceller += 1
                 elif globals.docx_document == globals.TKB:
                     table_title = "TKB-tabell nummer " + str(table_number)
-                    globals.TKB_antal_brister_tomma_tabellceller += 1
+                    #globals.TKB_antal_brister_tomma_tabellceller += 1
+                    antal_brister_tomma_tabellceller += 1
                 if cells_missing_content == "":
                     cells_missing_content += str(column+1)
                 else:
@@ -454,7 +490,7 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
-    return result
+    return result, antal_brister_tomma_tabellceller
 
 """def __get_infomodel_classname_from_table_number(table_number, include_level):
     #global infomodel_classes_list

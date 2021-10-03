@@ -59,12 +59,12 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    DOCX_inspect_revision_history()
+    globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
-    globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
+    result, globals.IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+    #globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
@@ -72,8 +72,8 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
-    globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
+    result, globals.IS_antal_brister_tomma_referenstabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
+    #globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
@@ -92,8 +92,8 @@ def __inspect_IS():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
     begreppsbeskrivning_tabell = IS_get_tableno_for_first_title_cell("begrepp")
-    DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
-    globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
+    result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
+    #globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
@@ -120,6 +120,8 @@ def __inspect_IS():
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
     DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
+    paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_list_searched_paragraph_titles("klasser och attribut", "Klass ")
+    print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     ##IS_inspect_document_contents()
 
@@ -171,9 +173,11 @@ def __inspect_IS():
     antal_tomma_klasstabellceller = 0
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
-        if DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT) == True:
+        result, antal = DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
+        if result == True:  #DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
             empty_cells_found = True
-            antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
+            #antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
+            antal_tomma_klasstabellceller += antal
     if empty_cells_found == True:
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
@@ -195,12 +199,12 @@ def __inspect_TKB():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    DOCX_inspect_revision_history()
+    globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
-    globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
+    result, globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+    #globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
@@ -208,8 +212,8 @@ def __inspect_TKB():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TABLE)
-    globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
+    result, globals.TKB_antal_brister_tomma_referenstabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TABLE)
+    #globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
