@@ -9,6 +9,8 @@ All kod är skriven i Python, som använder några bibliotek.
 Koden är skriven i form av funktioner som anropas i ett flöde per dokument. 
 Koden bör förenklas och renodlas innan slutleverans. 
 I samband med det kan antagligen någon eller några Pythonfiler arbetas bort.
+Det har påbörjats ett arbete att göra funktionerna mer självständiga
+ur ett informationsförsörjningsperspektiv, utan beroende till globala variabler
 
 Vid refaktorering skulle det kunna skapas en klass per dokument, 
 innehållande de metoder som idag finns som funktioner i Python-filer.
