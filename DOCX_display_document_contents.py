@@ -121,7 +121,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
 
     return paragraph_or_table_found
 
-def DOCX_list_searched_paragraph_titles(searched_paragraph_title, delimiter):
+def DOCX_list_searched_paragraph_titles_wrong_case(searched_paragraph_title, delimiter):
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
     paragraph_title_list = []
 
@@ -152,6 +152,7 @@ def DOCX_inspect_reference_links(table_num):
     """
     Kollar om länkarna i dokumentets referenstabell fungerar eller ej.
     """
+    antal_brister_referenslänkar = 0
     links = extract_urls_from_table(document, table_num)
     if len(links) == 0:
         write_output("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
@@ -162,20 +163,25 @@ def DOCX_inspect_reference_links(table_num):
             write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             if globals.docx_document == globals.IS:
-                globals.IS_antal_brister_referenslänkar += 1
+                #globals.IS_antal_brister_referenslänkar += 1
+                antal_brister_referenslänkar += 1
             elif globals.docx_document == globals.TKB:
-                globals.TKB_antal_brister_referenslänkar += 1
+                #globals.TKB_antal_brister_referenslänkar += 1
+                antal_brister_referenslänkar += 1
         elif status_code < 404:
             write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
             write_detail_box_content("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
         else:
             if globals.docx_document == globals.IS:
-                globals.IS_antal_brister_referenslänkar += 1
+                #globals.IS_antal_brister_referenslänkar += 1
+                antal_brister_referenslänkar += 1
             elif globals.docx_document == globals.TKB:
-                globals.TKB_antal_brister_referenslänkar += 1
+                #globals.TKB_antal_brister_referenslänkar += 1
+                antal_brister_referenslänkar += 1
             write_output("Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Sidan saknas!</b> (statuskod: " + str(status_code) + ") för: " + link)
 
+    return antal_brister_referenslänkar
 
 def DOCX_display_paragragh_title(searched_title_name):
     """
@@ -422,7 +428,6 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
     elif globals.docx_document == globals.TKB:
         globals.TKB_antal_brister_tomma_tabellceller = 0
     antal_brister_tomma_tabellceller = 0
-
 
     html_table = ""
     if display_type == globals.DISPLAY_TYPE_TABLE:

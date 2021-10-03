@@ -27,6 +27,7 @@ def IS_inspect_document_contents():
 
 def IS_inspect_class_description():
     result = True
+    IS_antal_brister_klassbeskrivning = 0
 
     ############################################################
     ### DOESN'T WORK!. Compare to document paragraph instead ###
@@ -36,7 +37,8 @@ def IS_inspect_class_description():
             paragraph_number = class_paragraphs_description[paragraph][0:4].strip()
             if any(x in paragraph_number for x in class_paragraphs_number) == False:
                 result = False
-                globals.IS_antal_brister_klassbeskrivning += 1
+                #globals.IS_antal_brister_klassbeskrivning += 1
+                IS_antal_brister_klassbeskrivning += 1
 
     if result == True:
         write_output("<b>Resultat:</b> alla infomodellklasser har beskrivning")
@@ -44,6 +46,7 @@ def IS_inspect_class_description():
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
+    return IS_antal_brister_klassbeskrivning
 
 def IS_inspect_attribute_case():
     all_attributes_approved = True

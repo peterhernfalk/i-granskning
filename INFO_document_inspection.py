@@ -68,7 +68,7 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
-    DOCX_inspect_reference_links(TABLE_NUM_REF)
+    globals.IS_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
@@ -120,8 +120,8 @@ def __inspect_IS():
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
     DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
-    paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_list_searched_paragraph_titles("klasser och attribut", "Klass ")
-    print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
+    paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ")
+    #print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     ##IS_inspect_document_contents()
 
@@ -131,7 +131,7 @@ def __inspect_IS():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
-    IS_inspect_class_description()
+    globals.IS_antal_brister_klassbeskrivning = IS_inspect_class_description()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
@@ -208,7 +208,7 @@ def __inspect_TKB():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
-    DOCX_inspect_reference_links(TABLE_NUM_REF)
+    globals.TKB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
