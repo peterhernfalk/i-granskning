@@ -16,8 +16,8 @@ Vid refaktorering skulle det kunna skapas en klass per dokument,
 innehållande de metoder som idag finns som funktioner i Python-filer.
 
 ### Runtime-stöd:
-Filerna requirements.txt och runtime.txt används av Heroku för att 
-installera eller uppdatera Python-version och beroenden.
+Filerna requirements.txt och runtime.txt används av Heroku vid deploy 
+för att installera eller uppdatera Python-version och beroenden.
 
 ### Python-filer som används:
 ```

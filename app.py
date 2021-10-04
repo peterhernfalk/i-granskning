@@ -188,21 +188,6 @@ def __get_document_page_link(domainname, tag, document):
 
     return document_page_link
 
-"""def __get_domain_docs_link(domainname, tag):
-    #
-    #Beräknar url till docs-sidan för vald domän och tag i Bitbucket-repot.
-    #
-    #Returnerar: länk till dokumentsidan
-    #
-    url_prefix = "https://bitbucket.org/rivta-domains/"
-    url_domain = globals.domain_prefix + domainname + "/"
-    url_src = "src/"
-    url_tag = tag + "/"
-    url_docs = "docs/"
-    document_page_link = url_prefix+url_domain+url_src+url_tag+url_docs
-
-    return document_page_link"""
-
 def __get_document_link(domainname, tag, document, head_hash, alt_document_name):
     """
     Beräknar url till angivet dokument för vald domän och tag i Bitbucket-repot.
@@ -237,11 +222,6 @@ def __get_downloaded_document(document_link):
 
     return downloaded_doc
 
-"""def __get_document_in_docx_format(document):
-    docx_document = document.content
-
-    return docx_document"""
-
 def __get_head_hash(document_page):
     """
     hämtar head-hash för det dokument som ska laddas ner. Hashen finns i den Bitbucketsida som innehåller länk till dokumentet.
@@ -265,49 +245,6 @@ def __get_docx_document(downloaded_document):
 
     return docx_document
 
-#def APP_text_document_not_found(doc, domain, tag):
-
-    """
-    Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
-
-    Returnerar: information i html-format
-    """
-    """document_name = "Infospec"
-    if doc == globals.TKB:
-        document_name = globals.TKB
-
-    document_info = "<div><li>"
-    document_info += document_name + " saknas eller har annat namn än det förväntade: <i>" + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
-    docs_link = REPO_get_domain_docs_link(domain, tag)
-    document_info += "<br>Kontrollera dokumentnamn här: <a href='" + docs_link + "'" + " target='_blank'>" + docs_link + "</a>"
-    document_info += "<br>Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
-    document_info += "I så fall kan du ange det namnet som en url-parameter enligt: <i>url...</i><b>&is=dokumentnamn</b>"
-    document_info += "<br>Om detta är en applikationsspecifik domän kan du ange det i en url-parameter enligt: <i>url...</i><b>&domainprefix=true</b>"
-    document_info += "<div><li>"
-
-    return document_info"""
-
-
-#def __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs):
-    """
-    Sammanställer ett meddelande till användaren med granskningsresultat
-
-    Returnerar: information i html-format
-    """
-    """html = '''
-        <h1>I-granskningsstöd för: {}</h1>
-        <br><h2><a href={}>Infospec-sida</a> &nbsp;&nbsp;&nbsp; <a href={}>TKB-sida</a></h2>
-        <br><h2><b>IS-paragrafer:</b></h2> {}
-        <br><h2><b>TKB-paragrafer:</b></h2> {}
-        '''.format(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)"""
-
-    """html = '''
-        <h1>I-granskningsstöd för: {}</h1>
-        <br>{}
-        <br>{}
-        '''.format(riv_domain, __get_summary_in_html_format(), globals.granskningsresultat)
-
-    return html"""
 
 def __get_summary_in_html_format():
     """
@@ -347,12 +284,9 @@ def __get_summary_in_html_format():
     return summary
 
 if __name__ == '__main__':
-    from argparse import ArgumentParser
+    #from argparse import ArgumentParser
 
     port = 4001
-    usedHost = 'https://callistabackend.herokuapp.com'
-    instance_address = "http://" + usedHost + ":" + str(port)
-
     usedHost = '127.0.0.1'
     app.run(host=usedHost, port=port)
 

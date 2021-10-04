@@ -23,7 +23,7 @@ IS_antal_brister_revisionshistorik = 0
 IS_antal_brister_tomma_begreppsbeskrivningstabellceller = 0
 IS_antal_brister_tomma_referenstabellceller = 0
 IS_antal_brister_tomma_revisionshistoriktabellceller = 0
-IS_antal_brister_tomma_tabellceller = 0
+#IS_antal_brister_tomma_tabellceller = 0
 IS_detail_box_contents = ""
 IS_document_exists = False
 IS_document_name = ""
@@ -39,7 +39,7 @@ TKB_antal_brister_referenslänkar = 0
 TKB_antal_brister_revisionshistorik = 0
 TKB_antal_brister_tomma_referenstabellceller = 0
 TKB_antal_brister_tomma_revisionshistoriktabellceller = 0
-TKB_antal_brister_tomma_tabellceller = 0
+#TKB_antal_brister_tomma_tabellceller = 0
 TKB_detail_box_contents = ""
 TKB_document_exists = False
 TKB_document_name = ""
@@ -65,7 +65,7 @@ def GLOBALS_init():
     global IS_antal_brister_tomma_begreppsbeskrivningstabellceller
     global IS_antal_brister_tomma_referenstabellceller
     global IS_antal_brister_tomma_revisionshistoriktabellceller
-    global IS_antal_brister_tomma_tabellceller
+    #global IS_antal_brister_tomma_tabellceller
     global IS_detail_box_contents
     global IS_document_exists
     global IS_document_name
@@ -78,7 +78,7 @@ def GLOBALS_init():
     global TKB_antal_brister_revisionshistorik
     global TKB_antal_brister_tomma_referenstabellceller
     global TKB_antal_brister_tomma_revisionshistoriktabellceller
-    global TKB_antal_brister_tomma_tabellceller
+    #global TKB_antal_brister_tomma_tabellceller
     global TKB_detail_box_contents
     global TKB_document_exists
     global TKB_document_name
@@ -103,7 +103,7 @@ def GLOBALS_init():
     IS_antal_brister_tomma_begreppsbeskrivningstabellceller = 0
     IS_antal_brister_tomma_referenstabellceller = 0
     IS_antal_brister_tomma_revisionshistoriktabellceller = 0
-    IS_antal_brister_tomma_tabellceller = 0
+    #IS_antal_brister_tomma_tabellceller = 0
     IS_detail_box_contents = ""
     IS_document_exists = False
     IS_document_name = ""
@@ -116,7 +116,7 @@ def GLOBALS_init():
     TKB_antal_brister_revisionshistorik = 0
     TKB_antal_brister_tomma_referenstabellceller = 0
     TKB_antal_brister_tomma_revisionshistoriktabellceller = 0
-    TKB_antal_brister_tomma_tabellceller = 0
+    #TKB_antal_brister_tomma_tabellceller = 0
     TKB_detail_box_contents = ""
     TKB_document_exists = False
     TKB_document_name = ""
