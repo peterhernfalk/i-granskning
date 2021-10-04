@@ -26,8 +26,8 @@ för att installera eller uppdatera Python-version och beroenden.
   - Läser in GET-parametrar från URL-strängen
   - Infospec
     - Anropar funktioner i DOC_document för att beräkna URL till Infospec i Bitbucket-repo
-    - Anropar INFO_inspect_document i INFO_document_inspection
     - Sätter globals.docx_document till globals.IS
+    - Anropar INFO_inspect_document i INFO_document_inspection
   - TKB
     - Anropar funktioner i DOC_document för att beräkna URL till TKB i Bitbucket-repo
     - Sätter globals.docx_document till globals.TKB
