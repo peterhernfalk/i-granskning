@@ -50,6 +50,7 @@ def IS_inspect_class_description():
 
 def IS_inspect_attribute_case():
     all_attributes_approved = True
+    IS_antal_brister_attributnamn = 0
     for index in range(len(infomodel_table_indexes)):
         table_num = index + infomodel_table_indexes[0]
         table = document.tables[table_num]
@@ -60,11 +61,13 @@ def IS_inspect_attribute_case():
                         table_title + ": har fel skiftläge på attributnamn" +
                         ". Attribut: " + row.cells[0].text.strip())
                 all_attributes_approved = False
-                globals.IS_antal_brister_attributnamn += 1
+                #globals.IS_antal_brister_attributnamn += 1
+                IS_antal_brister_attributnamn += 1
     if all_attributes_approved == True:
         write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla attributnamn har liten begynnelsebokstav")
     else:
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har attributnamn med stor begynnelsebokstav")
+    return IS_antal_brister_attributnamn
 
 
 def IS_inspect_attribute_multiplicity():

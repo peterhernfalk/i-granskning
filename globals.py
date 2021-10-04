@@ -31,6 +31,7 @@ IS_exists = False
 IS_felmeddelande = ""
 IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
+lower_case = "lower_case"
 
 tag = ""
 
@@ -44,6 +45,7 @@ TKB_detail_box_contents = ""
 TKB_document_exists = False
 TKB_document_name = ""
 TKB_exists = False
+UPPER_CASE = "UPPER_CASE"
 
 def GLOBALS_init():
     global COMMENTS_detail_box_contents

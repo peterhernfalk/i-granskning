@@ -25,14 +25,17 @@ för att installera eller uppdatera Python-version och beroenden.
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
   - Infospec
-    - Beräknar URL till Infospec i Bitbucket-repo
+    - Anropar funktioner i DOC_document för att beräkna URL till Infospec i Bitbucket-repo
     - Anropar INFO_inspect_document i INFO_document_inspection
     - Sätter globals.docx_document till globals.IS
   - TKB
-    - Beräknar URL till TKB i Bitbucket-repo
+    - Anropar funktioner i DOC_document för att beräkna URL till TKB i Bitbucket-repo
     - Sätter globals.docx_document till globals.TKB
     - Anropar INFO_inspect_document i INFO_document_inspection
-  
+ 
+ - DOC_document.py
+    - Funktioner för att beräkna URL till angivet dokument
+ 
 - INFO_document_inspection.py
   - Då globals.IS valts: INFO_inspect_document anropar __inspect_IS
     - DOCX_prepare_inspection("IS_*.doc*")

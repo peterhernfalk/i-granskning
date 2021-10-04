@@ -121,7 +121,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
 
     return paragraph_or_table_found
 
-def DOCX_list_searched_paragraph_titles_wrong_case(searched_paragraph_title, delimiter):
+def DOCX_list_searched_paragraph_titles_wrong_case(searched_paragraph_title, delimiter, searched_case):
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
     paragraph_title_list = []
 
@@ -142,9 +142,14 @@ def DOCX_list_searched_paragraph_titles_wrong_case(searched_paragraph_title, del
                                 key_extract = key[key.find(delimiter)+len(delimiter):]
                                 if key[key.find(" "):].lower().strip() != searched_paragraph_title.lower().strip():
                                     if key[key.find(delimiter):].lower() != searched_paragraph_title.lower():
-                                        if key_extract[0] != key_extract[0].upper():
-                                            paragraph_title_list.append(key)
-                                            count += 1
+                                        if searched_case == globals.UPPER_CASE:
+                                            if key_extract[0] != key_extract[0].upper():
+                                                paragraph_title_list.append(key)
+                                                count += 1
+                                        else:
+                                            if key_extract[0] != key_extract[0].lower():
+                                                paragraph_title_list.append(key)
+                                                count += 1
                             previous_key = key.strip()[0:key_level_length]
     return paragraph_title_list, count
 

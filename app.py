@@ -1,5 +1,6 @@
 
 from docx import Document
+import DOC_document
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
@@ -109,14 +110,16 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     """
     global IS_page_link
     global IS_document_paragraphs
-    IS_page_link = __get_document_page_link(domain, tag, globals.IS)
-    downloaded_IS_page = __get_downloaded_document(IS_page_link)
+    #IS_page_link = __get_document_page_link(domain, tag, globals.IS)
+    #downloaded_IS_page = __get_downloaded_document(IS_page_link)
+    IS_page_link = DOC_document.DOC_get_document_page_link(domain, tag, globals.IS)
+    downloaded_IS_page = DOC_document.DOC_get_downloaded_document(IS_page_link)
 
     IS_document_paragraphs = ""
 
-    IS_head_hash = __get_head_hash(downloaded_IS_page)
-    IS_document_link = __get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
-    downloaded_IS_document = __get_downloaded_document(IS_document_link)
+    IS_head_hash = DOC_document.DOC_get_head_hash(downloaded_IS_page)
+    IS_document_link = DOC_document.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
+    downloaded_IS_document = DOC_document.DOC_get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
         ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
         ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
@@ -124,7 +127,7 @@ def __inspect_IS_document(domain, tag, alt_document_name):
         globals.IS_exists = False
         docx_IS_document = ""
     else:
-        globals.docx_IS_document = __get_docx_document(downloaded_IS_document)
+        globals.docx_IS_document = DOC_document.DOC_get_docx_document(downloaded_IS_document)
         globals.IS_document_exists = True
         globals.IS_exists = True
         ### dev test ###
@@ -145,14 +148,16 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
     """
     global TKB_page_link
     global TKB_document_paragraphs
-    TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
-    downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
+    #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
+    #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
+    TKB_page_link = DOC_document.DOC_get_document_page_link(domain, tag, globals.TKB)
+    downloaded_TKB_page = DOC_document.DOC_get_downloaded_document(TKB_page_link)
 
     TKB_document_paragraphs = ""
 
-    TKB_head_hash = __get_head_hash(downloaded_TKB_page)
-    TKB_document_link = __get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
-    downloaded_TKB_document = __get_downloaded_document(TKB_document_link)
+    TKB_head_hash = DOC_document.DOC_get_head_hash(downloaded_TKB_page)
+    TKB_document_link = DOC_document.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
+    downloaded_TKB_document = DOC_document.DOC_get_downloaded_document(TKB_document_link)
     if downloaded_TKB_document.status_code == 404:
         ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
         ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
@@ -160,7 +165,7 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
         #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
         globals.TKB_exists = False
     else:
-        globals.docx_TKB_document = __get_docx_document(downloaded_TKB_document)
+        globals.docx_TKB_document = DOC_document.DOC_get_docx_document(downloaded_TKB_document)
         globals.TKB_document_exists = True
         globals.TKB_exists = True
         ### dev test ###
@@ -170,118 +175,6 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
         ### dev test ###
         INFO_inspect_document(globals.TKB)
 
-
-def __get_document_page_link(domainname, tag, document):
-    """
-    Beräknar url till sidan som innehåller länk till angivet dokument för vald domän och tag i Bitbucket-repot.
-
-    Returnerar: länk till dokumentsidan
-    """
-    url_prefix = "https://bitbucket.org/rivta-domains/"
-    url_domain = globals.domain_prefix + domainname + "/"
-    url_src = "src/"
-    url_tag = tag + "/"
-    url_docs = "docs/"
-    domain_name = domainname.replace(".","_")
-    url_doc = document +"_" + domain_name + ".docx"
-    document_page_link = url_prefix+url_domain+url_src+url_tag+url_docs+url_doc
-
-    return document_page_link
-
-def __get_document_link(domainname, tag, document, head_hash, alt_document_name):
-    """
-    Beräknar url till angivet dokument för vald domän och tag i Bitbucket-repot.
-
-    Returnerar: länk som kan användas vid nerladdning av angivet dokument
-    """
-    url_prefix = "https://bitbucket.org/rivta-domains/"
-    url_domain = globals.domain_prefix + domainname + "/"
-    url_raw = "raw/"
-    url_docs = "docs/"
-    domain_name = domainname.replace(".","_")
-    if len(alt_document_name.strip()) > 0:
-        url_doc = alt_document_name
-    else:
-        url_doc = document +"_" + domain_name + ".docx"
-    document_link = url_prefix+url_domain+url_raw+head_hash+"/"+url_docs+url_doc
-
-    if document == globals.IS:
-        globals.IS_document_name = url_doc
-    elif document == globals.TKB:
-        globals.TKB_document_name = url_doc
-
-    return document_link
-
-def __get_downloaded_document(document_link):
-    """
-    Laddar ner dokument från angiven länk.
-
-    Returnerar: nerladdat dokument
-    """
-    downloaded_doc = requests.get(document_link, stream=True)
-
-    return downloaded_doc
-
-def __get_head_hash(document_page):
-    """
-    hämtar head-hash för det dokument som ska laddas ner. Hashen finns i den Bitbucketsida som innehåller länk till dokumentet.
-
-    Returnerar: head-hash
-    """
-    hash_start = document_page.text.find('{"hash":')
-    hash_end = hash_start+17
-    head_hash = document_page.text[hash_start+10:hash_end]
-
-    return head_hash
-
-def __get_docx_document(downloaded_document):
-    """
-    Läser in angivet dokuments innehåll i ett docx-Document.
-
-    Returnerar: docx-Documentet
-    """
-    with io.BytesIO(downloaded_document.content) as inmemoryfile:
-        docx_document = Document(inmemoryfile)
-
-    return docx_document
-
-
-def __get_summary_in_html_format():
-    """
-    Sammanställer övergripande information om resultatet av granskning av Infospec och TKB.
-
-    Returnerar: en sträng med html-innehåll
-    """
-    summary = ""
-    if globals.IS_exists == False and globals.TKB_exists == False:
-        summary = "<h1>Sammanfattning</h1>"
-        summary += "<h2>Inga granskningskontroller har utförts på grund av att varken Infospec eller TKB kunnat hittas.</h2><br>"
-    else:
-        summary += "<h1>Sammanfattning</h1>"
-        if globals.IS_exists == True:
-            summary += "<h2>Granskningsresultat för Infospec</h2>"
-            if globals.IS_antal_brister_revisionshistorik == 0:
-                summary += "Revisionshistoriken är <b>korrekt</b>"
-            else:
-                summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
-            summary += "<br><b>" + str(globals.IS_antal_brister_referenslänkar) + "</b> felaktiga länkar i referenstabellen"
-            summary += "<br><b>" + str(globals.IS_antal_brister_klassbeskrivning) + "</b> saknade klassbeskrivningar"
-            summary += "<br><b>" + str(globals.IS_antal_brister_multiplicitet) + "</b> saknade multipliciteter i klasstabeller"
-            summary += "<br><b>" + str(globals.IS_antal_brister_datatyper) + "</b> fel för datatyper"
-            summary += "<br><b>" + str(globals.IS_antal_brister_referensinfomodell) + "</b> saknade referenser till RIM i klasstabeller"
-            summary += "<br><b>" + str(globals.IS_antal_brister_tomma_tabellceller) + "</b> tomma celler i klasstabeller"
-            summary += "<br>"
-        #else:
-            #summary += __text_document_not_found(globals.IS,domain,globals.tag)
-        if globals.TKB_exists == True:
-            summary += "<h2>Granskningsresultat för TKB</h2>"
-            if globals.TKB_antal_brister_revisionshistorik == 0:
-                summary += "Revisionshistoriken är <b>korrekt</b>"
-            else:
-                summary += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
-
-
-    return summary
 
 if __name__ == '__main__':
     #from argparse import ArgumentParser
