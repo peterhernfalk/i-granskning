@@ -3,6 +3,13 @@ import globals
 from repo import *
 
 def get_page_html():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.domain_name
+    - globals.tag
+    - globals.IS_detail_box_contents
+    - globals.COMMENTS_detail_box_contents
+    """
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name, globals.tag)
     html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end()
 
@@ -325,6 +332,13 @@ def __html_overview_start(domain_name, tag):
     return html
 
 def __html_summary_infospec():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.IS_exists
+    - globals.IS
+    - globals.domain_name
+    - globals.tag
+    """
     html = '''
     <ul class="recent-result box">
     <div>
@@ -360,11 +374,17 @@ def __html_summary_infospec():
     return html
 
 def __text_document_not_found(doc, domain, tag):
-
     """
     Sammanställer ett meddelande till användaren då sökt dokument saknas eller då fel dokumentnamn har angivits.
 
     Returenar: information i html-format
+    """
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.TKB
+    - globals.HTML_2_SPACES
+    - resultatet av REPO_get_domain_docs_link(domain, tag)
+    - globals.IS
     """
     document_name = "Infospec"
     if doc == globals.TKB:
@@ -383,6 +403,24 @@ def __text_document_not_found(doc, domain, tag):
 
 
 def __get_infospec_summary(topic):
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.IS_antal_brister_revisionshistorik
+    - globals.IS_antal_brister_tomma_revisionshistoriktabellceller
+    - globals.IS_antal_brister_referenslänkar
+    - globals.IS_antal_brister_tomma_referenstabellceller
+    - globals.IS_referensinfomodell_finns
+    - globals.IS_begreppsmodell_finns
+    - globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller
+    - globals.IS_begreppslista_finns
+    - globals.IS_kodverkstabell_finns
+    - globals.IS_antal_brister_klassbeskrivning
+    - globals.IS_antal_brister_attributnamn
+    - globals.IS_antal_brister_multiplicitet
+    - globals.IS_antal_brister_datatyper
+    - globals.IS_antal_brister_referensinfomodell
+    - globals.IS_antal_brister_tomma_tabellceller
+    """
     html = ""
     if topic == "revisionshistorik":
         if globals.IS_antal_brister_revisionshistorik == 0:
@@ -432,13 +470,19 @@ def __get_infospec_summary(topic):
     return html
 
 def __html_summary_TKB():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.TKB_exists
+    - globals.TKB
+    - globals.domain_name
+    - globals.tag
+    """
     html = '''
     <ul class="recent-result box">
     <div>
     <div class="box-topic">Sammanfattning: TKB-granskning</div>
     '''
 
-    #html += "<div><li>" + __get_TKB_summary() + "</li></div>"
     if globals.TKB_exists == True:
         html += __get_TKB_summary()
     else:
@@ -458,6 +502,13 @@ def __html_summary_TKB():
     return html
 
 def __get_TKB_summary():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.TKB_antal_brister_revisionshistorik
+    - globals.TKB_antal_brister_tomma_revisionshistoriktabellceller
+    - globals.TKB_antal_brister_referenslänkar
+    - globals.TKB_antal_brister_tomma_referenstabellceller
+    """
     html = ""
     if globals.TKB_antal_brister_revisionshistorik == 0:
         html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
@@ -533,71 +584,6 @@ def __html_detail_box_begin_COMMENTS():
     <div class="title">Förslag till granskningskommentarer</div>
     <div class="inspection-details">
     <ul class="details">
-    '''
-    return html
-
-
-def __demo_add_box_content_IS():
-    html = '''
-      <li><b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version</li>
-      <br>
-      <li><b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen</li>
-      <li><b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar</li>
-      <li><b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen</li>
-      <li>Revisionshistorikens sista rad: ('4.0.5', '2020-01-17', 'Peter Hernfalk', 'Ändrat versionsnummer till 4.0.5')</li>
-      <br>
-      <li><b>Krav:</b> länkarna i referenstabellen ska fungera</li>
-      <li><b>OK</b> (statuskod: 301) för: <a href="http://rivta.se/" target="_blank"">http://rivta.se/</a></li>
-      <li><b>OK</b> (statuskod: 302) för: http://informationsstruktur.socialstyrelsen.se/</li>
-      <li><b>OK</b> (statuskod: 200) för: https://inera.atlassian.net/wiki/spaces/KINT/pages/3615655/Kodverk+i+nationella+tj+nstekontrakt</li>
-      <li><b>OK</b> (statuskod: 301) för: http://termbank.socialstyrelsen.se/</li>
-      <li><b>OK</b> (statuskod: 302) för: http://www.rivta.se/domains/clinicalprocess_healthcond_certificate.html</li>
-      <li><b>OK</b> (statuskod: 200) för: https://inera.atlassian.net/wiki/spaces/EIT/overview</li>
-      <li><b>OK</b> (statuskod: 307) för: http://www.rikstermbanken.se/mainMenu.html</li>
-      <li><b>OK</b> (statuskod: 200) för: https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/halso-och-sjukvardsinformatik/sseniso139402016/</li>
-      <li><b>OK</b> (statuskod: 200) för: https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/halso-och-sjukvardsinformatik/sseniso210902011/</li>
-      <br>
-      <li><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning </li>
-      <li><b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav </li>
-      <li><b>Kontroll</b> att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav </li>
-      <li>&nbsp&nbsp 8 Klasser och attribut </li>
-      <li>&nbsp&nbsp 8.1 Avsändare av meddelande </li>
-      <li>&nbsp&nbsp 8.2 Delfråga </li>
-      <li>&nbsp&nbsp 8.3 Delsvar </li>
-      <li>&nbsp&nbsp 8.4 Enhet: Organisation </li>
-      <li>&nbsp&nbsp 8.5 Fråga </li>
-      <li>&nbsp&nbsp 8.6 HoS-personal: Hälso och sjukvårdspersonal </li>
-      <li>&nbsp&nbsp 8.7 Händelse </li>
-      <li>&nbsp&nbsp 8.8 Intygsmottagare: Organisation </li>
-      <li>&nbsp&nbsp 8.9 Intyg: Dokument (inom hälso- och sjukvård) </li>
-      <li>&nbsp&nbsp 8.10 Kompletteringsfråga </li>
-      <li>&nbsp&nbsp 8.11 Makulering </li>
-      <li>&nbsp&nbsp 8.12 Meddelande </li>
-      <li>&nbsp&nbsp 8.13 Metadata </li>
-      <li>&nbsp&nbsp 8.14 Mottagare av meddelande </li>
-      <li>&nbsp&nbsp 8.15 Part </li>
-      <li>&nbsp&nbsp 8.16 Patient: Person </li>
-      <li>&nbsp&nbsp 8.17 Referens </li>
-      <li>&nbsp&nbsp 8.18 Relation </li>
-      <li>&nbsp&nbsp 8.19 Sjukfall </li>
-      <li>&nbsp&nbsp 8.20 Status </li>
-      <li>&nbsp&nbsp 8.21 Svar </li>
-      <li>&nbsp&nbsp 8.22 Vårdgivare: Organisation </li>
-      <li>&nbsp&nbsp 8.23 Ärenden </li>
-      <li><b>Resultat: </b>för närvarande sker kontrollen manuellt, med ovanstående listning som underlag </li>
-    '''
-    return html
-
-def __demo_add_box_content_TKB():
-    html = '''
-        <li><b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version</li>
-        <br>
-        <li><b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen</li>
-        <li><b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen</li>
-        <li>Revisionshistorikens sista rad: ('4.0.5', '', '2020-01-17', 'Uppdaterat versionsnummer till 4.0.5
-        <br>Lagt till attributet hanteratAv i den gemensamma
-        klassen Handelse.
-        <br>Uppdaterat versionsnummer för ListCertificatesForCareWithQA till 3.3 eftersom den ska använda det nya Händelsefältet. \nUppdaterat tabell för kompatibilitet.', 'Peter Hernfalk', '')</li>
     '''
     return html
 

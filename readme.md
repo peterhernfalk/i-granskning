@@ -81,15 +81,22 @@ för att installera eller uppdatera Python-version och beroenden.
   - Gemensamma granskningskrav och granskning
   - Granskningskrav och granskning per dokument
   - Html-generering
+  - Klass med summeringsinformation
+  - Klass med globala variabler
 ### Python-filer som används i förbättrad struktur:
 ```
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
   - Anropar funktion i granskning.py för att genomföra granskning
+  - 2do: bygg bort funktioner för IS- och TKB-granskning
 
 - granskning.py
     - Funktion för att förbereda granskning
+
+- html_dashboard.py
+  - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
+  - 2do: lägg till inparametrar till vissa funktioner 
 ```
 
 ## Driftsättning, konfiguration, beroenden:
