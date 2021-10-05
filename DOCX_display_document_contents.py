@@ -42,7 +42,7 @@ def DOCX_prepare_inspection(document_search_phrase):
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
 
-def DOCX_inspect_revision_history():
+def DOCX_inspect_revision_history(docx_document):
     """
     Kollar att dokumentets tabell med revisionshistorik har en rad för aktuell tag.
     """
@@ -59,10 +59,10 @@ def DOCX_inspect_revision_history():
     if str(table.cell(i, 0).text) != globals.tag:
         write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
-        if globals.docx_document == globals.IS:
+        if docx_document == globals.IS:
             #globals.IS_antal_brister_revisionshistorik = 1
             antal_brister_revisionshistorik = 1
-        elif globals.docx_document == globals.TKB:
+        elif docx_document == globals.TKB:
             #globals.TKB_antal_brister_revisionshistorik = 1
             antal_brister_revisionshistorik = 1
     else:

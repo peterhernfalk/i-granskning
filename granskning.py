@@ -32,6 +32,9 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
 
     Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
     """
+    """
+    2do: Förenkla och snygga till koden
+    """
     global IS_page_link
     global IS_document_paragraphs
     IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
@@ -57,73 +60,19 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
             if paragraph.text.strip() != "":
                 IS_document_paragraphs += paragraph.text + "<br>"
         ### dev test ###
-        #INFO_inspect_document(globals.IS)
 
-    #INFO_inspect_document(globals.IS)
+        DOCX_prepare_inspection("IS_*.doc*")
+        IS_init_infomodel_classes_list()
 
-
-def prepare_TKB_inspection(domain, tag, alt_document_name):
-    """
-    Beräknar url till TKB-dokumentet för angiven domain och tag.
-
-    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
-
-    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
-    """
-    global TKB_page_link
-    global TKB_document_paragraphs
-    #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
-    #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
-    TKB_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.TKB)
-    downloaded_TKB_page = Document_mangagement.DOC_get_downloaded_document(TKB_page_link)
-
-    TKB_document_paragraphs = ""
-
-    TKB_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_TKB_page)
-    TKB_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
-    downloaded_TKB_document = Document_mangagement.DOC_get_downloaded_document(TKB_document_link)
-    if downloaded_TKB_document.status_code == 404:
-        ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
-        ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
-        docx_TKB_document = ""
-        #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
-        globals.TKB_exists = False
-    else:
-        globals.docx_TKB_document = Document_mangagement.DOC_get_docx_document(downloaded_TKB_document)
-        globals.TKB_document_exists = True
-        globals.TKB_exists = True
-        ### dev test ###
-        for paragraph in globals.docx_TKB_document.paragraphs:
-            if paragraph.text.strip() != "":
-                TKB_document_paragraphs += paragraph.text + "<br>"
-        ### dev test ###
-        #INFO_inspect_document(globals.TKB)
-
-
-
-"""def __show_missing_files():
-    write_output("\n\n-----------------------------------")
-    write_output("--- Saknade obligatoriska filer ---")
-    write_output("-----------------------------------")
-    write_output("Krav: domänen måste innehålla TKB-dokumentet, annars ska de underkännas. Infospecen bör finnas, men är inte obligatorisk")
-    write_output("--------------------------------------------------------------------------------------------------------------------------------")
-    globals.IS_exists = check_if_file_exists(globals.domain_folder_name+"/docs/", "IS_*.docx")
-    if globals.IS_exists == False:
-        write_output("Saknad obligatorisk fil: docs/IS_*.docx")
-    globals.TKB_exists = check_if_file_exists(globals.domain_folder_name+"/docs/", "TKB_*.docx")
-    if globals.TKB_exists == False:
-        write_output("Saknad obligatorisk fil: docs/TKB_*.docx")"""
 
 def perform_IS_inspection():
-    DOCX_prepare_inspection("IS_*.doc*")
-    IS_init_infomodel_classes_list()
-
-    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    write_detail_box_content(
+        "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
     """
         Exempel på Core properties:
             Title, Subject, Author
-            
+
         Exempel på Custom properties:
             datepublished, datumpubliserad, Publisheddate
             domain_1,_2,_3
@@ -136,12 +85,12 @@ def perform_IS_inspection():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history()
+    globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.IS)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     result, globals.IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
-    #globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
+    # globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
@@ -150,14 +99,14 @@ def perform_IS_inspection():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     result, globals.IS_antal_brister_tomma_referenstabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
-    #globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
+    # globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
     write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
     globals.IS_referensinfomodell_finns = DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
-    if globals.IS_referensinfomodell_finns  == False:
+    if globals.IS_referensinfomodell_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
@@ -170,7 +119,7 @@ def perform_IS_inspection():
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
     begreppsbeskrivning_tabell = IS_get_tableno_for_first_title_cell("begrepp")
     result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
-    #globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
+    # globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
@@ -196,9 +145,9 @@ def perform_IS_inspection():
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
-    DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
+    DOCX_display_paragraph_text_and_tables("klasser och attribut", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ", globals.UPPER_CASE)
-    #print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
+    # print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     ##IS_inspect_document_contents()
 
@@ -251,9 +200,9 @@ def perform_IS_inspection():
     for table_index in range(len(IS_inspection.infomodel_table_indexes)):
         table_number = IS_inspection.infomodel_table_indexes[table_index]
         result, antal = DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
-        if result == True:  #DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
+        if result == True:  # DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
             empty_cells_found = True
-            #antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
+            # antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
             antal_tomma_klasstabellceller += antal
     if empty_cells_found == True:
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
@@ -262,8 +211,48 @@ def perform_IS_inspection():
     globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
 
 
+def prepare_TKB_inspection(domain, tag, alt_document_name):
+    """
+    Beräknar url till TKB-dokumentet för angiven domain och tag.
+
+    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
+
+    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
+    """
+    """
+    2do: Förenkla och snygga till koden
+    """
+    global TKB_page_link
+    global TKB_document_paragraphs
+    #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
+    #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
+    TKB_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.TKB)
+    downloaded_TKB_page = Document_mangagement.DOC_get_downloaded_document(TKB_page_link)
+
+    TKB_document_paragraphs = ""
+
+    TKB_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_TKB_page)
+    TKB_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
+    downloaded_TKB_document = Document_mangagement.DOC_get_downloaded_document(TKB_document_link)
+    if downloaded_TKB_document.status_code == 404:
+        ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
+        ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
+        docx_TKB_document = ""
+        #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
+        globals.TKB_exists = False
+    else:
+        globals.docx_TKB_document = Document_mangagement.DOC_get_docx_document(downloaded_TKB_document)
+        globals.TKB_document_exists = True
+        globals.TKB_exists = True
+        ### dev test ###
+        for paragraph in globals.docx_TKB_document.paragraphs:
+            if paragraph.text.strip() != "":
+                TKB_document_paragraphs += paragraph.text + "<br>"
+        ### dev test ###
+
+        DOCX_prepare_inspection("TKB_*.doc*")
+
 def perform_TKB_inspection():
-    DOCX_prepare_inspection("TKB_*.doc*")
     #write_detail_box_html("<br>")
     #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     #write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
@@ -276,7 +265,7 @@ def perform_TKB_inspection():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history()
+    globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.TKB)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
@@ -308,16 +297,6 @@ def perform_TKB_inspection():
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
 
-
-##########################
-##### Public methods #####
-##########################
-"""def INFO_inspect_document(doc):
-    if doc == globals.IS:
-        __inspect_IS()
-    elif doc == globals.TKB:
-        perform_TKB_inspection()"""
-
 ############################## TEST ##############################
 if local_test == True:
     ### info class name list OK ###
@@ -342,5 +321,5 @@ if local_test == True:
     #INFO_show_missing_files_and_inspect_documents()
     #__inspect_readme_file()
     #__inspect_AB()
-    __inspect_IS()
+    #__inspect_IS()
     #__inspect_TKB()
