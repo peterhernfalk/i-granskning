@@ -4,6 +4,7 @@ import Document_mangagement
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
+import granskning
 import html_dashboard
 from html_dashboard import *
 
@@ -59,12 +60,12 @@ def reponse2request():
     Returnerar: en sträng med html-innehåll
     """
 
+    ###########################
+    ### 2do: förenkla koden ###
+    ###########################
+
     ##### PREPARE #####
-    #global domain
-    #global tag
-    #global alt_document_name
     globals.GLOBALS_init()
-    #detail_box_content = ""
     domain = request.args.get('domain', default="")
     domain = domain.replace("riv.","")
     domain = domain.replace("riv-application.","")
@@ -85,15 +86,15 @@ def reponse2request():
 
         ##### INSPECT #####
         globals.docx_document = globals.IS
-        __inspect_IS_document(domain, tag, alt_IS_name)
+        granskning.prepare_IS_inspection(domain, tag, alt_IS_name)
         globals.alt_document_name = alt_IS_name
         if globals.IS_exists == True:
-            INFO_inspect_document(globals.IS)
+            perform_IS_inspection()
 
         globals.docx_document = globals.TKB
-        __inspect_TKB_document(domain, tag, alt_TKB_name)
+        granskning.prepare_TKB_inspection(domain, tag, alt_TKB_name)
         if globals.TKB_exists == True:
-            INFO_inspect_document(globals.TKB)
+            perform_TKB_inspection()
 
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
@@ -106,88 +107,8 @@ def reponse2request():
     ##### REPLY #####
     return html
 
-##############################
-# Internal methods
-##############################
-def __inspect_IS_document(domain, tag, alt_document_name):
-    """
-    Beräknar url till infospecdokumentet för angiven domain och tag.
-
-    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
-
-    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
-    """
-    global IS_page_link
-    global IS_document_paragraphs
-    IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
-    downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
-
-    IS_document_paragraphs = ""
-
-    IS_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_IS_page)
-    IS_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
-    downloaded_IS_document = Document_mangagement.DOC_get_downloaded_document(IS_document_link)
-    if downloaded_IS_document.status_code == 404:
-        ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
-        ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
-        #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
-        globals.IS_exists = False
-        docx_IS_document = ""
-    else:
-        globals.docx_IS_document = Document_mangagement.DOC_get_docx_document(downloaded_IS_document)
-        globals.IS_document_exists = True
-        globals.IS_exists = True
-        ### dev test ###
-        for paragraph in globals.docx_IS_document.paragraphs:
-            if paragraph.text.strip() != "":
-                IS_document_paragraphs += paragraph.text + "<br>"
-        ### dev test ###
-        #INFO_inspect_document(globals.IS)
-
-    #INFO_inspect_document(globals.IS)
-
-
-def __inspect_TKB_document(domain, tag, alt_document_name):
-    """
-    Beräknar url till TKB-dokumentet för angiven domain och tag.
-
-    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
-
-    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
-    """
-    global TKB_page_link
-    global TKB_document_paragraphs
-    #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
-    #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
-    TKB_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.TKB)
-    downloaded_TKB_page = Document_mangagement.DOC_get_downloaded_document(TKB_page_link)
-
-    TKB_document_paragraphs = ""
-
-    TKB_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_TKB_page)
-    TKB_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
-    downloaded_TKB_document = Document_mangagement.DOC_get_downloaded_document(TKB_document_link)
-    if downloaded_TKB_document.status_code == 404:
-        ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
-        ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
-        docx_TKB_document = ""
-        #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
-        globals.TKB_exists = False
-    else:
-        globals.docx_TKB_document = Document_mangagement.DOC_get_docx_document(downloaded_TKB_document)
-        globals.TKB_document_exists = True
-        globals.TKB_exists = True
-        ### dev test ###
-        for paragraph in globals.docx_TKB_document.paragraphs:
-            if paragraph.text.strip() != "":
-                TKB_document_paragraphs += paragraph.text + "<br>"
-        ### dev test ###
-        #INFO_inspect_document(globals.TKB)
-
 
 if __name__ == '__main__':
-    #from argparse import ArgumentParser
-
     port = 4001
     usedHost = '127.0.0.1'
     app.run(host=usedHost, port=port)

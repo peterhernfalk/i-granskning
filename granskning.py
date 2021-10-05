@@ -24,6 +24,83 @@ local_test = False
 def __execute_command(command):
     os.system(command)
 
+def prepare_IS_inspection(domain, tag, alt_document_name):
+    """
+    Beräknar url till infospecdokumentet för angiven domain och tag.
+
+    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
+
+    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
+    """
+    global IS_page_link
+    global IS_document_paragraphs
+    IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
+    downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
+
+    IS_document_paragraphs = ""
+
+    IS_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_IS_page)
+    IS_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
+    downloaded_IS_document = Document_mangagement.DOC_get_downloaded_document(IS_document_link)
+    if downloaded_IS_document.status_code == 404:
+        ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
+        ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
+        #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
+        globals.IS_exists = False
+        docx_IS_document = ""
+    else:
+        globals.docx_IS_document = Document_mangagement.DOC_get_docx_document(downloaded_IS_document)
+        globals.IS_document_exists = True
+        globals.IS_exists = True
+        ### dev test ###
+        for paragraph in globals.docx_IS_document.paragraphs:
+            if paragraph.text.strip() != "":
+                IS_document_paragraphs += paragraph.text + "<br>"
+        ### dev test ###
+        #INFO_inspect_document(globals.IS)
+
+    #INFO_inspect_document(globals.IS)
+
+
+def prepare_TKB_inspection(domain, tag, alt_document_name):
+    """
+    Beräknar url till TKB-dokumentet för angiven domain och tag.
+
+    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
+
+    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
+    """
+    global TKB_page_link
+    global TKB_document_paragraphs
+    #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
+    #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
+    TKB_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.TKB)
+    downloaded_TKB_page = Document_mangagement.DOC_get_downloaded_document(TKB_page_link)
+
+    TKB_document_paragraphs = ""
+
+    TKB_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_TKB_page)
+    TKB_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
+    downloaded_TKB_document = Document_mangagement.DOC_get_downloaded_document(TKB_document_link)
+    if downloaded_TKB_document.status_code == 404:
+        ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
+        ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
+        docx_TKB_document = ""
+        #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
+        globals.TKB_exists = False
+    else:
+        globals.docx_TKB_document = Document_mangagement.DOC_get_docx_document(downloaded_TKB_document)
+        globals.TKB_document_exists = True
+        globals.TKB_exists = True
+        ### dev test ###
+        for paragraph in globals.docx_TKB_document.paragraphs:
+            if paragraph.text.strip() != "":
+                TKB_document_paragraphs += paragraph.text + "<br>"
+        ### dev test ###
+        #INFO_inspect_document(globals.TKB)
+
+
+
 """def __show_missing_files():
     write_output("\n\n-----------------------------------")
     write_output("--- Saknade obligatoriska filer ---")
@@ -37,7 +114,7 @@ def __execute_command(command):
     if globals.TKB_exists == False:
         write_output("Saknad obligatorisk fil: docs/TKB_*.docx")"""
 
-def __inspect_IS():
+def perform_IS_inspection():
     DOCX_prepare_inspection("IS_*.doc*")
     IS_init_infomodel_classes_list()
 
@@ -185,7 +262,7 @@ def __inspect_IS():
     globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
 
 
-def __inspect_TKB():
+def perform_TKB_inspection():
     DOCX_prepare_inspection("TKB_*.doc*")
     #write_detail_box_html("<br>")
     #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
@@ -235,11 +312,11 @@ def __inspect_TKB():
 ##########################
 ##### Public methods #####
 ##########################
-def INFO_inspect_document(doc):
+"""def INFO_inspect_document(doc):
     if doc == globals.IS:
         __inspect_IS()
     elif doc == globals.TKB:
-        __inspect_TKB()
+        perform_TKB_inspection()"""
 
 ############################## TEST ##############################
 if local_test == True:

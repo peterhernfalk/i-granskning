@@ -88,11 +88,19 @@ för att installera eller uppdatera Python-version och beroenden.
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
-  - Anropar funktion i granskning.py för att genomföra granskning
-  - 2do: bygg bort funktioner för IS- och TKB-granskning
+  - Anropar funktion i granskning.py för att förbereda granskning av infospec
+  - Anropar funktion i granskning.py för att genomföra granskning av Infospec
+  - Anropar funktion i granskning.py för att förbereda granskning av TKB
+  - Anropar funktion i granskning.py för att genomföra granskning av TKB
 
 - granskning.py
-    - Funktion för att förbereda granskning
+    - Funktioner som förbereder granskning av Infospec resp. av TKB
+    - Funktioner som genomför granskning av Infospec resp. av TKB
+      - För varje granskningspunkt
+        - Presenterar granskningskrav och ev. granskningsstöd
+        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+          - Beroende på granskningspunkt så är det olika funktioner som anropas 
+        - Presenterar resultat av granskningen
 
 - html_dashboard.py
   - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
