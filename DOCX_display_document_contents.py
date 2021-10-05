@@ -1,6 +1,7 @@
 from docx import Document
 import glob
 
+import Document_mangagement
 import IS_inspection
 import globals
 import os
@@ -33,7 +34,13 @@ def DOCX_prepare_inspection(document_search_phrase):
     Anropar metoder för att förbereda för granskning av ett Worddokument
     """
     __set_document_name(document_search_phrase)
-    __document_structure_2_dict(__style_family(document_search_phrase))
+
+    if globals.IS_document_exists == True:
+        __set_document_name(document_search_phrase)
+        __document_structure_2_dict(__style_family(document_search_phrase))
+    if globals.TKB_document_exists == True:
+        __set_document_name(document_search_phrase)
+        __document_structure_2_dict(__style_family(document_search_phrase))
 
 def DOCX_inspect_revision_history():
     """

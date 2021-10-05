@@ -3,6 +3,43 @@ import globals
 import io
 import requests
 
+def DOC_document_name(search_phrase):
+    """
+    Sätter den globala variabeln 'document' till namnet på angivet dokument
+    """
+    global document
+    global document_name
+
+    if "IS_*" in search_phrase:
+        document = globals.docx_IS_document
+    elif "TKB_*" in search_phrase:
+        document = globals.docx_TKB_document
+
+
+def DOC_load_doacument():
+    ##########
+    if document == globals.IS:
+        global IS_page_link
+        global IS_document_paragraphs
+        IS_page_link = DOC_get_document_page_link(globals.domain_name, globals.tag, globals.IS)
+        downloaded_IS_page = document.DOC_get_downloaded_document(IS_page_link)
+        IS_document_paragraphs = ""
+        IS_head_hash = document.DOC_get_head_hash(downloaded_IS_page)
+        IS_document_link = document.DOC_get_document_link(globals.domain_name, globals.tag, globals.IS, IS_head_hash, globals.alt_document_name)
+        downloaded_IS_document = DOC_get_downloaded_document(IS_document_link)
+        if downloaded_IS_document.status_code == 404:
+            globals.IS_exists = False
+            docx_IS_document = ""
+        else:
+            globals.docx_IS_document = document.DOC_get_docx_document(downloaded_IS_document)
+            globals.IS_document_exists = True
+            globals.IS_exists = True
+            ### dev test ###
+            for paragraph in globals.docx_IS_document.paragraphs:
+                if paragraph.text.strip() != "":
+                    IS_document_paragraphs += paragraph.text + "<br>"
+            ### dev test ###
+        ##########
 
 def DOC_get_document_page_link(domainname, tag, document):
     """

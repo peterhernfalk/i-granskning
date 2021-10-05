@@ -1,6 +1,6 @@
 
 from docx import Document
-import DOC_document
+import Document_mangagement
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
@@ -8,7 +8,7 @@ import html_dashboard
 from html_dashboard import *
 
 import globals
-from INFO_document_inspection import *
+from granskning import *
 import io
 from repo import *
 import requests
@@ -60,6 +60,9 @@ def reponse2request():
     """
 
     ##### PREPARE #####
+    #global domain
+    #global tag
+    #global alt_document_name
     globals.GLOBALS_init()
     #detail_box_content = ""
     domain = request.args.get('domain', default="")
@@ -83,9 +86,15 @@ def reponse2request():
         ##### INSPECT #####
         globals.docx_document = globals.IS
         __inspect_IS_document(domain, tag, alt_IS_name)
+        globals.alt_document_name = alt_IS_name
+        if globals.IS_exists == True:
+            INFO_inspect_document(globals.IS)
 
         globals.docx_document = globals.TKB
         __inspect_TKB_document(domain, tag, alt_TKB_name)
+        if globals.TKB_exists == True:
+            INFO_inspect_document(globals.TKB)
+
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
         html = html_dashboard.get_page_html()
@@ -110,16 +119,14 @@ def __inspect_IS_document(domain, tag, alt_document_name):
     """
     global IS_page_link
     global IS_document_paragraphs
-    #IS_page_link = __get_document_page_link(domain, tag, globals.IS)
-    #downloaded_IS_page = __get_downloaded_document(IS_page_link)
-    IS_page_link = DOC_document.DOC_get_document_page_link(domain, tag, globals.IS)
-    downloaded_IS_page = DOC_document.DOC_get_downloaded_document(IS_page_link)
+    IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
+    downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
 
     IS_document_paragraphs = ""
 
-    IS_head_hash = DOC_document.DOC_get_head_hash(downloaded_IS_page)
-    IS_document_link = DOC_document.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
-    downloaded_IS_document = DOC_document.DOC_get_downloaded_document(IS_document_link)
+    IS_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_IS_page)
+    IS_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
+    downloaded_IS_document = Document_mangagement.DOC_get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
         ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
         ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
@@ -127,7 +134,7 @@ def __inspect_IS_document(domain, tag, alt_document_name):
         globals.IS_exists = False
         docx_IS_document = ""
     else:
-        globals.docx_IS_document = DOC_document.DOC_get_docx_document(downloaded_IS_document)
+        globals.docx_IS_document = Document_mangagement.DOC_get_docx_document(downloaded_IS_document)
         globals.IS_document_exists = True
         globals.IS_exists = True
         ### dev test ###
@@ -135,7 +142,9 @@ def __inspect_IS_document(domain, tag, alt_document_name):
             if paragraph.text.strip() != "":
                 IS_document_paragraphs += paragraph.text + "<br>"
         ### dev test ###
-        INFO_inspect_document(globals.IS)
+        #INFO_inspect_document(globals.IS)
+
+    #INFO_inspect_document(globals.IS)
 
 
 def __inspect_TKB_document(domain, tag, alt_document_name):
@@ -150,14 +159,14 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
     global TKB_document_paragraphs
     #TKB_page_link = __get_document_page_link(domain, tag, globals.TKB)
     #downloaded_TKB_page = __get_downloaded_document(TKB_page_link)
-    TKB_page_link = DOC_document.DOC_get_document_page_link(domain, tag, globals.TKB)
-    downloaded_TKB_page = DOC_document.DOC_get_downloaded_document(TKB_page_link)
+    TKB_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.TKB)
+    downloaded_TKB_page = Document_mangagement.DOC_get_downloaded_document(TKB_page_link)
 
     TKB_document_paragraphs = ""
 
-    TKB_head_hash = DOC_document.DOC_get_head_hash(downloaded_TKB_page)
-    TKB_document_link = DOC_document.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
-    downloaded_TKB_document = DOC_document.DOC_get_downloaded_document(TKB_document_link)
+    TKB_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_TKB_page)
+    TKB_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.TKB, TKB_head_hash, alt_document_name)
+    downloaded_TKB_document = Document_mangagement.DOC_get_downloaded_document(TKB_document_link)
     if downloaded_TKB_document.status_code == 404:
         ###TKB_document_paragraphs = APP_text_document_not_found(globals.TKB, domain, tag)
         ###globals.granskningsresultat += "<br><br><h2>TKB</h2>" + APP_text_document_not_found(globals.TKB, domain, tag)
@@ -165,7 +174,7 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
         #globals.TKB_felmeddelande = APP_text_document_not_found(globals.TKB, domain, tag)
         globals.TKB_exists = False
     else:
-        globals.docx_TKB_document = DOC_document.DOC_get_docx_document(downloaded_TKB_document)
+        globals.docx_TKB_document = Document_mangagement.DOC_get_docx_document(downloaded_TKB_document)
         globals.TKB_document_exists = True
         globals.TKB_exists = True
         ### dev test ###
@@ -173,7 +182,7 @@ def __inspect_TKB_document(domain, tag, alt_document_name):
             if paragraph.text.strip() != "":
                 TKB_document_paragraphs += paragraph.text + "<br>"
         ### dev test ###
-        INFO_inspect_document(globals.TKB)
+        #INFO_inspect_document(globals.TKB)
 
 
 if __name__ == '__main__':

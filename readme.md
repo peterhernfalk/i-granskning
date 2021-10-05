@@ -25,18 +25,18 @@ för att installera eller uppdatera Python-version och beroenden.
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
   - Infospec
-    - Anropar funktioner i DOC_document för att beräkna URL till Infospec i Bitbucket-repo
+    - Anropar funktioner i Document_management för att beräkna URL till Infospec i Bitbucket-repo
     - Sätter globals.docx_document till globals.IS
-    - Anropar INFO_inspect_document i INFO_document_inspection
+    - Anropar INFO_inspect_document i granskning.py
   - TKB
-    - Anropar funktioner i DOC_document för att beräkna URL till TKB i Bitbucket-repo
+    - Anropar funktioner i Document_management för att beräkna URL till TKB i Bitbucket-repo
     - Sätter globals.docx_document till globals.TKB
-    - Anropar INFO_inspect_document i INFO_document_inspection
+    - Anropar INFO_inspect_document i granskning.py
  
- - DOC_document.py
+ - Document_management.py
     - Funktioner för att beräkna URL till angivet dokument
  
-- INFO_document_inspection.py
+- granskning.py
   - Då globals.IS valts: INFO_inspect_document anropar __inspect_IS
     - DOCX_prepare_inspection("IS_*.doc*")
     - IS_init_infomodel_classes_list()
@@ -66,3 +66,38 @@ för att installera eller uppdatera Python-version och beroenden.
 - uilities.py
     - Några funktioner som används både vid granskning av Infospec och TKB
 ```
+
+## Målbild för kodstruktur:
+- Renodlad, välstrukturerad kod (separation of concerns)
+- Inparametrar till funktioner med all data de behöver
+- Generaliserade funktioner (återanvändning)
+- Struktur
+  - App med endpoint och html-svar på anrop
+  - Granskningsprocedur (anropas av app)
+  - URL-byggande
+  - Dokumenthantering
+  - Dokument-tolkning
+  - Läsning av och sökning i dokument
+  - Gemensamma granskningskrav och granskning
+  - Granskningskrav och granskning per dokument
+  - Html-generering
+### Python-filer som används i förbättrad struktur:
+```
+- app.py
+  - Exponerar REST-endpoint: ('/granskningsinfo')
+  - Läser in GET-parametrar från URL-strängen
+  - Anropar funktion i granskning.py för att genomföra granskning
+
+- granskning.py
+    - Funktion för att förbereda granskning
+```
+
+## Driftsättning, konfiguration, beroenden:
+- Push till GitHub-repo
+  - Från lokalt repo
+- Deploy till Heroku-app
+  - Deploy sker med Herokus CLI 
+  - runtime.txt används av Heroku för att se till att önskat Python-version är installerat i appen
+  - requirements.txt används av Heroku för att se till att angivna versioner av dependencies är installerade i appen
+
+## Tips för utvecklare:
