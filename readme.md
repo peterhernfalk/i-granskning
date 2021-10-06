@@ -61,7 +61,7 @@ för att installera eller uppdatera Python-version och beroenden.
 
 ```
 
-### Python-filer innan struktur- och kodfärbättringar:
+### Python-filer innan struktur- och kodförbättringar:
 ```
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
@@ -118,3 +118,12 @@ för att installera eller uppdatera Python-version och beroenden.
   - requirements.txt används av Heroku för att se till att angivna versioner av dependencies är installerade i appen
 
 ## Tips för utvecklare:
+### Komplettera med ytterligare granskningspukt:
+- lägg till kod i granskning.py
+  - Presentation av granskningskrav
+  - Anrop till funktion som genomför granskningen
+    - Använd befintlig funktion eller lägg till en ny funktion i lämplig python-fil
+  - Presentation av granskningens resultat
+- Uppdatera sammanfattningsruta i html_dashboard.py
+
+### Komplettera med granskning av ytterligare dokument:
