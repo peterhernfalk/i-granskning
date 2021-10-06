@@ -4,22 +4,64 @@
 Granskningsprocedur som läser in Infospec och TKB från Bitbucket-repo.
 Dokumenten läses in i varsin instans av typen DOCX Document-klass. 
 Granskningsflödet exekveras i sekvens per dokument. 
+Granskningsfunktioner har i första hand utvecklats för att kunna användas av alla granskade dokument. 
+I de fall där kraven är specifika för ett visst dokument så har granskningsfunktioner utvecklats för just dessa krav.
 
 All kod är skriven i Python, som använder några bibliotek.
 Koden är skriven i form av funktioner som anropas i ett flöde per dokument. 
-Koden bör förenklas och renodlas innan slutleverans. 
-I samband med det kan antagligen någon eller några Pythonfiler arbetas bort.
+Koden förenklas och renodlas inför slutleverans. 
 Det har påbörjats ett arbete att göra funktionerna mer självständiga
-ur ett informationsförsörjningsperspektiv, utan beroende till globala variabler
-
-Vid refaktorering skulle det kunna skapas en klass per dokument, 
-innehållande de metoder som idag finns som funktioner i Python-filer.
+ur ett informationsförsörjningsperspektiv, med ett minimum av beroende till globala variabler
 
 ### Runtime-stöd:
 Filerna requirements.txt och runtime.txt används av Heroku vid deploy 
 för att installera eller uppdatera Python-version och beroenden.
 
-### Python-filer som används:
+
+## Målbild för kodstruktur:
+- Renodlad, välstrukturerad kod (separation of concerns)
+- Inparametrar till funktioner med all data de behöver
+- Generaliserade funktioner (återanvändning)
+- Struktur
+  - App med endpoint och html-svar på anrop
+  - Granskningsprocedur (anropas av app)
+  - URL-byggande
+  - Dokumenthantering
+  - Dokument-tolkning
+  - Läsning av och sökning i dokument
+  - Gemensamma granskningskrav och granskning
+  - Granskningskrav och granskning per dokument
+  - Html-generering
+  - Klass med summeringsinformation
+  - Klass med globala variabler
+### Python-filer som används i förbättrad struktur:
+```
+- app.py
+  - Exponerar REST-endpoint: ('/granskningsinfo')
+  - Läser in GET-parametrar från URL-strängen
+  - Anropar funktion i granskning.py för att förbereda granskning av infospec
+  - Anropar funktion i granskning.py för att genomföra granskning av Infospec
+  - Anropar funktion i granskning.py för att förbereda granskning av TKB
+  - Anropar funktion i granskning.py för att genomföra granskning av TKB
+
+- granskning.py
+    - Funktioner som förbereder granskning av Infospec resp. av TKB
+    - Funktioner som genomför granskning av Infospec resp. av TKB
+      - För varje granskningspunkt
+        - Presenterar granskningskrav och ev. granskningsstöd
+        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+          - Beroende på granskningspunkt så är det olika funktioner som anropas 
+        - Presenterar resultat av granskningen
+
+- html_dashboard.py
+  - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
+  - 2do: lägg till inparametrar till vissa funktioner 
+
+... resterande filer ska beskrivas ...
+
+```
+
+### Python-filer innan struktur- och kodfärbättringar:
 ```
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
@@ -65,46 +107,6 @@ för att installera eller uppdatera Python-version och beroenden.
     
 - uilities.py
     - Några funktioner som används både vid granskning av Infospec och TKB
-```
-
-## Målbild för kodstruktur:
-- Renodlad, välstrukturerad kod (separation of concerns)
-- Inparametrar till funktioner med all data de behöver
-- Generaliserade funktioner (återanvändning)
-- Struktur
-  - App med endpoint och html-svar på anrop
-  - Granskningsprocedur (anropas av app)
-  - URL-byggande
-  - Dokumenthantering
-  - Dokument-tolkning
-  - Läsning av och sökning i dokument
-  - Gemensamma granskningskrav och granskning
-  - Granskningskrav och granskning per dokument
-  - Html-generering
-  - Klass med summeringsinformation
-  - Klass med globala variabler
-### Python-filer som används i förbättrad struktur:
-```
-- app.py
-  - Exponerar REST-endpoint: ('/granskningsinfo')
-  - Läser in GET-parametrar från URL-strängen
-  - Anropar funktion i granskning.py för att förbereda granskning av infospec
-  - Anropar funktion i granskning.py för att genomföra granskning av Infospec
-  - Anropar funktion i granskning.py för att förbereda granskning av TKB
-  - Anropar funktion i granskning.py för att genomföra granskning av TKB
-
-- granskning.py
-    - Funktioner som förbereder granskning av Infospec resp. av TKB
-    - Funktioner som genomför granskning av Infospec resp. av TKB
-      - För varje granskningspunkt
-        - Presenterar granskningskrav och ev. granskningsstöd
-        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
-          - Beroende på granskningspunkt så är det olika funktioner som anropas 
-        - Presenterar resultat av granskningen
-
-- html_dashboard.py
-  - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
-  - 2do: lägg till inparametrar till vissa funktioner 
 ```
 
 ## Driftsättning, konfiguration, beroenden:
