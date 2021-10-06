@@ -163,11 +163,11 @@ def perform_IS_inspection():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
-    IS_inspect_attribute_multiplicity()
+    globals.IS_antal_brister_multiplicitet = IS_inspect_attribute_multiplicity()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
-    IS_inspect_usage_of_defined_datatypes()
+    globals.IS_antal_brister_datatyper = IS_inspect_usage_of_defined_datatypes()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
@@ -193,7 +193,7 @@ def perform_IS_inspection():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
-    IS_inspect_usage_of_reference_infomodel()
+    globals.IS_antal_brister_referensinfomodell = IS_inspect_usage_of_reference_infomodel()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
@@ -290,10 +290,13 @@ def perform_TKB_inspection():
     write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
     DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> TKB ska innehålla ett avsnitt för meddelandemodeller")
-    DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    globals.TKB_meddelandemodeller_finns = DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.TKB_meddelandemodeller_finns == False:
+        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Tjänstedomänens meddelandemodeller)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)

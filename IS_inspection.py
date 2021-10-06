@@ -72,6 +72,7 @@ def IS_inspect_attribute_case():
 
 def IS_inspect_attribute_multiplicity():
     all_results = True
+    IS_antal_brister_multiplicitet = 0
     for index in range(len(infomodel_table_indexes)):
         table_num = infomodel_table_indexes[index]
         table_num = index + infomodel_table_indexes[0]
@@ -84,7 +85,7 @@ def IS_inspect_attribute_multiplicity():
             table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
             write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
-            globals.IS_antal_brister_multiplicitet += 1
+            IS_antal_brister_multiplicitet += 1
             all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
@@ -93,9 +94,12 @@ def IS_inspect_attribute_multiplicity():
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
 
+    return IS_antal_brister_multiplicitet
+
 ### Data Types ###
 def IS_inspect_usage_of_defined_datatypes():
     all_results = True
+    IS_antal_brister_datatyper = 0
     table = document.tables[datatype_definitions_table[0]]
     defined_datatypes = []
     for i in range(1,len(table.rows)):
@@ -117,7 +121,7 @@ def IS_inspect_usage_of_defined_datatypes():
                 write_detail_box_content(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
                         table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
                         table.cell(i, table_column_index).text.strip().lower())
-                globals.IS_antal_brister_datatyper += 1
+                IS_antal_brister_datatyper += 1
                 all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
@@ -125,9 +129,11 @@ def IS_inspect_usage_of_defined_datatypes():
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
+    return IS_antal_brister_datatyper
 
 def IS_inspect_usage_of_reference_infomodel():
     all_results = True
+    IS_antal_brister_referensinfomodell = 0
     table = document.tables[datatype_definitions_table[0]]
 
     for index in range(len(infomodel_table_indexes)):
@@ -139,7 +145,7 @@ def IS_inspect_usage_of_reference_infomodel():
                 table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
                 write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
-                globals.IS_antal_brister_referensinfomodell += 1
+                IS_antal_brister_referensinfomodell += 1
                 all_results = False
     if all_results == True:
         write_output("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
@@ -147,6 +153,7 @@ def IS_inspect_usage_of_reference_infomodel():
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
+    return IS_antal_brister_referensinfomodell
 
 
 ################################################## local methods

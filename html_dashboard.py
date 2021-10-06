@@ -2,6 +2,9 @@ import app
 import globals
 from repo import *
 
+IS_antal_brister = 0
+TKB_antal_brister = 0
+
 def get_page_html():
     """
     2do: lägg till dessa inparametrar:
@@ -10,6 +13,11 @@ def get_page_html():
     - globals.IS_detail_box_contents
     - globals.COMMENTS_detail_box_contents
     """
+    global IS_antal_brister
+    IS_antal_brister = 0
+    global TKB_antal_brister
+    TKB_antal_brister = 0
+
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name, globals.tag)
     html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end()
 
@@ -364,6 +372,8 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("datatyper") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
+        html += "<br>"
+        html += "<h4>Antal brister i Infospec: " + str(IS_antal_brister) + "</h4>"
     else:
         #html = globals.IS_felmeddelande
         #html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
@@ -422,57 +432,74 @@ def __get_infospec_summary(topic):
     - globals.IS_antal_brister_referensinfomodell
     - globals.IS_antal_brister_tomma_tabellceller
     """
+    global IS_antal_brister
     html = ""
     if topic == "revisionshistorik":
         if globals.IS_antal_brister_revisionshistorik == 0:
             html += "Revisionshistoriken har <b>korrekt</b> version angiven"
         else:
             html += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
+            IS_antal_brister += 1
     elif topic == "revisionshistorik_cellinnehåll":
         html += "<b>" + str(globals.IS_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken"
+        IS_antal_brister += globals.IS_antal_brister_tomma_revisionshistoriktabellceller
     elif topic == "referenslänkar":
         html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen"
+        IS_antal_brister += globals.IS_antal_brister_referenslänkar
     elif topic == "referenslänkar_cellinnehåll":
         html += "<b>" + str(globals.IS_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen"
+        IS_antal_brister += globals.IS_antal_brister_tomma_referenstabellceller
     elif topic == "referensinfomodell_finns":
         if globals.IS_referensinfomodell_finns == True:
             html += "Referensinformationsmodell (RIM) <b>finns</b>"
         else:
             html += "Referensinformationsmodell (RIM) <b>saknas</b>"
+            IS_antal_brister += 1
     elif topic == "begreppsmodell_finns":
           if globals.IS_begreppsmodell_finns == True:
                 html += "Begreppsmodell <b>finns</b>"
           else:
                 html += "Begreppsmodell <b>saknas</b>"
+                IS_antal_brister += 1
     elif topic == "begreppsmodellr_cellinnehåll":
         html += "<b>" + str(globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + " &nbsp</b>tomma celler i begreppsbeskrivningstabellen"
+        IS_antal_brister += globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller
     elif topic == "begreppslista_finns":
-          if globals.IS_begreppslista_finns == True:
-                html += "Begreppslista <b>finns</b>"
-          else:
-                html += "Begreppslista <b>saknas</b>"
+        if globals.IS_begreppslista_finns == True:
+            html += "Begreppslista <b>finns</b>"
+        else:
+            html += "Begreppslista <b>saknas</b>"
+            IS_antal_brister += 1
     elif topic == "informationsmodell_finns":
-          if globals.IS_informationsmodell_finns == True:
-                html += "Informationsmodell <b>finns</b>"
-          else:
-                html += "Informationsmodell <b>saknas</b>"
+        if globals.IS_informationsmodell_finns == True:
+            html += "Informationsmodell <b>finns</b>"
+        else:
+            html += "Informationsmodell <b>saknas</b>"
+            IS_antal_brister += 1
     elif topic == "kodverkstabell_finns":
-          if globals.IS_kodverkstabell_finns == True:
-                html += "Kodverkstabell <b>finns</b>"
-          else:
-                html += "Kodverkstabell <b>saknas</b>"
+        if globals.IS_kodverkstabell_finns == True:
+            html += "Kodverkstabell <b>finns</b>"
+        else:
+            html += "Kodverkstabell <b>saknas</b>"
+            IS_antal_brister += 1
     elif topic == "klassbeskrivning":
         html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
+        IS_antal_brister += globals.IS_antal_brister_klassbeskrivning
     elif topic == "attributnamn":
         html += "<b>" + str(globals.IS_antal_brister_attributnamn) + " &nbsp</b>klassattribut med fel skiftläge"
+        IS_antal_brister += globals.IS_antal_brister_attributnamn
     elif topic == "multiplicitet":
         html += "<b>" + str(globals.IS_antal_brister_multiplicitet) + " &nbsp</b>saknade multipliciteter i klasstabeller"
+        IS_antal_brister += globals.IS_antal_brister_multiplicitet
     elif topic == "datatyper":
         html += "<b>" + str(globals.IS_antal_brister_datatyper) + " &nbsp</b>odefinierade datatyper"
+        IS_antal_brister += globals.IS_antal_brister_datatyper
     elif topic == "referensinfomodell":
         html += "<b>" + str(globals.IS_antal_brister_referensinfomodell) + " &nbsp</b>saknade referenser till RIM i klasstabeller"
+        IS_antal_brister += globals.IS_antal_brister_referensinfomodell
     elif topic == "tabellcellinnehåll":
         html += "<b>" + str(globals.IS_antal_brister_tomma_tabellceller) + " &nbsp</b>tomma celler i klasstabeller"
+        IS_antal_brister += globals.IS_antal_brister_tomma_tabellceller
     return html
 
 def __html_summary_TKB():
@@ -515,15 +542,28 @@ def __get_TKB_summary():
     - globals.TKB_antal_brister_referenslänkar
     - globals.TKB_antal_brister_tomma_referenstabellceller
     """
+    global TKB_antal_brister
     html = ""
     if globals.TKB_antal_brister_revisionshistorik == 0:
         html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
+        TKB_antal_brister += 1
     html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    TKB_antal_brister += globals.TKB_antal_brister_tomma_revisionshistoriktabellceller
     html += "<br>"
     html += "<div><li><b>" + str(globals.TKB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
+    TKB_antal_brister += globals.TKB_antal_brister_referenslänkar
     html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
+    TKB_antal_brister += globals.TKB_antal_brister_tomma_referenstabellceller
+    html += "<br>"
+    if globals.TKB_meddelandemodeller_finns == True:
+        html += "<div><li>Meddelandemodeller <b>finns</b></li></div>"
+    else:
+        html += "<div><li>Meddelandemodeller <b>saknas</b></li></div>"
+        TKB_antal_brister += 1
+    html += "<br>"
+    html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
 
     return html
 

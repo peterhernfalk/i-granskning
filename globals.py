@@ -47,6 +47,7 @@ TKB_detail_box_contents = ""
 TKB_document_exists = False
 TKB_document_name = ""
 TKB_exists = False
+TKB_meddelandemodeller_finns = False
 UPPER_CASE = "UPPER_CASE"
 
 def GLOBALS_init():
@@ -89,6 +90,7 @@ def GLOBALS_init():
     global TKB_document_exists
     global TKB_document_name
     global TKB_exists
+    global TKB_meddelandemodeller_finns
 
     alt_document_name = ""
     COMMENTS_detail_box_contents = ""
@@ -129,5 +131,6 @@ def GLOBALS_init():
     TKB_document_exists = False
     TKB_document_name = ""
     TKB_exists = False
+    TKB_meddelandemodeller_finns = False
 
 
