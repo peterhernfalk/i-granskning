@@ -42,16 +42,16 @@ def DOCX_prepare_inspection(document_search_phrase):
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
 
-def DOCX_inspect_revision_history(docx_document):
+def DOCX_inspect_revision_history(docx_document, table_num):
     """
     Kollar att dokumentets tabell med revisionshistorik har en rad för aktuell tag.
     """
-    table = document.tables[1]
+    table = document.tables[table_num]
     antal_brister_revisionshistorik = 0
     # 2do: Display version number from page 1 in the document
 
     if table.cell(0,0).text == "Revisionshistorik mall":
-        table = document.tables[2]
+        table = document.tables[table_num+1]
 
     for i, row in enumerate(table.rows):
         text = tuple(cell.text for cell in row.cells)

@@ -30,6 +30,7 @@ IS_document_exists = False
 IS_document_name = ""
 IS_exists = False
 IS_felmeddelande = ""
+IS_informationsmodell_finns = False
 IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
 lower_case = "lower_case"
@@ -75,6 +76,7 @@ def GLOBALS_init():
     global IS_document_name
     global IS_exists
     global IS_felmeddelande
+    global IS_informationsmodell_finns
     global IS_kodverkstabell_finns
     global IS_referensinfomodell_finns
     global tag
@@ -113,6 +115,7 @@ def GLOBALS_init():
     IS_document_exists = False
     IS_document_name = ""
     IS_exists = False
+    IS_informationsmodell_finns = False
     IS_kodverkstabell_finns = False
     IS_referensinfomodell_finns = False
     IS_felmeddelande = ""

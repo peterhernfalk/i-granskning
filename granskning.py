@@ -85,7 +85,7 @@ def perform_IS_inspection():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.IS)
+    globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.IS,TABLE_NUM_REVISION)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
@@ -139,7 +139,9 @@ def perform_IS_inspection():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
-    DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    globals.IS_informationsmodell_finns = DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_informationsmodell_finns == False:
+        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
@@ -265,7 +267,7 @@ def perform_TKB_inspection():
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.TKB)
+    globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.TKB,TABLE_NUM_REVISION)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")

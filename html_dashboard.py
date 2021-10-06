@@ -355,6 +355,7 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("begreppsmodell_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppsmodellr_cellinnehåll") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("begreppslista_finns") + '</li></div>'
+        html += '<div><li>' + __get_infospec_summary("informationsmodell_finns") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("kodverkstabell_finns") + '</li></div>'
         html += "<br>"
         html += '<div><li>' + __get_infospec_summary("klassbeskrivning") + '</li></div>'
@@ -450,6 +451,11 @@ def __get_infospec_summary(topic):
                 html += "Begreppslista <b>finns</b>"
           else:
                 html += "Begreppslista <b>saknas</b>"
+    elif topic == "informationsmodell_finns":
+          if globals.IS_informationsmodell_finns == True:
+                html += "Informationsmodell <b>finns</b>"
+          else:
+                html += "Informationsmodell <b>saknas</b>"
     elif topic == "kodverkstabell_finns":
           if globals.IS_kodverkstabell_finns == True:
                 html += "Kodverkstabell <b>finns</b>"
