@@ -8,10 +8,11 @@ Granskningsfunktioner har i första hand utvecklats för att kunna användas av 
 I de fall där kraven är specifika för ett visst dokument så har granskningsfunktioner utvecklats för just dessa krav.
 
 All kod är skriven i Python, som använder några bibliotek.
-Koden är skriven i form av funktioner som anropas i ett flöde per dokument. 
+Koden är skriven i form av funktioner som anropas i ett flöde per dokument.
+
 Koden förenklas och renodlas inför slutleverans. 
 Det har påbörjats ett arbete att göra funktionerna mer självständiga
-ur ett informationsförsörjningsperspektiv, med ett minimum av beroende till globala variabler
+ur ett informationsförsörjningsperspektiv, med ett minskat beroende till globala variabler
 
 ### Runtime-stöd:
 Filerna requirements.txt och runtime.txt används av Heroku vid deploy 
@@ -100,6 +101,7 @@ för att installera eller uppdatera Python-version och beroenden.
   - requirements.txt används av Heroku för att se till att angivna versioner av dependencies är installerade i appen
 
 ## Information riktad till utvecklare:
+Dokumenten som granskas laddas ner till virtuella dokumentinstanser (DOCX Document), som är de som granskas.
 ### Komplettera med ytterligare granskningspukt:
 Både granskningsflöde och dokumentspecifika funktioner finns i 
 respektive dokuments granskningsfil (granskning_*.py). 
