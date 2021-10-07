@@ -43,6 +43,15 @@ för att installera eller uppdatera Python-version och beroenden.
   - Anropar funktion i granskning_IS.py för att genomföra granskning av Infospec
   - Anropar funktion i granskning_TKB.py för att förbereda granskning av TKB
   - Anropar funktion i granskning_TKB.py för att genomföra granskning av TKB
+ 
+ - Document_management.py
+    - Funktioner för att beräkna URL till angivet dokument
+    
+- DOCX_display_document_contents.py
+    - Funktioner som används vid granskning av docx-dokument
+
+- globals.py
+    - Globala variabler och konstanter samt en funktion för att initiera dem
 
 - granskning_AB.py (ej skapad än)
     - Funktioner som förbereder granskning av AB-dokumentet
@@ -75,57 +84,14 @@ för att installera eller uppdatera Python-version och beroenden.
   - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
   - 2do: lägg till inparametrar till vissa funktioner 
 
-... resterande filer ska beskrivas ...
-
-```
-
-### Python-filer innan struktur- och kodförbättringar:
-```
-- app.py
-  - Exponerar REST-endpoint: ('/granskningsinfo')
-  - Läser in GET-parametrar från URL-strängen
-  - Infospec
-    - Anropar funktioner i Document_management för att beräkna URL till Infospec i Bitbucket-repo
-    - Sätter globals.docx_document till globals.IS
-    - Anropar INFO_inspect_document i granskning.py
-  - TKB
-    - Anropar funktioner i Document_management för att beräkna URL till TKB i Bitbucket-repo
-    - Sätter globals.docx_document till globals.TKB
-    - Anropar INFO_inspect_document i granskning.py
- 
- - Document_management.py
-    - Funktioner för att beräkna URL till angivet dokument
- 
-- granskning.py
-  - Då globals.IS valts: INFO_inspect_document anropar __inspect_IS
-    - DOCX_prepare_inspection("IS_*.doc*")
-    - IS_init_infomodel_classes_list()
-    - Exekverar granskningskontroller
-  - Då globals.TKB valts: INFO_inspect_document anropar __inspect_TKB
-    - DOCX_prepare_inspection("TKB_*.doc*")
-    - Exekverar granskningskontroller
-    
-- DOCX_display_document_contents.py
-    - Funktioner som används vid granskning av docx-dokument
-    
-- IS_inspection.py
-    - Funktioner som är specifika för granskning av Infospec
-    
-- TKB_inspection.py
-    - Funktioner som är specifika för granskning av TKB
-
-- globals.py
-    - Globala variabler och konstanter samt en funktion för att initiera dem
-
-- html_dashboard.py
-    - Funktioner för att bygga den html som lämnas ut som svar på GET-anropet
-    
 - repo.py
     - Innehåller funktionen REPO_get_domain_docs_link
     
 - uilities.py
     - Några funktioner som används både vid granskning av Infospec och TKB
+
 ```
+
 
 ## Driftsättning, konfiguration, beroenden:
 - Push till GitHub-repo
@@ -145,4 +111,4 @@ för att installera eller uppdatera Python-version och beroenden.
 - Uppdatera sammanfattningsruta i html_dashboard.py
 
 ### Listning av dokumentinnehåll under en viss rubrik:
-Använd funktionen DOCX_display_paragraph_text_and_tables
+- Använd funktionen DOCX_display_paragraph_text_and_tables
