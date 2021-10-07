@@ -33,7 +33,11 @@ IS_felmeddelande = ""
 IS_informationsmodell_finns = False
 IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
+
 lower_case = "lower_case"
+NOT_FOUND = "Not found"
+TABLE_NUM_REVISION = 1   #Hard coded, assuming that the reference table is number 1 in the document
+TABLE_NUM_REF = 2   #Hard coded, assuming that the reference table is number 2 in the document
 
 tag = ""
 

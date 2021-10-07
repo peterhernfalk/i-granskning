@@ -3,7 +3,7 @@
 ## Beskrivning:
 Granskningsprocedur som läser in Infospec och TKB från Bitbucket-repo.
 Dokumenten läses in i varsin instans av typen DOCX Document-klass. 
-Granskningsflödet exekveras i sekvens per dokument. 
+Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py 
 Granskningsfunktioner har i första hand utvecklats för att kunna användas av alla granskade dokument. 
 I de fall där kraven är specifika för ett visst dokument så har granskningsfunktioner utvecklats för just dessa krav.
 
@@ -24,29 +24,47 @@ för att installera eller uppdatera Python-version och beroenden.
 - Generaliserade funktioner (återanvändning)
 - Struktur
   - App med endpoint och html-svar på anrop
-  - Granskningsprocedur (anropas av app)
+  - Granskningsprocedur per dokument (anropas av app)
   - URL-byggande
   - Dokumenthantering
   - Dokument-tolkning
   - Läsning av och sökning i dokument
-  - Gemensamma granskningskrav och granskning
-  - Granskningskrav och granskning per dokument
   - Html-generering
-  - Klass med summeringsinformation
-  - Klass med globala variabler
+  - Globala variabler
 ### Python-filer som används i förbättrad struktur:
 ```
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
-  - Anropar funktion i granskning.py för att förbereda granskning av infospec
-  - Anropar funktion i granskning.py för att genomföra granskning av Infospec
-  - Anropar funktion i granskning.py för att förbereda granskning av TKB
-  - Anropar funktion i granskning.py för att genomföra granskning av TKB
+  - Ej skapat än
+    - Anropar funktion i granskning_AB.py för att förbereda granskning av infospec
+    - Anropar funktion i granskning_AB.py för att genomföra granskning av Infospec
+  - Anropar funktion i granskning_IS.py för att förbereda granskning av infospec
+  - Anropar funktion i granskning_IS.py för att genomföra granskning av Infospec
+  - Anropar funktion i granskning_TKB.py för att förbereda granskning av TKB
+  - Anropar funktion i granskning_TKB.py för att genomföra granskning av TKB
 
-- granskning.py
-    - Funktioner som förbereder granskning av Infospec resp. av TKB
-    - Funktioner som genomför granskning av Infospec resp. av TKB
+- granskning_AB.py (ej skapad än)
+    - Funktioner som förbereder granskning av AB-dokumentet
+    - Funktioner som genomför granskning av AB-dokumentet
+      - För varje granskningspunkt
+        - Presenterar granskningskrav och ev. granskningsstöd
+        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+          - Beroende på granskningspunkt så är det olika funktioner som anropas 
+        - Presenterar resultat av granskningen
+        
+- granskning_IS.py
+    - Funktioner som förbereder granskning av Infospec
+    - Funktioner som genomför granskning av Infospec
+      - För varje granskningspunkt
+        - Presenterar granskningskrav och ev. granskningsstöd
+        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+          - Beroende på granskningspunkt så är det olika funktioner som anropas 
+        - Presenterar resultat av granskningen
+
+- granskning_TKB.py
+    - Funktioner som förbereder granskning av TKB
+    - Funktioner som genomför granskning av TKB
       - För varje granskningspunkt
         - Presenterar granskningskrav och ev. granskningsstöd
         - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
@@ -126,4 +144,5 @@ för att installera eller uppdatera Python-version och beroenden.
   - Presentation av granskningens resultat
 - Uppdatera sammanfattningsruta i html_dashboard.py
 
-### Komplettera med granskning av ytterligare dokument:
+### Listning av dokumentinnehåll under en viss rubrik:
+Använd funktionen DOCX_display_paragraph_text_and_tables

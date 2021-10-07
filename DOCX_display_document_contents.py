@@ -1,15 +1,10 @@
-from docx import Document
-import glob
-
-import Document_mangagement
-import IS_inspection
-import globals
-import os
+#from notinuse import IS_inspection
+import granskning_IS
 from utilities import *
 #from utilities import write_output, write_output_without_newline, __extract_urls_from_table, verify_url_exists
 
 from docx.document import Document as _Document
-from docx.table import _Cell, Table, _Row
+from docx.table import Table
 from docx.oxml.table import CT_Tbl
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import Paragraph
@@ -475,7 +470,7 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
             if cell_has_contents == False:
                 result = True
                 if globals.docx_document == globals.IS:
-                    table_title = IS_inspection.IS_get_infomodel_classname_from_table_number(table_number, True)
+                    table_title = granskning_IS.IS_get_infomodel_classname_from_table_number(table_number, True)
                     #globals.IS_antal_brister_tomma_tabellceller += 1
                     antal_brister_tomma_tabellceller += 1
                 elif globals.docx_document == globals.TKB:

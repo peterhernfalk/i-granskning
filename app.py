@@ -4,15 +4,16 @@ import Document_mangagement
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
-import granskning
+import granskning_TKB
+from granskning_TKB import *
+import granskning_IS
 import html_dashboard
-from html_dashboard import *
+#from html_dashboard import *
 
-import globals
-from granskning import *
-import io
+#import globals
+#import io
 from repo import *
-import requests
+#import requests
 
 ##############################
 # Startup settings
@@ -86,15 +87,15 @@ def reponse2request():
 
         ##### INSPECT #####
         globals.docx_document = globals.IS
-        granskning.prepare_IS_inspection(domain, tag, alt_IS_name)
+        granskning_IS.prepare_IS_inspection(domain, tag, alt_IS_name)
         globals.alt_document_name = alt_IS_name
         if globals.IS_exists == True:
-            perform_IS_inspection()
+            granskning_IS.perform_IS_inspection()
 
         globals.docx_document = globals.TKB
-        granskning.prepare_TKB_inspection(domain, tag, alt_TKB_name)
+        granskning_TKB.prepare_TKB_inspection(domain, tag, alt_TKB_name)
         if globals.TKB_exists == True:
-            perform_TKB_inspection()
+            granskning_TKB.perform_TKB_inspection()
 
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)

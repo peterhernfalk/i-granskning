@@ -1,8 +1,18 @@
-import IS_inspection
-from IS_inspection import *
-from TKB_inspection import *
+"""import Document_mangagement
+#from TKB_inspection import *
 #from utilities import write_output, write_detail_box_content, verify_url_exists, check_if_file_exists
+from utilities import *"""
+import DOCX_display_document_contents
+from DOCX_display_document_contents import *
+import docx
+from docx.table import *
+from docx.oxml.text.paragraph import CT_P
+from docx.text.paragraph import *
+from docx.oxml.table import *
+from docx.api import Document  # noqa
+import Document_mangagement
 from utilities import *
+
 
 TITLE = True
 NO_TITLE = False
@@ -24,7 +34,7 @@ local_test = False
 def __execute_command(command):
     os.system(command)
 
-def prepare_IS_inspection(domain, tag, alt_document_name):
+#def prepare_IS_inspection(domain, tag, alt_document_name):
     """
     Beräknar url till infospecdokumentet för angiven domain och tag.
 
@@ -35,7 +45,7 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     """
     2do: Förenkla och snygga till koden
     """
-    global IS_page_link
+    """global IS_page_link
     global IS_document_paragraphs
     IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
     downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
@@ -62,12 +72,12 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
         ### dev test ###
 
         DOCX_prepare_inspection("IS_*.doc*")
-        IS_init_infomodel_classes_list()
+        IS_init_infomodel_classes_list()"""
 
 
-def perform_IS_inspection():
-    write_detail_box_content(
-        "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+#def perform_IS_inspection():
+#    write_detail_box_content(
+#        "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
     """
         Exempel på Core properties:
@@ -82,7 +92,7 @@ def perform_IS_inspection():
     """
     # 2do: kontrollera versionsnummer på dokumentets första sida: förekomst av "Version" med efterföljande versionsnummer
 
-    write_detail_box_html("<br>")
+    """write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     globals.IS_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.IS,TABLE_NUM_REVISION)
@@ -210,7 +220,7 @@ def perform_IS_inspection():
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
         write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-    globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
+    globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller"""
 
 
 def prepare_TKB_inspection(domain, tag, alt_document_name):
@@ -302,29 +312,44 @@ def perform_TKB_inspection():
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
 
-############################## TEST ##############################
-if local_test == True:
-    ### info class name list OK ###
-    #globals.domain = "riv-application.supportprocess.logistics.complaintsandfeedback"
-    #globals.domain = "riv.clinicalprocess.activity.request"
-    globals.domain = "riv.clinicalprocess.healthcond.actoutcome"
-    #globals.domain = "riv.clinicalprocess.healthcond.certificate"
-    #globals.domain = "riv.clinicalprocess.logistics.cervixscreening"
-    #globals.domain = "riv.crm.requeststatus"
-    #globals.domain = "riv.informationsecurity.authorization.blocking"
-    #globals.domain = "riv.informationsecurity.authorization.consent"
-    #globals.domain = "riv.strategicresourcemanagement.persons.person"   ### ERROR parsing URL
-    #globals.domain = "riv.supportprocess.serviceprovisioning.healthcareoffering"
-    #globals.domain = "riv.supportprocess.logistics.carelisting"
+######################################################
+##### Privata funktioner (från TKB_inspection.py #####
+######################################################
+def TKB_get_interaction_version(interaction_name):
+    version_number = "0"
+    #2do: extract version number from interaction paragraph
+    searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(interaction_name)
+    #__display_paragraph_text_by_paragraph_level(interaction_name,searched_paragraph_level)
+    version_number = DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,interaction_name)
 
-    ### 8.6 (Organisation) is displayed instead of 8.17 (Vårdgivare)  ###
-    #globals.domain = "riv.clinicalprocess.activity.actions"
+    return version_number
 
-    globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/"+globals.domain+"/docs"
-    globals.domain_folder_name = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/"+globals.domain
 
-    #INFO_show_missing_files_and_inspect_documents()
-    #__inspect_readme_file()
-    #__inspect_AB()
-    #__inspect_IS()
-    #__inspect_TKB()
+def TKB_display_paragragh_title(searched_title_name):
+    result = True
+    result_description = ""
+    searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(searched_title_name)
+    if searched_paragraph_level != "":
+        #result_description = "OK. TKB (" + searched_paragraph_level + "):  \t" + searched_title_name
+        result_description = "TKB (" + searched_paragraph_level + "):  \t" + searched_title_name
+        #write_output("OK. TKB (" + searched_paragraph_level + "):  \t" + searched_title_name)
+    else:
+        result_description = "FEL! " + searched_title_name + " verkar inte vara beskrivet i TKB!"
+        #write_output("FEL! " + searched_title_name + " verkar inte vara beskrivet i TKB!")
+        result = False
+    return result, result_description
+
+def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
+    global document_paragraph_index_dict
+    previous_key = ""
+    for key, value in document_paragraph_index_dict.items():
+        if key[0:len(searched_paragraph_level)] == searched_paragraph_level:
+            key_level_length = key.find(" ")
+            if len(key.strip()) > key_level_length:
+                this_key_level = key.strip()[0:key_level_length]
+                if this_key_level == previous_key:
+                    if display_keylevel_text == True:
+                        write_output("\t" + key.strip()[key_level_length+1:])
+                else:
+                    write_output(key)
+                previous_key = key.strip()[0:key_level_length]

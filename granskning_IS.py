@@ -1,16 +1,219 @@
-import docx
-from docx import Document
-from lxml.etree import _Document
-
 import DOCX_display_document_contents
 from DOCX_display_document_contents import *
-import glob
-import globals
-import os
-from utilities import write_output, extract_urls_from_table, verify_url_exists
+import docx
+from docx.table import *
+from docx.oxml.text.paragraph import CT_P
+from docx.text.paragraph import *
+from docx.oxml.table import *
+from docx.api import Document  # noqa
+import Document_mangagement
+from utilities import *
 
-local_test = False
+TITLE = True
+NO_TITLE = False
+INITIAL_NEWLINE = True
+NO_INITIAL_NEWLINE = False
+TEXT = True
+NO_TEXT = False
+TABLES = True
+NO_TABLES = False
 
+
+##############################
+##### Publika funktioner #####
+##############################
+def prepare_IS_inspection(domain, tag, alt_document_name):
+    """
+    Beräknar url till infospecdokumentet för angiven domain och tag.
+
+    Laddar ner dokumentet till en virtuell fil som läses in i ett docx-Document.
+
+    Anropar därefter metoden "INFO_inspect_document" som genomför granskning av dokumentet.
+    """
+    """
+    2do: Förenkla och snygga till koden
+    """
+    global IS_page_link
+    global IS_document_paragraphs
+    IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
+    downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
+
+    IS_document_paragraphs = ""
+
+    IS_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_IS_page)
+    IS_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
+    downloaded_IS_document = Document_mangagement.DOC_get_downloaded_document(IS_document_link)
+    if downloaded_IS_document.status_code == 404:
+        ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
+        ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
+        #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
+        globals.IS_exists = False
+        docx_IS_document = ""
+    else:
+        globals.docx_IS_document = Document_mangagement.DOC_get_docx_document(downloaded_IS_document)
+        globals.IS_document_exists = True
+        globals.IS_exists = True
+        ### dev test ###
+        for paragraph in globals.docx_IS_document.paragraphs:
+            if paragraph.text.strip() != "":
+                IS_document_paragraphs += paragraph.text + "<br>"
+        ### dev test ###
+
+        DOCX_display_document_contents.DOCX_prepare_inspection("IS_*.doc*")
+        IS_init_infomodel_classes_list()
+
+
+def perform_IS_inspection():
+    write_detail_box_content(
+        "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
+    """
+        Exempel på Core properties:
+            Title, Subject, Author
+
+        Exempel på Custom properties:
+            datepublished, datumpubliserad, Publisheddate
+            domain_1,_2,_3
+            svekortnamn
+            svename, svenamn, SvensktDomänNamn
+            Version, version, Version_1,_2,_3, Version_RC, version1,2,3
+    """
+    # 2do: kontrollera versionsnummer på dokumentets första sida: förekomst av "Version" med efterföljande versionsnummer
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
+    write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
+    globals.IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,globals.TABLE_NUM_REVISION)
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
+    result, globals.IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+    # globals.IS_antal_brister_tomma_revisionshistoriktabellceller = globals.IS_antal_brister_tomma_tabellceller
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
+    globals.IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
+    result, globals.IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
+    # globals.IS_antal_brister_tomma_referenstabellceller = globals.IS_antal_brister_tomma_tabellceller
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
+    write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
+    # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
+    globals.IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
+    if globals.IS_referensinfomodell_finns == False:
+        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
+    globals.IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
+    begreppsbeskrivning_tabell = IS_get_tableno_for_first_title_cell("begrepp")
+    result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
+    # globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
+    globals.IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_begreppslista_finns == False:
+        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Begreppssystem, klassifikationer och kodverk)")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
+
+    # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
+    # tolkning: jämför begreppskolumnen med beskrivningskolumnen i begreppsbeskrivningstabellen
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
+    if begreppsbeskrivning_tabell > 0 and globals.IS_begreppslista_finns == True:
+        write_detail_box_content("<b>Resultat:</b> kontrollen är inte utvecklad än, så för närvarande kan inget resultat visas!")
+    else:
+        write_detail_box_content("<b>Resultat:</b> kravet är inte uppfyllt eftersom inte både begreppsbeskrivningstabellen och begreppslistan finns i dokumentet")
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
+    globals.IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_informationsmodell_finns == False:
+        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
+    write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
+    write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
+    write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
+    DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("klasser och attribut", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_display_document_contents.DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ", globals.UPPER_CASE)
+    # print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    ##IS_inspect_document_contents()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> Infomodellklassernas attributnamn ska ha liten begynnelsebokstav")
+    globals.IS_antal_brister_attributnamn = IS_inspect_attribute_case()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
+    globals.IS_antal_brister_klassbeskrivning = IS_inspect_class_description()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
+    globals.IS_antal_brister_multiplicitet = IS_inspect_attribute_multiplicity()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
+    globals.IS_antal_brister_datatyper = IS_inspect_usage_of_defined_datatypes()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
+    search_phrase_kodverk = "Identifikationer och kodverk"
+    globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if globals.IS_kodverkstabell_finns == False:
+        search_phrase_kodverk = "Identifierare och kodverk"
+        globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+        if globals.IS_kodverkstabell_finns == False:
+            search_phrase_kodverk = "Begreppssystem, klassifikationer och kodverk"
+            globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+            if globals.IS_kodverkstabell_finns == False:
+                write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    # 2do: jämför klasstabellernas med dokumentets kodverkstabell
+    # Kolumner: data, kodverk/format/regler, kodverk
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
+    if globals.IS_kodverkstabell_finns == True:
+        DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
+    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
+    globals.IS_antal_brister_referensinfomodell = IS_inspect_usage_of_reference_infomodel()
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
+    empty_cells_found = False
+    antal_tomma_klasstabellceller = 0
+    for table_index in range(len(infomodel_table_indexes)):
+        table_number = infomodel_table_indexes[table_index]
+        result, antal = DOCX_display_document_contents.DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
+        if result == True:  # DOCX_empty_table_cells_exists(table_number, False, globals.DISPLAY_TYPE_TEXT)
+            empty_cells_found = True
+            # antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
+            antal_tomma_klasstabellceller += antal
+    if empty_cells_found == True:
+        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+    else:
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+    globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
+
+
+#####################################################
+##### Privata funktioner (från IS_inspection.py #####
+#####################################################
 class infomodel_classes:
     def __init__(self, classtitle, document_level, classtable_number):
         self.classtitle = classtitle
@@ -169,7 +372,7 @@ def IS_get_infomodel_classname_from_table_number(table_number, include_level):
             break
     return result_classtitle
 
-def __get_infomodel_table_number_from_classname(classtitle):
+"""def __get_infomodel_table_number_from_classname(classtitle):
     global infomodel_classes_list
     result_table_number = ""
     for obj in infomodel_classes_list:
@@ -177,7 +380,7 @@ def __get_infomodel_table_number_from_classname(classtitle):
         if classtitle.strip().lower() == classtitle_without_level:
             result_table_number = obj.classtable_number
             break
-    return result_table_number
+    return result_table_number"""
 
 def __set_document_name():
     global document_name
@@ -213,7 +416,7 @@ def IS_get_tableno_for_first_title_cell(title):
     global all_tables
     table_number = 0
     index = 0
-    for table in IS_inspection.all_tables:
+    for table in all_tables:
         if table.cell(0,0).text.strip().lower() == title:
             table_number = index
             break
@@ -366,40 +569,6 @@ def __inspect_attribut_name_case():
     else:
         write_output("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
 
-
-############################## TEST ##############################
-def __extract_hyperlink(xml):
-    import re
-    # text = xml.decode('utf-8')
-    text = xml
-    if "</w:hyperlink>" in text:
-        print(text)
-    #text = text.replace("</w:hyperlink>", "")
-    #text = re.sub('<w:hyperlink[^>]*>', "", text)
-    # return text.encode('utf-8')
-    #return text
-
-if local_test == True:
-    globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/riv.clinicalprocess.healthcond.certificate/docs"
-    #globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/riv.informationsecurity.authorization.consent/docs"
-
-    #DOCX_prepare_inspection("IS_*.doc*")
-    __set_document_name()
-    document = Document(document_name)
-    __find_all_document_tables()
-    __find_all_document_paragraphs()
-    #IS_inspect_attribute_multiplicity()
-    #IS_inspect_usage_of_defined_datatypes()
-    #DOCX_inspect_revision_history()
-    #DOCX_display_paragraph_text_and_tables("klasser och attribut", True, False)
-    #DOCX_display_paragraph_text_and_tables("processmodell", True, False)
-
-    #IS_inspect_reference_links()
-
-
-
-#################################################################################################
-#################################################################################################
 def IS_init_infomodel_classes_list():
     global document
     global document_name
@@ -423,13 +592,13 @@ def IS_init_infomodel_classes_list():
     for block in __iter_block_items(document, searched_paragraph_level):
         append_table_number = 0
         if isinstance(block, Paragraph):
-            new_paragraph_level = DOCX_document_structure_get_levelvalue(block.text)
-            if new_paragraph_level != NOT_FOUND:
+            new_paragraph_level = DOCX_display_document_contents.DOCX_document_structure_get_levelvalue(block.text)
+            if new_paragraph_level != globals.NOT_FOUND:
                 paragraph_level = new_paragraph_level
             if len(paragraph_level) == 1:
                 continue
             if paragraph_level != "" and paragraph_level[0] == classes_paragraph_level_1[0]:
-                if DOCX_document_structure_get_levelvalue(block.text) != NOT_FOUND:
+                if DOCX_display_document_contents.DOCX_document_structure_get_levelvalue(block.text) != globals.NOT_FOUND:
                     append_paragraph_title = block.text
         elif isinstance(block, Table):
             if paragraph_level != "":
@@ -469,13 +638,13 @@ def IS_init_all_tables_list():
     for block in __iter_block_items(document, searched_paragraph_level):
         append_table_number = 0
         if isinstance(block, Paragraph):
-            new_paragraph_level = DOCX_document_structure_get_levelvalue(block.text)
-            if new_paragraph_level != NOT_FOUND:
+            new_paragraph_level = DOCX_display_document_contents.DOCX_document_structure_get_levelvalue(block.text)
+            if new_paragraph_level != globals.NOT_FOUND:
                 paragraph_level = new_paragraph_level
             if len(paragraph_level) == 1:
                 continue
             if paragraph_level != "": #and paragraph_level[0] == classes_paragraph_level_1[0]:
-                if DOCX_document_structure_get_levelvalue(block.text) != NOT_FOUND:
+                if DOCX_display_document_contents.DOCX_document_structure_get_levelvalue(block.text) != globals.NOT_FOUND:
                     append_paragraph_title = block.text
         elif isinstance(block, Table):
             if paragraph_level != "":
@@ -496,11 +665,11 @@ def IS_init_all_tables_list():
     #print("Infomodellklass för tabell 12:", __get_infomodel_classname_from_table_number(12,False))
 
 
-def __document_structure_get_key(searched_value):
-    for key, value in DOCX_display_document_contents.document_structure_dict.items():
+"""def __document_structure_get_key(searched_value):
+    for key, value in document_structure_dict.items():
         if searched_value == value:
             return key
-    return NOT_FOUND
+    return NOT_FOUND"""
 
 def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, docx.document.Document):   #_Document
@@ -511,52 +680,3 @@ def __iter_block_items(parent,searched_paragraph_level):
             yield Paragraph(child, parent)
         elif isinstance(child, CT_Tbl):
             yield Table(child, parent)
-#################################################################################################
-#################################################################################################
-
-
-"""def IS_find_empty_table_cells():
-    result = False
-    for table_index in range(len(infomodel_table_indexes)):
-        table_number = infomodel_table_indexes[table_index]
-        table = document.tables[table_number]
-        for row in range(1, len(table.rows)):
-            column_count = len(table.row_cells(0))
-            for column in range(0, column_count):
-                if table.cell(row, column).text.strip() == "":
-                    result = True
-                    #table_title = __get_title_by_table_number(table_index + 1)
-                    tbl_no = table_index + infomodel_table_indexes[0]
-                    table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
-                    write_output(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
-                    globals.IS_antal_brister_tomma_tabellceller += 1
-
-    if result == True:
-        write_output("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
-        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
-    else:
-        write_output("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-
-    if local_test == True:
-        print("\ndoamin:", globals.domain)
-        #author = document.core_properties.author
-        #print("document.core_properties.author:",author)
-        print("class_paragraphs_title:", class_paragraphs_title)
-        print("class_paragraphs_number:", class_paragraphs_number)
-        print("infomodel_table_indexes:",infomodel_table_indexes)
-
-        print("\ninfomodel_classes_list:")
-        #global infomodel_classes_list
-        #infomodel_classes_list = []
-        #IS_init_infomodel_classes_list()
-
-        for obj in infomodel_classes_list:
-            print("\t", obj.document_level, obj.classtitle, obj.classtable_number, sep=' ')
-        #print("Infomodellklass för tabell 12:", __get_infomodel_classname_from_table_number(12))
-        #print("Infomodellklass för tabell 29:", __get_infomodel_classname_from_table_number(29))
-        #print("Infomodelltabell för delsvar:", __get_infomodel_table_number_from_classname("delsvar"))
-        #print("Infomodelltabell för svar:", __get_infomodel_table_number_from_classname("svar"))
-        #print("Infomodelltabell saknas för avsändare:", __get_infomodel_table_number_from_classname("avsändare"))
-        #print("Infomodelltabell saknas för mottagare:", __get_infomodel_table_number_from_classname("mottagare"))"""

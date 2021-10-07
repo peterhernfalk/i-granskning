@@ -373,7 +373,9 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
         html += "<br>"
-        html += "<h4>Antal brister i Infospec: " + str(IS_antal_brister) + "</h4>"
+        #html += "<h4>Antal brister i Infospec: " + str(IS_antal_brister) + "</h4>"
+        #html += "<h4>" + str(IS_antal_brister) + " brister i Infospec upptäckta av automatiserad granskning</h4>"
+        html += "<b>" + str(IS_antal_brister) + " brister i Infospec</b> upptäckta av automatiserad granskning<br>"
     else:
         #html = globals.IS_felmeddelande
         #html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
@@ -563,7 +565,8 @@ def __get_TKB_summary():
         html += "<div><li>Meddelandemodeller <b>saknas</b></li></div>"
         TKB_antal_brister += 1
     html += "<br>"
-    html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
+    #html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
+    html += "<b>" + str(TKB_antal_brister) + " brister i TKB</b> upptäckta av automatiserad granskning<br>"
 
     return html
 
