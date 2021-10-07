@@ -20,15 +20,13 @@ för att installera eller uppdatera Python-version och beroenden.
 
 ## Målbild för kodstruktur:
 - Renodlad, välstrukturerad kod (separation of concerns)
-- Inparametrar till funktioner med all data de behöver
-- Generaliserade funktioner (återanvändning)
+- Funktionell stil i form av inparametrar till funktioner med data som används av funktionerna
+- Generaliserade funktioner (återanvändning) för at undvika kopiering av kod
 - Struktur
   - App med endpoint och html-svar på anrop
   - Granskningsprocedur per dokument (anropas av app)
   - URL-byggande
-  - Dokumenthantering
-  - Dokument-tolkning
-  - Läsning av och sökning i dokument
+  - Dokumenthantering och användning av dokumentinnehåll
   - Html-generering
   - Globala variabler
 ### Python-filer som används i förbättrad struktur:
