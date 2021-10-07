@@ -101,8 +101,12 @@ för att installera eller uppdatera Python-version och beroenden.
   - runtime.txt används av Heroku för att se till att önskat Python-version är installerat i appen
   - requirements.txt används av Heroku för att se till att angivna versioner av dependencies är installerade i appen
 
-## Tips för utvecklare:
+## Information riktad till utvecklare:
 ### Komplettera med ytterligare granskningspukt:
+Både granskningsflöde och dokumentspecifika funktioner finns i 
+respektive dokuments granskningsfil (granskning_*.py). 
+Funktioner som används vid granskning av flera dokument finns i gemensam pyhon-fil. 
+Exempel på det är DOCX_display_document_contents.py
 - lägg till kod i granskning.py
   - Presentation av granskningskrav
   - Anrop till funktion som genomför granskningen
