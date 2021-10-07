@@ -107,12 +107,16 @@ Både granskningsflöde och dokumentspecifika funktioner finns i
 respektive dokuments granskningsfil (granskning_*.py). 
 Funktioner som används vid granskning av flera dokument finns i gemensam pyhon-fil. 
 Exempel på det är DOCX_display_document_contents.py
-- lägg till kod i granskning.py
+
+- Lägg till kod i granskning_*.py (granskningsfilen för berört dokument)
   - Presentation av granskningskrav
   - Anrop till funktion som genomför granskningen
     - Använd befintlig funktion eller lägg till en ny funktion i lämplig python-fil
   - Presentation av granskningens resultat
-- Uppdatera sammanfattningsruta i html_dashboard.py
+- Ifall granskningskrav som är gemensamt för flera dokument ska läggas till:
+  - Skapa funktionen i lämplig gemensam python-fil
+  - Lägg till anrop till funktionen i de granskningsfiler som ska använda samma granskningskontroll
+- Uppdatera sammanfattningsruta i html_dashboard.py om resultat av den nya granskningspunkten ska visas i summeringsruta
 
 ### Listning av dokumentinnehåll under en viss rubrik:
 - Använd funktionen DOCX_display_paragraph_text_and_tables
