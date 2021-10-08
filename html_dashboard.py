@@ -342,7 +342,7 @@ def __html_overview_start(domain_name, tag):
     <nav>
       <div class="sidebar-button">
         <i></i>
-        <span class="dashboard">I-granskning av: &nbsp '''
+        <span class="dashboard">I-granskning av: &nbsp; '''
     html += domain_name + ' (' + tag + ')</span>'
     html += '''
     </div>
@@ -389,7 +389,7 @@ def __html_summary_infospec():
         html += "<br>"
         #html += "<h4>Antal brister i Infospec: " + str(IS_antal_brister) + "</h4>"
         #html += "<h4>" + str(IS_antal_brister) + " brister i Infospec upptäckta av automatiserad granskning</h4>"
-        html += "<b>" + str(IS_antal_brister) + " brister i Infospec</b> upptäckta av automatiserad granskning<br>"
+        html += "<b>" + str(IS_antal_brister) + " &nbsp;brister i Infospec</b> upptäckta av automatiserad granskning<br>"
     else:
         #html = globals.IS_felmeddelande
         #html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
@@ -466,13 +466,13 @@ def __get_infospec_summary(topic):
             html += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
             IS_antal_brister += 1
     elif topic == "revisionshistorik_cellinnehåll":
-        html += "<b>" + str(globals.IS_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken"
+        html += "<b>" + str(globals.IS_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken"
         IS_antal_brister += globals.IS_antal_brister_tomma_revisionshistoriktabellceller
     elif topic == "referenslänkar":
-        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen"
+        html += "<b>" + str(globals.IS_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen"
         IS_antal_brister += globals.IS_antal_brister_referenslänkar
     elif topic == "referenslänkar_cellinnehåll":
-        html += "<b>" + str(globals.IS_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen"
+        html += "<b>" + str(globals.IS_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen"
         IS_antal_brister += globals.IS_antal_brister_tomma_referenstabellceller
     elif topic == "referensinfomodell_finns":
         if globals.IS_referensinfomodell_finns == True:
@@ -487,7 +487,7 @@ def __get_infospec_summary(topic):
                 html += "Begreppsmodell <b>saknas</b>"
                 IS_antal_brister += 1
     elif topic == "begreppsmodellr_cellinnehåll":
-        html += "<b>" + str(globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + " &nbsp</b>tomma celler i begreppsbeskrivningstabellen"
+        html += "<b>" + str(globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + " &nbsp;</b>tomma celler i begreppsbeskrivningstabellen"
         IS_antal_brister += globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller
     elif topic == "begreppslista_finns":
         if globals.IS_begreppslista_finns == True:
@@ -508,22 +508,22 @@ def __get_infospec_summary(topic):
             html += "Kodverkstabell <b>saknas</b>"
             IS_antal_brister += 1
     elif topic == "klassbeskrivning":
-        html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp</b>saknade klassbeskrivningar"
+        html += "<b>" + str(globals.IS_antal_brister_klassbeskrivning) + " &nbsp;</b>saknade klassbeskrivningar"
         IS_antal_brister += globals.IS_antal_brister_klassbeskrivning
     elif topic == "attributnamn":
-        html += "<b>" + str(globals.IS_antal_brister_attributnamn) + " &nbsp</b>klassattribut med fel skiftläge"
+        html += "<b>" + str(globals.IS_antal_brister_attributnamn) + " &nbsp;</b>klassattribut med fel skiftläge"
         IS_antal_brister += globals.IS_antal_brister_attributnamn
     elif topic == "multiplicitet":
-        html += "<b>" + str(globals.IS_antal_brister_multiplicitet) + " &nbsp</b>saknade multipliciteter i klasstabeller"
+        html += "<b>" + str(globals.IS_antal_brister_multiplicitet) + " &nbsp;</b>saknade multipliciteter i klasstabeller"
         IS_antal_brister += globals.IS_antal_brister_multiplicitet
     elif topic == "datatyper":
-        html += "<b>" + str(globals.IS_antal_brister_datatyper) + " &nbsp</b>odefinierade datatyper"
+        html += "<b>" + str(globals.IS_antal_brister_datatyper) + " &nbsp;</b>odefinierade datatyper"
         IS_antal_brister += globals.IS_antal_brister_datatyper
     elif topic == "referensinfomodell":
-        html += "<b>" + str(globals.IS_antal_brister_referensinfomodell) + " &nbsp</b>saknade referenser till RIM i klasstabeller"
+        html += "<b>" + str(globals.IS_antal_brister_referensinfomodell) + " &nbsp;</b>saknade referenser till RIM i klasstabeller"
         IS_antal_brister += globals.IS_antal_brister_referensinfomodell
     elif topic == "tabellcellinnehåll":
-        html += "<b>" + str(globals.IS_antal_brister_tomma_tabellceller) + " &nbsp</b>tomma celler i klasstabeller"
+        html += "<b>" + str(globals.IS_antal_brister_tomma_tabellceller) + " &nbsp;</b>tomma celler i klasstabeller"
         IS_antal_brister += globals.IS_antal_brister_tomma_tabellceller
     return html
 
@@ -556,7 +556,7 @@ def __html_summary_TKB_box():
 
     html += '''
         <br><hr><br><div class="box-topic">Sammanfattning: granskningskommentarer</div>
-        <div><li><b>0  &nbsp</b>förslag till granskningskommentarer</div></li>
+        <div><li><b>0  &nbsp;</b>förslag till granskningskommentarer</div></li>
     '''
 
 
@@ -582,12 +582,12 @@ def __get_TKB_summary():
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         TKB_antal_brister += 1
-    html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
     TKB_antal_brister += globals.TKB_antal_brister_tomma_revisionshistoriktabellceller
     html += "<br>"
-    html += "<div><li><b>" + str(globals.TKB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
+    html += "<div><li><b>" + str(globals.TKB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     TKB_antal_brister += globals.TKB_antal_brister_referenslänkar
-    html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
+    html += "<div><li><b>" + str(globals.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
     TKB_antal_brister += globals.TKB_antal_brister_tomma_referenstabellceller
     html += "<br>"
     if globals.TKB_meddelandemodeller_finns == True:
@@ -597,7 +597,7 @@ def __get_TKB_summary():
         TKB_antal_brister += 1
     html += "<br>"
     #html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
-    html += "<b>" + str(TKB_antal_brister) + " brister i TKB</b> upptäckta av automatiserad granskning<br>"
+    html += "<b>" + str(TKB_antal_brister) + " &nbsp;brister i TKB</b> upptäckta av automatiserad granskning<br>"
 
     return html
 
@@ -622,7 +622,7 @@ def __html_summary_AB():
 
     html += '''
         <br><div class="box-topic">Sammanfattning: AB-granskning</div>
-        <div><li><b>0  &nbsp</b>granskade krav på AB-dokumentet</div></li>
+        <div><li><b>0  &nbsp;</b>granskade krav på AB-dokumentet</div></li>
     '''
 
 
@@ -646,16 +646,16 @@ def __get_AB_summary():
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         AB_antal_brister += 1
-    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
     #AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
 
     #html += "<br>"
-    html += "<div><li><b>" + str(globals.AB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
+    html += "<div><li><b>" + str(globals.AB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     AB_antal_brister += globals.AB_antal_brister_referenslänkar
 
-    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
+    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
     #AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
-    html += "<br><b>" + str(AB_antal_brister) + " brister i AB</b> upptäckta av automatiserad granskning<br>"
+    html += "<br><b>" + str(AB_antal_brister) + " &nbsp;brister i AB</b> upptäckta av automatiserad granskning<br>"
 
     return html
 

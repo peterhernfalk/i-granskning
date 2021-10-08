@@ -60,6 +60,8 @@ def DOCX_inspect_revision_history(docx_document, table_num):
         elif docx_document == globals.TKB:
             #globals.TKB_antal_brister_revisionshistorik = 1
             antal_brister_revisionshistorik = 1
+        elif docx_document == globals.AB:
+            antal_brister_revisionshistorik = 1
     else:
         write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
