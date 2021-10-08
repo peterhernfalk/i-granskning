@@ -1,4 +1,6 @@
 AB = "AB"
+AB_antal_brister_referenslänkar = 0
+AB_antal_brister_revisionshistorik = 0
 AB_detail_box_contents = ""
 AB_document_exists = False
 AB_exists = False
@@ -59,6 +61,8 @@ TKB_meddelandemodeller_finns = False
 UPPER_CASE = "UPPER_CASE"
 
 def GLOBALS_init():
+    global AB_antal_brister_referenslänkar
+    global AB_antal_brister_revisionshistorik
     global AB_detail_box_contents
     global AB_document_exists
     global AB_exists
@@ -103,6 +107,8 @@ def GLOBALS_init():
     global TKB_exists
     global TKB_meddelandemodeller_finns
 
+    AB_antal_brister_referenslänkar = 0
+    AB_antal_brister_revisionshistorik = 0
     AB_detail_box_contents = ""
     AB_document_exists = False
     AB_exists = False

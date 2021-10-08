@@ -56,13 +56,12 @@ för att installera eller uppdatera Python-version och beroenden.
 
 - granskning_AB.py
     - Funktion som förbereder granskning av AB-dokumentet
-    - Återstår att uveckla:
-      - Funktioner som genomför granskning av AB-dokumentet
-        - För varje granskningspunkt
-          - Presenterar granskningskrav och ev. granskningsstöd
-          - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
-            - Beroende på granskningspunkt så är det olika funktioner som anropas 
-          - Presenterar resultat av granskningen
+    - Funktioner som genomför granskning av AB-dokumentet
+      - För varje granskningspunkt
+        - Presenterar granskningskrav och ev. granskningsstöd
+        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+          - Beroende på granskningspunkt så är det olika funktioner som anropas 
+        - Presenterar resultat av granskningen
         
 - granskning_IS.py
     - Funktion som förbereder granskning av Infospec

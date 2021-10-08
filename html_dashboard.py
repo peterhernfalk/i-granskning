@@ -30,7 +30,7 @@ def get_page_html():
 
     html += __html_br() + __html_detail_box_begin_TKB() + globals.TKB_detail_box_contents + __box_content_end()
 
-    globals.AB_detail_box_contents = "Här ska krav och granskningsresultat visas för automatiserad granskning av AB-dokumentet"
+    #globals.AB_detail_box_contents = "Här ska krav och granskningsresultat visas för automatiserad granskning av AB-dokumentet"
     html += __html_br() + __html_detail_box_begin_AB() + globals.AB_detail_box_contents + __box_content_end()
 
     globals.COMMENTS_detail_box_contents = "Här ska förslag till granskningskommentarer visas, inklusive färgkodning och i samma struktur som granskningsrapporten"
@@ -408,14 +408,17 @@ def __text_document_not_found(doc, domain, tag):
     """
     """
     2do: lägg till dessa inparametrar:
+    - globals.IS
     - globals.TKB
+    - globals.AB
     - globals.HTML_2_SPACES
     - resultatet av REPO_get_domain_docs_link(domain, tag)
-    - globals.IS
     """
     document_name = "Infospec"
     if doc == globals.TKB:
         document_name = globals.TKB
+    elif doc == globals.AB:
+        document_name = globals.AB
 
     document_info = globals.HTML_2_SPACES
     document_info += document_name + " saknas eller har annat namn än det förväntade: <i><br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + doc.upper() + "_" + domain.replace(".", "_") + ".docx</i>"
@@ -424,6 +427,12 @@ def __text_document_not_found(doc, domain, tag):
     document_info += "<br><br>" + globals.HTML_2_SPACES + "Om det finns en " + document_name + " så har den ett annat än det förväntade namnet. "
     if doc == globals.IS:
         document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES + globals.HTML_2_SPACES + "<i>url...</i><b>&is=dokumentnamn</b>"
+        document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
+    elif doc == globals.TKB:
+        document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES + globals.HTML_2_SPACES + "<i>url...</i><b>&tkb=dokumentnamn</b>"
+        document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
+    elif doc == globals.AB:
+        document_info += "<br>" + globals.HTML_2_SPACES + "I så fall kan du ange det namnet som en url-parameter enligt: <br>" + globals.HTML_2_SPACES + globals.HTML_2_SPACES + "<i>url...</i><b>&ab=dokumentnamn</b>"
         document_info += "<br>" + globals.HTML_2_SPACES + "Om detta är en applikationsspecifik domän kan du ange det i en url-parameter: <br>" + globals.HTML_2_SPACES+globals.HTML_2_SPACES + "<i>url...</i><b>&domainprefix=true</b>"
 
     return document_info
@@ -540,7 +549,6 @@ def __html_summary_TKB_box():
     if globals.AB_exists == True:
         html += '''
             <br><hr><br><div class="box-topic">Sammanfattning: AB-granskning</div>
-            <div><li><b>0  &nbsp</b>AB-krav har granskats</div></li>
         '''
         html += __get_AB_summary()
     else:
@@ -633,25 +641,20 @@ def __get_AB_summary():
     """
     global AB_antal_brister
     html = ""
-    """if globals.AB_antal_brister_revisionshistorik == 0:
+    if globals.AB_antal_brister_revisionshistorik == 0:
         html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         AB_antal_brister += 1
-    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
-    AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
-    html += "<br>"
+    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    #AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
+
+    #html += "<br>"
     html += "<div><li><b>" + str(globals.AB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
     AB_antal_brister += globals.AB_antal_brister_referenslänkar
-    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
-    AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
-    html += "<br>"
-    if globals.AB_meddelandemodeller_finns == True:
-        html += "<div><li>Meddelandemodeller <b>finns</b></li></div>"
-    else:
-        html += "<div><li>Meddelandemodeller <b>saknas</b></li></div>"
-        AB_antal_brister += 1"""
-    #html += "<br>"
+
+    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
+    #AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
     html += "<br><b>" + str(AB_antal_brister) + " brister i AB</b> upptäckta av automatiserad granskning<br>"
 
     return html

@@ -175,6 +175,8 @@ def DOCX_inspect_reference_links(table_num):
             elif globals.docx_document == globals.TKB:
                 #globals.TKB_antal_brister_referenslänkar += 1
                 antal_brister_referenslänkar += 1
+            elif globals.docx_document == globals.AB:
+                antal_brister_referenslänkar += 1
         elif status_code < 404:
             write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
             write_detail_box_content("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")

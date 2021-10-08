@@ -18,6 +18,9 @@ TEXT = True
 NO_TEXT = False
 TABLES = True
 NO_TABLES = False
+TABLE_NUM_REVISION = 1   #Hard coded, assuming that the reference table is number 1 in the document
+TABLE_NUM_REF = 2   #Hard coded, assuming that the reference table is number 2 in the document
+
 
 
 def prepare_AB_inspection(domain, tag, alt_document_name):
@@ -56,6 +59,22 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
         DOCX_prepare_inspection("AB_*.doc*")
 
 def perform_AB_inspection():
-    #2do: add inspection code
-    return False
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    write_detail_box_html("<br>")
+    #globals.document_path = globals.domain_folder_name+"/docs/"
+    #DOCX_prepare_inspection("AB_*.doc*")
+    write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
+    write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
+    globals.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB,TABLE_NUM_REVISION)
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
+    globals.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
+
+    write_detail_box_html("<br>")
+    write_detail_box_content("<b>Krav:</b> alla AB ska ha minst två alternativ och motivering till det valda alternativet. Kontrolleras manuellt")
+    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    write_detail_box_content("<b>Krav:</b> dokumentet ska innehålla rimliga arkitekturbeslut")
+    DOCX_display_paragraph_text_and_tables("arkitekturella beslut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
 

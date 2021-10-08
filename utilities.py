@@ -75,12 +75,16 @@ def write_detail_box_content(text):
         globals.IS_detail_box_contents += detail_box_content
     elif globals.docx_document == globals.TKB:
         globals.TKB_detail_box_contents += detail_box_content
+    elif globals.docx_document == globals.AB:
+        globals.AB_detail_box_contents += detail_box_content
 
 def write_detail_box_html(html_text):
     if globals.docx_document == globals.IS:
         globals.IS_detail_box_contents += html_text
     elif globals.docx_document == globals.TKB:
         globals.TKB_detail_box_contents += html_text
+    elif globals.docx_document == globals.AB:
+        globals.AB_detail_box_contents += html_text
 
 
 def write_output_without_newline(text):
