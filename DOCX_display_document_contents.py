@@ -187,6 +187,8 @@ def DOCX_inspect_reference_links(table_num):
             elif globals.docx_document == globals.TKB:
                 #globals.TKB_antal_brister_referenslänkar += 1
                 antal_brister_referenslänkar += 1
+            elif globals.docx_document == globals.AB:
+                antal_brister_referenslänkar += 1
             write_output("Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Sidan saknas!</b> (statuskod: " + str(status_code) + ") för: " + link)
 
