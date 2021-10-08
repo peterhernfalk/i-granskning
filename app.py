@@ -4,6 +4,7 @@ import Document_mangagement
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
+import granskning_AB
 import granskning_TKB
 from granskning_TKB import *
 import granskning_IS
@@ -74,6 +75,7 @@ def reponse2request():
     domain_prefix_param = request.args.get('domainprefix', default="")
     tag = request.args.get('tag', default="")
     globals.tag = tag
+    alt_AB_name = request.args.get('ab', default="")
     alt_IS_name = request.args.get('is', default="")
     alt_TKB_name = request.args.get('tkb', default="")
 
@@ -96,6 +98,11 @@ def reponse2request():
         granskning_TKB.prepare_TKB_inspection(domain, tag, alt_TKB_name)
         if globals.TKB_exists == True:
             granskning_TKB.perform_TKB_inspection()
+
+        globals.docx_document = globals.AB
+        granskning_AB.prepare_AB_inspection(domain, tag, alt_AB_name)
+        if globals.AB_exists == True:
+            granskning_AB.perform_AB_inspection()
 
 
         #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)

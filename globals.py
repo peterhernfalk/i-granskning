@@ -1,3 +1,7 @@
+AB = "AB"
+AB_detail_box_contents = ""
+AB_document_exists = False
+AB_exists = False
 alt_document_name = ""
 COMMENTS_detail_box_contents = ""
 DISPLAY_TYPE_TABLE = "display_type_table"
@@ -55,6 +59,9 @@ TKB_meddelandemodeller_finns = False
 UPPER_CASE = "UPPER_CASE"
 
 def GLOBALS_init():
+    global AB_detail_box_contents
+    global AB_document_exists
+    global AB_exists
     global alt_document_name
     global COMMENTS_detail_box_contents
     global docx_document
@@ -96,6 +103,9 @@ def GLOBALS_init():
     global TKB_exists
     global TKB_meddelandemodeller_finns
 
+    AB_detail_box_contents = ""
+    AB_document_exists = False
+    AB_exists = False
     alt_document_name = ""
     COMMENTS_detail_box_contents = ""
     docx_document = ""

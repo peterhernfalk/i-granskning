@@ -2,6 +2,7 @@ import app
 import globals
 from repo import *
 
+AB_antal_brister = 0
 IS_antal_brister = 0
 TKB_antal_brister = 0
 
@@ -13,18 +14,24 @@ def get_page_html():
     - globals.IS_detail_box_contents
     - globals.COMMENTS_detail_box_contents
     """
+    global AB_antal_brister
+    AB_antal_brister = 0
     global IS_antal_brister
     IS_antal_brister = 0
     global TKB_antal_brister
     TKB_antal_brister = 0
 
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name, globals.tag)
-    html += __html_summary_infospec() + __html_summary_TKB() + __html_section_end()
+    #html += __html_summary_infospec() + __html_summary_TKB_box() + __html_summary_AB() + __html_section_end()
+    html += __html_summary_infospec() + __html_summary_TKB_box() + __html_section_end()
 
     html += __html_detail_section_begin("Infospec")
     html += __html_recent_inspection_box_begin("Infospec-granskning") + globals.IS_detail_box_contents + __html_recent_inspection_box_end()
 
-    html += __html_br()+__html_detail_box_begin_TKB()+globals.TKB_detail_box_contents+__box_content_end()
+    html += __html_br() + __html_detail_box_begin_TKB() + globals.TKB_detail_box_contents + __box_content_end()
+
+    globals.AB_detail_box_contents = "Här ska krav och granskningsresultat visas för automatiserad granskning av AB-dokumentet"
+    html += __html_br() + __html_detail_box_begin_AB() + globals.AB_detail_box_contents + __box_content_end()
 
     globals.COMMENTS_detail_box_contents = "Här ska förslag till granskningskommentarer visas, inklusive färgkodning och i samma struktur som granskningsrapporten"
     html += __html_br() + __html_detail_box_begin_COMMENTS() + globals.COMMENTS_detail_box_contents + __box_content_end()
@@ -314,6 +321,12 @@ def __html_sidebar():
           </a>
         </li>
         <li>
+          <a href="#AB">
+            <i></i>
+            <span class="links_name">AB-granskning</span>
+          </a>
+        </li>
+        <li>
           <a href="#Comments">
             <i></i>
             <span class="links_name">Granskningskommentarer</span>
@@ -338,6 +351,7 @@ def __html_overview_start(domain_name, tag):
     <div class="overview-boxes">
     '''
     return html
+
 
 def __html_summary_infospec():
     """
@@ -504,7 +518,7 @@ def __get_infospec_summary(topic):
         IS_antal_brister += globals.IS_antal_brister_tomma_tabellceller
     return html
 
-def __html_summary_TKB():
+def __html_summary_TKB_box():
     """
     2do: lägg till dessa inparametrar:
     - globals.TKB_exists
@@ -523,8 +537,17 @@ def __html_summary_TKB():
     else:
         html += __text_document_not_found(globals.TKB, globals.domain_name, globals.tag)
 
+    if globals.AB_exists == True:
+        html += '''
+            <br><hr><br><div class="box-topic">Sammanfattning: AB-granskning</div>
+            <div><li><b>0  &nbsp</b>AB-krav har granskats</div></li>
+        '''
+        html += __get_AB_summary()
+    else:
+        html += __text_document_not_found(globals.AB, globals.domain_name, globals.tag)
+
     html += '''
-        <br><div class="box-topic">Sammanfattning: granskningskommentarer</div>
+        <br><hr><br><div class="box-topic">Sammanfattning: granskningskommentarer</div>
         <div><li><b>0  &nbsp</b>förslag till granskningskommentarer</div></li>
     '''
 
@@ -567,6 +590,69 @@ def __get_TKB_summary():
     html += "<br>"
     #html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
     html += "<b>" + str(TKB_antal_brister) + " brister i TKB</b> upptäckta av automatiserad granskning<br>"
+
+    return html
+
+def __html_summary_AB():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.AB_exists
+    - globals.AB
+    - globals.domain_name
+    - globals.tag
+    """
+    html = '''
+    <ul class="recent-result box">
+    <div>
+    <div class="box-topic">Sammanfattning: AB-granskning</div>
+    '''
+
+    if globals.AB_exists == True:
+        html += __get_AB_summary()
+    else:
+        html += __text_document_not_found(globals.AB, globals.domain_name, globals.tag)
+
+    html += '''
+        <br><div class="box-topic">Sammanfattning: AB-granskning</div>
+        <div><li><b>0  &nbsp</b>granskade krav på AB-dokumentet</div></li>
+    '''
+
+
+    html += '''
+    </div>
+    </ul>
+    </div>
+    '''
+    return html
+
+def __get_AB_summary():
+    """
+    2do: lägg till dessa inparametrar:
+    - globals.AB_antal_brister_revisionshistorik
+    - globals.AB_antal_brister_tomma_revisionshistoriktabellceller
+    """
+    global AB_antal_brister
+    html = ""
+    """if globals.AB_antal_brister_revisionshistorik == 0:
+        html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
+    else:
+        html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
+        AB_antal_brister += 1
+    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp</b>tomma celler i revisionshistoriken</li></div>"
+    AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
+    html += "<br>"
+    html += "<div><li><b>" + str(globals.AB_antal_brister_referenslänkar) + " &nbsp</b>felaktiga länkar i referenstabellen</li></div>"
+    AB_antal_brister += globals.AB_antal_brister_referenslänkar
+    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp</b>tomma celler i referenstabellen</li></div>"
+    AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
+    html += "<br>"
+    if globals.AB_meddelandemodeller_finns == True:
+        html += "<div><li>Meddelandemodeller <b>finns</b></li></div>"
+    else:
+        html += "<div><li>Meddelandemodeller <b>saknas</b></li></div>"
+        AB_antal_brister += 1"""
+    #html += "<br>"
+    html += "<br><b>" + str(AB_antal_brister) + " brister i AB</b> upptäckta av automatiserad granskning<br>"
 
     return html
 
@@ -623,6 +709,16 @@ def __html_detail_box_begin_TKB():
     <div class="title">TKB-granskning</div>
     <div class="inspection-details">
     <ul class="details">
+    '''
+    return html
+
+def __html_detail_box_begin_AB():
+    html = '''
+        <div id = "AB" class="detail-boxes">
+	    <div class="recent-inspection box">
+        <div class="title">AB-granskning</div>
+        <div class="inspection-details">
+        <ul class="details">
     '''
     return html
 

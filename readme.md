@@ -35,13 +35,15 @@ för att installera eller uppdatera Python-version och beroenden.
 - app.py
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
-  - Ej skapat än
+  - AB-dokumentet
     - Anropar funktion i granskning_AB.py för att förbereda granskning av infospec
     - Anropar funktion i granskning_AB.py för att genomföra granskning av Infospec
-  - Anropar funktion i granskning_IS.py för att förbereda granskning av infospec
-  - Anropar funktion i granskning_IS.py för att genomföra granskning av Infospec
-  - Anropar funktion i granskning_TKB.py för att förbereda granskning av TKB
-  - Anropar funktion i granskning_TKB.py för att genomföra granskning av TKB
+  - Infospec
+    - Anropar funktion i granskning_IS.py för att förbereda granskning av infospec
+    - Anropar funktion i granskning_IS.py för att genomföra granskning av Infospec
+  - TKB
+    - Anropar funktion i granskning_TKB.py för att förbereda granskning av TKB
+    - Anropar funktion i granskning_TKB.py för att genomföra granskning av TKB
  
  - Document_management.py
     - Funktioner för att beräkna URL till angivet dokument
@@ -52,17 +54,18 @@ för att installera eller uppdatera Python-version och beroenden.
 - globals.py
     - Globala variabler och konstanter samt en funktion för att initiera dem
 
-- granskning_AB.py (ej skapad än)
-    - Funktioner som förbereder granskning av AB-dokumentet
-    - Funktioner som genomför granskning av AB-dokumentet
-      - För varje granskningspunkt
-        - Presenterar granskningskrav och ev. granskningsstöd
-        - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
-          - Beroende på granskningspunkt så är det olika funktioner som anropas 
-        - Presenterar resultat av granskningen
+- granskning_AB.py
+    - Funktion som förbereder granskning av AB-dokumentet
+    - Återstår att uveckla:
+      - Funktioner som genomför granskning av AB-dokumentet
+        - För varje granskningspunkt
+          - Presenterar granskningskrav och ev. granskningsstöd
+          - Anropar funktion som genomför granskning (eller listning av granskningsstöd)
+            - Beroende på granskningspunkt så är det olika funktioner som anropas 
+          - Presenterar resultat av granskningen
         
 - granskning_IS.py
-    - Funktioner som förbereder granskning av Infospec
+    - Funktion som förbereder granskning av Infospec
     - Funktioner som genomför granskning av Infospec
       - För varje granskningspunkt
         - Presenterar granskningskrav och ev. granskningsstöd
@@ -71,7 +74,7 @@ för att installera eller uppdatera Python-version och beroenden.
         - Presenterar resultat av granskningen
 
 - granskning_TKB.py
-    - Funktioner som förbereder granskning av TKB
+    - Funktion som förbereder granskning av TKB
     - Funktioner som genomför granskning av TKB
       - För varje granskningspunkt
         - Presenterar granskningskrav och ev. granskningsstöd
@@ -81,6 +84,11 @@ för att installera eller uppdatera Python-version och beroenden.
 
 - html_dashboard.py
   - Funktioner för att bygga den dashboard i html-format som lämnas ut som svar på GET-anropet
+  - Returnerad html innehåller:
+    - All layout, inklusive css
+    - Navigeringslänkar i lista till vänster om huvudinnehållet
+    - Två boxar med summeringsinformation
+    - Detaljboxar per granskat dokument
   - 2do: lägg till inparametrar till vissa funktioner 
 
 - repo.py
