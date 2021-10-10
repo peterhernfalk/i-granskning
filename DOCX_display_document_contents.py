@@ -18,7 +18,9 @@ local_test = False
 
 
 def __style_family(document_search_phrase):
-    if "IS_*" in document_search_phrase:
+    if "AB_*" in document_search_phrase:
+        return STYLE_FAMILY_RUBRIK
+    elif "IS_*" in document_search_phrase:
         return STYLE_FAMILY_RUBRIK
     else:
         return STYLE_FAMILY_HEADING
@@ -34,6 +36,9 @@ def DOCX_prepare_inspection(document_search_phrase):
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
     if globals.TKB_document_exists == True:
+        __set_document_name(document_search_phrase)
+        __document_structure_2_dict(__style_family(document_search_phrase))
+    if globals.AB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
 
@@ -228,6 +233,8 @@ def __set_document_name(search_phrase):
         document = globals.docx_IS_document
     elif "TKB_*" in search_phrase:
         document = globals.docx_TKB_document
+    elif "AB_*" in search_phrase:
+        document = globals.docx_AB_document
 
 
 def __document_structure_2_dict(style_family):

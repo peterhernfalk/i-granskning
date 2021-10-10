@@ -77,4 +77,3 @@ def perform_AB_inspection():
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     write_detail_box_content("<b>Krav:</b> dokumentet ska innehålla rimliga arkitekturbeslut")
     DOCX_display_paragraph_text_and_tables("arkitekturella beslut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
-
