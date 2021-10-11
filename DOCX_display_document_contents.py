@@ -447,6 +447,8 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         globals.IS_antal_brister_tomma_tabellceller = 0
     elif globals.docx_document == globals.TKB:
         globals.TKB_antal_brister_tomma_tabellceller = 0
+    elif globals.docx_document == globals.AB:
+        globals.AB_antal_brister_tomma_tabellceller = 0
     antal_brister_tomma_tabellceller = 0
 
     html_table = ""
@@ -489,6 +491,9 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
                 elif globals.docx_document == globals.TKB:
                     table_title = "TKB-tabell nummer " + str(table_number)
                     #globals.TKB_antal_brister_tomma_tabellceller += 1
+                    antal_brister_tomma_tabellceller += 1
+                elif globals.docx_document == globals.AB:
+                    table_title = "AB-tabell nummer " + str(table_number)
                     antal_brister_tomma_tabellceller += 1
                 if cells_missing_content == "":
                     cells_missing_content += str(column+1)

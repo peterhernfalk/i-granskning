@@ -1,9 +1,13 @@
 AB = "AB"
 AB_antal_brister_referenslänkar = 0
 AB_antal_brister_revisionshistorik = 0
+AB_antal_brister_tomma_referenstabellceller = 0
+AB_antal_brister_tomma_revisionshistoriktabellceller = 0
+AB_antal_brister_tomma_tabellceller = 0
 AB_detail_box_contents = ""
 AB_document_exists = False
 AB_exists = False
+
 alt_document_name = ""
 COMMENTS_detail_box_contents = ""
 DISPLAY_TYPE_TABLE = "display_type_table"
@@ -63,6 +67,9 @@ UPPER_CASE = "UPPER_CASE"
 def GLOBALS_init():
     global AB_antal_brister_referenslänkar
     global AB_antal_brister_revisionshistorik
+    global AB_antal_brister_tomma_referenstabellceller
+    global AB_antal_brister_tomma_revisionshistoriktabellceller
+    global AB_antal_brister_tomma_tabellceller
     global AB_detail_box_contents
     global AB_document_exists
     global AB_exists
@@ -109,6 +116,9 @@ def GLOBALS_init():
 
     AB_antal_brister_referenslänkar = 0
     AB_antal_brister_revisionshistorik = 0
+    AB_antal_brister_tomma_referenstabellceller = 0
+    AB_antal_brister_tomma_revisionshistoriktabellceller = 0
+    AB_antal_brister_tomma_tabellceller = 0
     AB_detail_box_contents = ""
     AB_document_exists = False
     AB_exists = False

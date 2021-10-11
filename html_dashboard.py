@@ -646,15 +646,15 @@ def __get_AB_summary():
     else:
         html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         AB_antal_brister += 1
-    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
-    #AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
+    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
+    AB_antal_brister += globals.AB_antal_brister_tomma_revisionshistoriktabellceller
 
     #html += "<br>"
     html += "<div><li><b>" + str(globals.AB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     AB_antal_brister += globals.AB_antal_brister_referenslänkar
 
-    #html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
-    #AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
+    html += "<div><li><b>" + str(globals.AB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
+    AB_antal_brister += globals.AB_antal_brister_tomma_referenstabellceller
     html += "<br><b>" + str(AB_antal_brister) + " &nbsp;brister i AB</b> upptäckta av automatiserad granskning<br>"
 
     return html
