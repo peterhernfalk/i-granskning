@@ -63,7 +63,11 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
         IS_init_infomodel_classes_list()
 
 
-def perform_IS_inspection():
+def perform_IS_inspection(domain, tag, alt_document_name):
+    prepare_IS_inspection(domain, tag, alt_document_name)
+    if globals.IS_exists == False:
+        return
+
     write_detail_box_content(
         "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
@@ -115,9 +119,8 @@ def perform_IS_inspection():
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
-    begreppsbeskrivning_tabell = IS_get_tableno_for_first_title_cell("begrepp")
+    begreppsbeskrivning_tabell = DOCX_display_document_contents.DOCX_get_tableno_for_first_column_title("begrepp", document.tables)
     result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
-    # globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = globals.IS_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
@@ -411,9 +414,9 @@ def __find_all_document_tables():
             datatype_definitions_table.append(index)
         index += 1
 
-def IS_get_tableno_for_first_title_cell(title):
+"""def IS_get_tableno_for_first_title_cell(title):
     global document
-    global all_tables
+    global all_tables   # equals to document.tables
     table_number = 0
     index = 0
     for table in all_tables:
@@ -422,7 +425,7 @@ def IS_get_tableno_for_first_title_cell(title):
             break
         index += 1
 
-    return table_number
+    return table_number"""
 
 ### Find and save a list of the paragraphs ###
 def __find_all_document_paragraphs():

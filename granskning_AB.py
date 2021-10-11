@@ -58,7 +58,11 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
 
         DOCX_prepare_inspection("AB_*.doc*")
 
-def perform_AB_inspection():
+def perform_AB_inspection(domain, tag, alt_document_name):
+    prepare_AB_inspection(domain, tag, alt_document_name)
+    if globals.AB_exists == False:
+        return
+
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
 

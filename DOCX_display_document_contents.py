@@ -522,6 +522,27 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
 
     return result, antal_brister_tomma_tabellceller
 
+def DOCX_get_tableno_for_first_column_title(title, all_tables):
+    table_number = 0
+    index = 0
+    for table in all_tables:
+        if table.cell(0,0).text.strip().lower() == title.strip().lower():
+            table_number = index
+            break
+        index += 1
+
+    return table_number
+
+
+#########################################
+########## 2DO 2DO 2DO 2DO 2DO ##########
+#########################################
+def DOCX_get_tableno_for_paragraph_title(title, document):
+    table_number = 0
+    return table_number
+
+
+
 """def __get_infomodel_classname_from_table_number(table_number, include_level):
     #global infomodel_classes_list
     result_classtitle = ""

@@ -68,7 +68,11 @@ def prepare_TKB_inspection(domain, tag, alt_document_name):
 
         DOCX_prepare_inspection("TKB_*.doc*")
 
-def perform_TKB_inspection():
+def perform_TKB_inspection(domain, tag, alt_document_name):
+    prepare_TKB_inspection(domain, tag, alt_document_name)
+    if globals.TKB_exists == False:
+        return
+
     #write_detail_box_html("<br>")
     #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     #write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")

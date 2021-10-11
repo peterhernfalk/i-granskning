@@ -89,23 +89,18 @@ def reponse2request():
 
         ##### INSPECT #####
         globals.docx_document = globals.IS
-        granskning_IS.prepare_IS_inspection(domain, tag, alt_IS_name)
         globals.alt_document_name = alt_IS_name
-        if globals.IS_exists == True:
-            granskning_IS.perform_IS_inspection()
+        granskning_IS.perform_IS_inspection(domain, tag, alt_AB_name)
 
         globals.docx_document = globals.TKB
-        granskning_TKB.prepare_TKB_inspection(domain, tag, alt_TKB_name)
-        if globals.TKB_exists == True:
-            granskning_TKB.perform_TKB_inspection()
+        globals.alt_document_name = alt_TKB_name
+        granskning_TKB.perform_TKB_inspection(domain, tag, alt_AB_name)
 
         globals.docx_document = globals.AB
-        granskning_AB.prepare_AB_inspection(domain, tag, alt_AB_name)
-        if globals.AB_exists == True:
-            granskning_AB.perform_AB_inspection()
+        globals.alt_document_name = alt_AB_name
+        granskning_AB.perform_AB_inspection(domain, tag, alt_AB_name)
 
-
-        #html = __get_html_response(riv_domain, IS_page_link, TKB_page_link, IS_document_paragraphs, TKB_document_paragraphs)
+        ##### CREATE HTML #####
         html = html_dashboard.get_page_html()
     else:
         html = "<br><h1>Webbadressen är inte korrekt!</h1>"
