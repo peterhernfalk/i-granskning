@@ -14,7 +14,6 @@ NOT_FOUND = "Not found"
 STYLE_FAMILY_HEADING = "Heading"
 STYLE_FAMILY_RUBRIK = "Rubrik"
 STYLE_FAMILY_SUBTLE_EMPHASIS = "Subtle Emphasis"
-local_test = False
 
 
 def __style_family(document_search_phrase):
@@ -41,6 +40,10 @@ def DOCX_prepare_inspection(document_search_phrase):
     if globals.AB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
+
+    ### 2do: dev ###
+    DOCX_init_dict_paragraph_title_and_tableno(document)
+    ################
 
 def DOCX_inspect_revision_history(docx_document, table_num):
     """
@@ -255,6 +258,8 @@ def __document_structure_2_dict(style_family):
     document_structure_dict = {}
     global document_paragraph_index_dict
     document_paragraph_index_dict = {}
+    global paragraph_title_tableno_dict
+    paragraph_title_tableno_dict = {}
 
     index = 1
     for paragraph in document.paragraphs:
@@ -281,7 +286,7 @@ def DOCX_document_structure_get_levelvalue(searched_key):
     Returnerar: Om rubrikvärdet hittades så returneras dess nyckel (rubrikens titel), annars returneras NOT_FOUND
     """
     for key, value in document_structure_dict.items():
-        if searched_key.strip().lower() == key:     #in key
+        if searched_key.strip().lower() == key:
             return value
     return NOT_FOUND
 
@@ -537,8 +542,94 @@ def DOCX_get_tableno_for_first_column_title(title, all_tables):
 #########################################
 ########## 2DO 2DO 2DO 2DO 2DO ##########
 #########################################
-def DOCX_get_tableno_for_paragraph_title(title, document):
-    table_number = 0
+def DOCX_init_dict_paragraph_title_and_tableno(document):
+    #paragraph_title_tableno_dict = {}
+    global paragraph_title_tableno_dict
+    """
+        Alt 1: key = title, value = tableno     paragraph_title_tableno_dict["Händelse"] = 18
+        Alt 2: key = level, value = tableno     paragraph_title_tableno_dict["8.7"] = 18
+        
+        Init:   paragraph_title_tableno_dict["Beskrivning av begrepp"] = 12
+    """
+
+    """
+        document_paragraph_index_dict = {}
+        index = 1
+        for paragraph in document.paragraphs:
+            if paragraph.style.name in level_from_style_name:
+                level = level_from_style_name[paragraph.style.name]
+                current_levels[level] += 1
+                for level in range(level + 1, 10):
+                    current_levels[level] = 0
+                document_structure_dict[paragraph.text.strip().lower()] = __format_levels(current_levels)
+            document_paragraph_index_dict[__format_levels(current_levels) + " " + paragraph.text] = index
+            index +=1
+    """
+
+    """
+    for block in __iter_block_items(document, searched_paragraph_level):
+        if isinstance(block, Paragraph):
+            this_paragraph_title = block.text.strip().lower()
+            if this_paragraph_title == searched_paragraph_title.strip().lower():
+                searched_paragraph_found = True
+                paragraph_or_table_found = True
+                if display_paragraph_title == True:
+                    __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+        elif isinstance(block, Table):
+            if searched_paragraph_found == True:
+                if display_tables == True:
+                    if display_paragraph_title == False:
+                        write_output("<br>")
+                        write_detail_box_html("<br>")
+                    # __table_print(block)
+                    # __table_print_beginning_columns(block)
+                    __document_table_print_html_table(block)
+                    paragraph_or_table_found = True
+                searched_paragraph_found = False  # Bug: supports only one table per paragraph
+    """
+
+    """searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
+    for block in __iter_block_items(document, searched_paragraph_level):
+        if isinstance(block, Paragraph):
+            this_paragraph_title = block.text.strip().lower()
+            if this_paragraph_title == searched_paragraph_title.strip().lower():
+                searched_paragraph_found = True
+                paragraph_or_table_found = True
+                if display_paragraph_title == True:
+                    __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+        elif isinstance(block, Table):
+            if searched_paragraph_found == True:
+                if display_tables == True:
+                    if display_paragraph_title == False:
+                        write_output("<br>")
+                        write_detail_box_html("<br>")
+                    # __table_print(block)
+                    # __table_print_beginning_columns(block)
+                    __document_table_print_html_table(block)
+                    paragraph_or_table_found = True
+                searched_paragraph_found = False  # Bug: supports only one table per paragraph"""
+
+    ### Hard coded test values ###
+    paragraph_title_tableno_dict["Beskrivning av begrepp"] = 12
+    paragraph_title_tableno_dict["Händelse"] = 18
+    for paragraph in document.paragraphs:
+        paragraph_title_tableno_dict[paragraph.text.strip().lower()] = 0
+    #print("\n"+globals.docx_document)
+    #for key, value in paragraph_title_tableno_dict.items():
+    #    print("\t",value,key)
+    ##############################
+
+    return paragraph_title_tableno_dict
+
+def DOCX_get_tableno_for_paragraph_title(title):
+    """
+        Anrop:  begreppsbeskrivning_tabell = DOCX_get_tableno_for_paragraph_title("Beskrivning av begrepp")
+        Impl:   return paragraph_title_tableno_dict[title]
+    """
+    global paragraph_title_tableno_dict
+    table_number = paragraph_title_tableno_dict[title]
+    if table_number == None:
+        return -1
     return table_number
 
 
@@ -554,34 +645,3 @@ def DOCX_get_tableno_for_paragraph_title(title, document):
                 result_classtitle = obj.classtitle
             break
     return result_classtitle"""
-
-
-if local_test == True:
-    TITLE = True
-    NO_TITLE = False
-    INITIAL_NEWLINE = True
-    NO_INITIAL_NEWLINE = False
-    TEXT = True
-    NO_TEXT = False
-    TABLES = True
-    NO_TABLES = False
-
-    #globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/riv.clinicalprocess.healthcond.certificate/docs"
-    #globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/riv.clinicalprocess.healthcond.actoutcome/docs"
-    #globals.document_path = "/Users/peterhernfalk/Desktop/Aktuellt/_T-granskningar/git-Repo/riv.clinicalprocess.activity.actions/docs"
-
-    #print("\n*** TKB ***")
-    #DOCX_prepare_inspection("TKB_*.doc*")
-    #DOCX_inspect_revision_history()
-    #DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,INITIAL_NEWLINE,TEXT,NO_TABLES)
-    #DOCX_display_paragraph_text_and_tables("adressering",TITLE,INITIAL_NEWLINE,TEXT,NO_TABLES)
-    #DOCX_display_paragraph_text_and_tables("aggregering",TITLE,INITIAL_NEWLINE,TEXT,NO_TABLES)
-    #DOCX_display_paragraph_text_and_tables("sla krav",TITLE,INITIAL_NEWLINE,TEXT,TABLES)
-    #DOCX_display_paragraph_text_and_tables("felhantering",TITLE,INITIAL_NEWLINE,TEXT,NO_TABLES)
-
-
-    #print("\n*** IS ***")
-    #DOCX_prepare_inspection("IS_*.doc*")
-    #DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
-    #DOCX_display_paragraph_text_and_tables("klasser och attribut",TITLE,INITIAL_NEWLINE,TEXT,NO_TABLES)
-    #DOCX_display_paragraph_text_and_tables("Referenser",TITLE,NO_INITIAL_NEWLINE,TEXT,TABLES)

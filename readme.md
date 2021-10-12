@@ -97,6 +97,66 @@ för att installera eller uppdatera Python-version och beroenden.
     - Några funktioner som används både vid granskning av Infospec och TKB
 
 ```
+### Utredning innan utveckling:
+- Listningen nedan visar hur många tabeller det faktiskt finns per avsnitt per dokument (för närvarande baserat på Intygsdomänen).
+  - Slutsatsen hittills är att de allra flesta avsnitt inte har mer än en tabell
+- AB
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik inom projektet
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 1.2: Begrepp
+    - 2.x: Arkitekturellt beslut
+- Infospec
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 2: Informationssäkerhet
+      - Tabell: beskrivning av informationen
+      - Tabell: lagrum
+      - Tabell: informationsflöde
+      - Tabell: spårbarhet, tillgänglighet och arkivering
+      - Tabell: krav på den som konsumerar informationen
+    - 3: Referensmodellsförteckning (RIM)
+    - 4: Processmodell
+      - 4.1, tabell: Beskrivning av processmodellen
+    - 5: Arbetsflöde
+      - 5.1.1, tabell: Aktörer
+      - 5.1.2, tabell: Användningsfall
+    - 6: Begreppsmodell och beskrivning
+      - 6.2, tabell: Beskrivning av begrepp
+    - 7: Informationsmodell och beskrivning
+      - Inga tabeller
+    - 8: Klasser och attribut
+      - 8.x, tabell: klass
+    - 9: Datatyper i informationsmdoellen
+      - Tabell
+    - 10: Multipliciteter i informationsmodellen
+      - Tabell
+    - 11: Identifierare och kodverk
+      - Tabell
+- TKB
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 2: Versionsinfomation
+      - 2.1.3: Förändrade tjänstekontrakt
+        - Tabell med kompatibilitetsinformation
+    - 3: Tjänstedomänens arkitektur
+      - 3.7: flöden
+        - Tabell
+    - 4: Tjänstedomänens krav och regler
+      - 4.2.1: SLA krav
+        - Tabell
+    - 6: Tjänstekontrakt
+      - 6.x tjänstekontrakt xyz
+        - 6.x.2: Fältregler
+          - Tabell med begäran och svar
+    - 7: Gemensamma fälttyper (kan även heta Gemensamma datatyper)
+      - Tabeller kan förekomma direkt eller i undernivåer
+
 
 
 ## Driftsättning, konfiguration, beroenden:

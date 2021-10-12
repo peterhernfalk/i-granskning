@@ -120,6 +120,9 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
     begreppsbeskrivning_tabell = DOCX_display_document_contents.DOCX_get_tableno_for_first_column_title("begrepp", document.tables)
+    ### dev ###
+    ###begreppsbeskrivning_tabell = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("Beskrivning av begrepp")
+    ### dev ###
     result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
 
     write_detail_box_html("<br>")
