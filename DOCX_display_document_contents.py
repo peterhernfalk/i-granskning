@@ -544,13 +544,6 @@ def DOCX_get_tableno_for_first_column_title(title, all_tables):
 ########## 2DO 2DO 2DO 2DO 2DO ##########
 #########################################
 def DOCX_init_dict_paragraph_title_and_tableno(document):
-    #paragraph_title_tableno_dict = {}
-    global paragraph_title_tableno_dict
-
-    paragraph_text = ""
-
-    #print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
-    #####################################################################
     """
         Fungerar för de infospecar som testats hittills
         TKB-tabeller med samma rubrik, exempelvis "fältregler" lagrar bara en post i dictionaryt
@@ -558,6 +551,11 @@ def DOCX_init_dict_paragraph_title_and_tableno(document):
         TKB- och AB-dokumenten har i regel en tabell på sida 1. Tabellen anger domän, version och datum, men har ingen rubrik
             Dessa tabeller sparas inte i dictionaryt pga att de saknar rubrik
     """
+
+    global paragraph_title_tableno_dict
+
+    #print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
+    paragraph_text = ""
     table_index = 0
     for block in __document_block_items(document):
         if isinstance(block, Paragraph):
@@ -575,15 +573,9 @@ def DOCX_init_dict_paragraph_title_and_tableno(document):
                     paragraph_title_tableno_dict[paragraph_text] = table_index
                 paragraph_text = ""
 
-            #if block.table.style.name.strip() != "Normal Table":
-            #    table_index += 1
-            #    print("\t",table_index,paragraph_text,"table block:",block.table,block.table.style.name, block.table.cell(1,0).text)
-    #####################################################################
-
     """print("\nparagraph_title_tableno_dict:")
     for key, value in paragraph_title_tableno_dict.items():
         print("\t",value,key)"""
-    ##############################
 
     return paragraph_title_tableno_dict
 

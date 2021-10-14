@@ -69,19 +69,33 @@ def perform_AB_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
-    globals.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB,TABLE_NUM_REVISION)
+    used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
+    if used_table_no > 0:
+        globals.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB, used_table_no)
+    else:
+        globals.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB,TABLE_NUM_REVISION)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
-    result, globals.AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+    if used_table_no > 0:
+        result, globals.AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
+    else:
+        result, globals.AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
-    globals.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
+    used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
+    if used_table_no > 0:
+        globals.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(used_table_no)
+    else:
+        globals.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
-    result, globals.AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
+    if used_table_no > 0:
+        result, globals.AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
+    else:
+        result, globals.AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> alla AB ska ha minst två alternativ och motivering till det valda alternativet. Kontrolleras manuellt")

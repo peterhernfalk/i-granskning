@@ -102,7 +102,11 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
-    globals.TKB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
+    used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
+    if used_table_no > 0:
+        globals.TKB_antal_brister_referenslänkar = DOCX_inspect_reference_links(used_table_no)
+    else:
+        globals.TKB_antal_brister_referenslänkar = DOCX_inspect_reference_links(TABLE_NUM_REF)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
