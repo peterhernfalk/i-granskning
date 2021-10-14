@@ -1,4 +1,5 @@
 #from notinuse import IS_inspection
+import globals
 import granskning_IS
 from utilities import *
 #from utilities import write_output, write_output_without_newline, __extract_urls_from_table, verify_url_exists
@@ -545,91 +546,69 @@ def DOCX_get_tableno_for_first_column_title(title, all_tables):
 def DOCX_init_dict_paragraph_title_and_tableno(document):
     #paragraph_title_tableno_dict = {}
     global paragraph_title_tableno_dict
-    """
-        Alt 1: key = title, value = tableno     paragraph_title_tableno_dict["Händelse"] = 18
-        Alt 2: key = level, value = tableno     paragraph_title_tableno_dict["8.7"] = 18
-        
-        Init:   paragraph_title_tableno_dict["Beskrivning av begrepp"] = 12
-    """
 
-    """
-        document_paragraph_index_dict = {}
-        index = 1
-        for paragraph in document.paragraphs:
-            if paragraph.style.name in level_from_style_name:
-                level = level_from_style_name[paragraph.style.name]
-                current_levels[level] += 1
-                for level in range(level + 1, 10):
-                    current_levels[level] = 0
-                document_structure_dict[paragraph.text.strip().lower()] = __format_levels(current_levels)
-            document_paragraph_index_dict[__format_levels(current_levels) + " " + paragraph.text] = index
-            index +=1
-    """
+    paragraph_text = ""
 
+    #print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
+    #####################################################################
     """
-    for block in __iter_block_items(document, searched_paragraph_level):
+        Fungerar för de infospecar som testats hittills
+        TKB-tabeller med samma rubrik, exempelvis "fältregler" lagrar bara en post i dictionaryt
+            Åtgärdat genom att konkatenera nyckeln med tabellnumret
+        TKB- och AB-dokumenten har i regel en tabell på sida 1. Tabellen anger domän, version och datum, men har ingen rubrik
+            Dessa tabeller sparas inte i dictionaryt pga att de saknar rubrik
+    """
+    table_index = 0
+    for block in __document_block_items(document):
         if isinstance(block, Paragraph):
-            this_paragraph_title = block.text.strip().lower()
-            if this_paragraph_title == searched_paragraph_title.strip().lower():
-                searched_paragraph_found = True
-                paragraph_or_table_found = True
-                if display_paragraph_title == True:
-                    __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+            if block.text.strip() != "" and block.style.name.lower() != "normal"  and block.style.name.lower() != "body text":
+                paragraph_text = block.text.strip().lower()
         elif isinstance(block, Table):
-            if searched_paragraph_found == True:
-                if display_tables == True:
-                    if display_paragraph_title == False:
-                        write_output("<br>")
-                        write_detail_box_html("<br>")
-                    # __table_print(block)
-                    # __table_print_beginning_columns(block)
-                    __document_table_print_html_table(block)
-                    paragraph_or_table_found = True
-                searched_paragraph_found = False  # Bug: supports only one table per paragraph
-    """
+            if block.table.cell(0, 0).text.strip() != "":
+                table_index += 1
+                if paragraph_text == "":
+                    paragraph_text = "Tabell " + str(table_index) + ": " + block.table.cell(0, 0).text
+                #print("\t","table block:",table_index, paragraph_text, block.table, block.table.style.name, block.table.cell(0, 0).text)
+                if paragraph_text in paragraph_title_tableno_dict:
+                    paragraph_title_tableno_dict[paragraph_text + "." + str(table_index)] = table_index
+                else:
+                    paragraph_title_tableno_dict[paragraph_text] = table_index
+                paragraph_text = ""
 
-    """searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
-    for block in __iter_block_items(document, searched_paragraph_level):
-        if isinstance(block, Paragraph):
-            this_paragraph_title = block.text.strip().lower()
-            if this_paragraph_title == searched_paragraph_title.strip().lower():
-                searched_paragraph_found = True
-                paragraph_or_table_found = True
-                if display_paragraph_title == True:
-                    __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
-        elif isinstance(block, Table):
-            if searched_paragraph_found == True:
-                if display_tables == True:
-                    if display_paragraph_title == False:
-                        write_output("<br>")
-                        write_detail_box_html("<br>")
-                    # __table_print(block)
-                    # __table_print_beginning_columns(block)
-                    __document_table_print_html_table(block)
-                    paragraph_or_table_found = True
-                searched_paragraph_found = False  # Bug: supports only one table per paragraph"""
+            #if block.table.style.name.strip() != "Normal Table":
+            #    table_index += 1
+            #    print("\t",table_index,paragraph_text,"table block:",block.table,block.table.style.name, block.table.cell(1,0).text)
+    #####################################################################
 
-    ### Hard coded test values ###
-    paragraph_title_tableno_dict["Beskrivning av begrepp"] = 12
-    paragraph_title_tableno_dict["Händelse"] = 18
-    for paragraph in document.paragraphs:
-        paragraph_title_tableno_dict[paragraph.text.strip().lower()] = 0
-    #print("\n"+globals.docx_document)
-    #for key, value in paragraph_title_tableno_dict.items():
-    #    print("\t",value,key)
+    """print("\nparagraph_title_tableno_dict:")
+    for key, value in paragraph_title_tableno_dict.items():
+        print("\t",value,key)"""
     ##############################
 
     return paragraph_title_tableno_dict
+
+def __document_block_items(document):
+    if isinstance(document, _Document):
+        document_element = document.element.body
+
+    for child in document_element.iterchildren():
+        if isinstance(child, CT_P):
+            yield Paragraph(child, document)
+        elif isinstance(child, CT_Tbl):
+            yield Table(child, document)
+
 
 def DOCX_get_tableno_for_paragraph_title(title):
     """
         Anrop:  begreppsbeskrivning_tabell = DOCX_get_tableno_for_paragraph_title("Beskrivning av begrepp")
         Impl:   return paragraph_title_tableno_dict[title]
     """
+    table_number = -1
     global paragraph_title_tableno_dict
-    table_number = paragraph_title_tableno_dict[title]
-    if table_number == None:
-        return -1
+    if title.lower() in paragraph_title_tableno_dict:
+        table_number = paragraph_title_tableno_dict[title]
+    #if table_number == None:
+    #    return -1
     return table_number
 
 
