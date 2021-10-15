@@ -89,8 +89,10 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
     if used_table_no > 0:
         globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.TKB, used_table_no)
+        #globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history_new(globals.TKB, globals.docx_TKB_document.tables[used_table_no])
     else:
         globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.TKB,TABLE_NUM_REVISION)
+        #globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history_new(globals.TKB,globals.docx_TKB_document.tables[used_table_no])
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
@@ -98,7 +100,6 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         result, globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
         result, globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
-    #globals.TKB_antal_brister_tomma_revisionshistoriktabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
@@ -114,7 +115,6 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         result, globals.TKB_antal_brister_tomma_referenstabellceller = DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
         result, globals.TKB_antal_brister_tomma_referenstabellceller = DOCX_empty_table_cells_exists(TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TABLE)
-    #globals.TKB_antal_brister_tomma_referenstabellceller = globals.TKB_antal_brister_tomma_tabellceller
 
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
@@ -138,17 +138,17 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
 ######################################################
 ##### Privata funktioner (från TKB_inspection.py #####
 ######################################################
-def TKB_get_interaction_version(interaction_name):
+"""def TKB_get_interaction_version(interaction_name):
     version_number = "0"
     #2do: extract version number from interaction paragraph
     searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(interaction_name)
     #__display_paragraph_text_by_paragraph_level(interaction_name,searched_paragraph_level)
     version_number = DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,interaction_name)
 
-    return version_number
+    return version_number"""
 
 
-def TKB_display_paragragh_title(searched_title_name):
+"""def TKB_display_paragragh_title(searched_title_name):
     result = True
     result_description = ""
     searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(searched_title_name)
@@ -160,7 +160,7 @@ def TKB_display_paragragh_title(searched_title_name):
         result_description = "FEL! " + searched_title_name + " verkar inte vara beskrivet i TKB!"
         #write_output("FEL! " + searched_title_name + " verkar inte vara beskrivet i TKB!")
         result = False
-    return result, result_description
+    return result, result_description"""
 
 def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
     global document_paragraph_index_dict

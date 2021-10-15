@@ -186,4 +186,30 @@ Exempel på det är DOCX_display_document_contents.py
 - Uppdatera sammanfattningsruta i html_dashboard.py om resultat av den nya granskningspunkten ska visas i summeringsruta
 
 ### Listning av dokumentinnehåll under en viss rubrik:
-- Använd funktionen DOCX_display_paragraph_text_and_tables
+- Introduktion
+  - Funktionen DOCX_display_paragraph_text_and_tables används för att visa innehåll i sökt paragraf
+- Lösning
+  - Parametrar avgör vilket paragrafinnehåll som ska visas
+  - Funktionen returnerar True eller False som anger om sökt paragraf hittades
+- Användning
+  - Funktionen används av ett flertal IS-, TKB- och AB-granskningspunkter
+
+### Tabellnummer för tabell under en viss rubrik
+- Introduktion
+  - Instanser av Document innehåller attributet tables som håller reda på alla tabeller som finns i dokumentet
+  - document.tables[tabellnummer] refererar till en viss tabell i dokumentet, men utan koppling till var i dokumentet den finns
+- Lösning
+  - Dictionaryt paragraph_title_tableno_dict sparar tabellnummer med rubrik som nyckel
+  - Funktionen DOCX_get_tableno_for_paragraph_title används för att få det tabellnummer som hör till en viss rubrik
+  - I vissa fall innehåller dokumentet flera likadana rubriker. I de fallen läggs tabellnummer till i nyckeln för att 
+  skapa unika nycklar så att alla förekomster lagras i dictionaryt
+- Användning
+  - Dictionaryt används av implementation av vissa granskningskrav i Infospec, TKB och AB-dokumentet
+
+### Kontroll av förekomst av tomma tabellceller
+- Introduktion
+  - Funktionen DOCX_empty_table_cells_exists används för att kontrollera om angiven tabell innehåller tomma celler
+  - Det är ganska många kodrader, vilket gör funktionen onödigt komplex att förvalta och vidareutveckla
+  - Förenkling av koden ska ske innan överlämning till förvaltning
+- Lösning
+- Användning

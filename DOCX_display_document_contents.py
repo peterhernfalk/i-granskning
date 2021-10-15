@@ -28,23 +28,21 @@ def __style_family(document_search_phrase):
 
 def DOCX_prepare_inspection(document_search_phrase):
     """
-    Anropar metoder för att förbereda för granskning av ett Worddokument
+    Anropar metoder som förbereder granskning av ett Worddokument
     """
     __set_document_name(document_search_phrase)
 
     if globals.IS_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
-    if globals.TKB_document_exists == True:
+    elif globals.TKB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
-    if globals.AB_document_exists == True:
+    elif globals.AB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
 
-    ### 2do: dev ###
     DOCX_init_dict_paragraph_title_and_tableno(document)
-    ################
 
 def DOCX_inspect_revision_history(docx_document, table_num):
     """
@@ -90,6 +88,35 @@ def DOCX_inspect_revision_history(docx_document, table_num):
 
     return antal_brister_revisionshistorik
 
+#########################
+### Under development ###
+def DOCX_inspect_revision_history_new(docx_document, table):
+    """
+    Kollar att dokumentets tabell med revisionshistorik har en rad för aktuell tag.
+    """
+    antal_brister_revisionshistorik = 0
+
+    for i, row in enumerate(table.rows):
+        text = tuple(cell.text for cell in row.cells)
+
+    if str(table.cell(i, 0).text) != globals.tag:
+        write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        if docx_document == globals.IS:
+            antal_brister_revisionshistorik = 1
+        elif docx_document == globals.TKB:
+            antal_brister_revisionshistorik = 1
+        elif docx_document == globals.AB:
+            antal_brister_revisionshistorik = 1
+    else:
+        write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
+        write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
+    write_output("Revisionshistorikens sista rad: " + str(text))
+    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
+
+    return antal_brister_revisionshistorik
+#########################
+
 
 def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_paragraph_title, display_initial_newline, display_keylevel_text, display_tables):
     """
@@ -111,7 +138,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
         if paragraph_displayed == True:
             paragraph_or_table_found = True
     else:
-        for block in __iter_block_items(document,searched_paragraph_level):
+        for block in __document_block_items(document):      #__iter_block_items(document,searched_paragraph_level)
             if isinstance(block, Paragraph):
                 this_paragraph_title = block.text.strip().lower()
                 if this_paragraph_title == searched_paragraph_title.strip().lower():
@@ -138,7 +165,7 @@ def DOCX_list_searched_paragraph_titles_wrong_case(searched_paragraph_title, del
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
     paragraph_title_list = []
 
-    for block in __iter_block_items(document, searched_paragraph_level):
+    for block in __document_block_items(document):   # )__iter_block_items(document, searched_paragraph_level)
         if isinstance(block, Paragraph):
             this_paragraph_title = block.text.strip()
             if this_paragraph_title.lower() == searched_paragraph_title.strip().lower():
@@ -205,13 +232,13 @@ def DOCX_inspect_reference_links(table_num):
 
     return antal_brister_referenslänkar
 
-def DOCX_display_paragragh_title(searched_title_name):
+#def DOCX_display_paragragh_title(searched_title_name):
     """
     Söker efter angiven paragraf i lagrad dokumentstruktur. Skriver ut paragrafens titel.
 
     Returnerar: True om sökt paragraf hittades och False om paragrafen inte hittades
     """
-    result = True
+    """result = True
     searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(searched_title_name)
     if searched_paragraph_level != "":
         #write_output("OK. (" + searched_title_name + ") avsnitt " + searched_paragraph_level + " i TKB")
@@ -219,7 +246,7 @@ def DOCX_display_paragragh_title(searched_title_name):
     else:
         write_output("FEL! " + searched_title_name + " verkar inte vara beskrivet i dokumentet!")
         result = False
-    return result
+    return result"""
 
 
 def __set_document_name(search_phrase):
@@ -227,12 +254,7 @@ def __set_document_name(search_phrase):
     Sätter den globala variabeln 'document' till namnet på angivet dokument
     """
     global document
-    global document_name
 
-    """os.chdir(globals.document_path)
-    for word_document in glob.glob(search_phrase):
-        document_name = r""+globals.document_path+"/"+word_document
-    document = Document(document_name)"""
     if "IS_*" in search_phrase:
         document = globals.docx_IS_document
     elif "TKB_*" in search_phrase:
@@ -244,8 +266,13 @@ def __set_document_name(search_phrase):
 def __document_structure_2_dict(style_family):
     """
     Lagrar dokumentet struktur i ett globalt dictionary.
+        Key = rubriktext
+        Value = rubriknivå (exempelvis 2.1)
 
     Lagrar även index till dokumentets paragrafer i ett globalt dictionary.
+        Key = rubriknivå (exempelvis 2.1) + " " + rubriktext
+        Value = indexnummer
+
     """
     if style_family == STYLE_FAMILY_HEADING:
         level_from_style_name = {f'Heading {i}': i for i in range(10)}
@@ -273,12 +300,6 @@ def __document_structure_2_dict(style_family):
         document_paragraph_index_dict[__format_levels(current_levels) + " " + paragraph.text] = index
         index +=1
 
-    if local_test == True:
-        for value in document_structure_dict:
-            print("value in document_structure_dict:",value)
-        for i in document_paragraph_index_dict:
-            print("i in document_paragraph_index_dict:",i)
-
 
 def DOCX_document_structure_get_levelvalue(searched_key):
     """
@@ -291,16 +312,17 @@ def DOCX_document_structure_get_levelvalue(searched_key):
             return value
     return NOT_FOUND
 
-def DOCX_document_structure_get_exact_levelvalue(searched_key):
+
+#def DOCX_document_structure_get_exact_levelvalue(searched_key):
     """
     Söker efter angivet rubriktitel (nyckel) i dictionaryt med dokumentstruktur.
 
     Returnerar: Om rubriktiteln hittades så returneras dess rubrikvärde, annars returneras NOT_FOUND
     """
-    for key, value in document_structure_dict.items():
+    """for key, value in document_structure_dict.items():
         if searched_key.strip().lower() == key:
             return value
-    return NOT_FOUND
+    return NOT_FOUND"""
 
 def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
     """
@@ -326,14 +348,14 @@ def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display
                 previous_key = key.strip()[0:key_level_length]
     return paragraph_displayed
 
-def DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
+#def DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
     """
     Hämtar paragraftext från dokumentstruktur-dictionaryt med rubriknivå som nyckel, och visar den funna texten.
 
     Sökning sker efter tjänstekontraktsversion, angiven i den funna paragraftexten.
     """
     #key_level = ""
-    key_text = ""
+    """key_text = ""
     previous_key = ""
     tk_version = ""
     for key, value in document_paragraph_index_dict.items():
@@ -351,7 +373,7 @@ def DOCX_display_paragraph_text_by_paragraph_level(searched_paragraph_level,disp
                     key_text = key.lower()[key_level_length:].strip()
                 previous_key = key.strip()[0:key_level_length]
 
-    return tk_version
+    return tk_version"""
 
 
 def __format_levels(current_level):
@@ -370,17 +392,17 @@ def DOCX_document_structure_get_key(searched_value):
     return NOT_FOUND
 
 ##### code test #####
-def remove_hyperlink_tags(xml):
+"""def remove_hyperlink_tags(xml):
     import re
     #text = xml.decode('utf-8')
     text = xml
     text = text.replace("</w:hyperlink>","")
     text = re.sub('<w:hyperlink[^>]*>', "", text)
     #return text.encode('utf-8')
-    return text
+    return text"""
 #####################
 
-def __table_print(table):
+"""def __table_print(table):
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:
@@ -388,15 +410,15 @@ def __table_print(table):
                 write_output_without_newline(globals.HTML_3_SPACES + output_text)
                 write_detail_box_html(globals.HTML_3_SPACES + output_text)
         write_output("")
-        write_detail_box_html("<br>")
+        write_detail_box_html("<br>")"""
 
-def __table_print_beginning_columns(table):
+"""def __table_print_beginning_columns(table):
     for row in table.rows:
         output_text = ""
         for cell in row.cells[0:3]:
             for paragraph in cell.paragraphs:
                 output_text += paragraph.text + globals.HTML_3_SPACES + globals.HTML_3_SPACES + globals.HTML_3_SPACES
-        write_detail_box_html(globals.HTML_3_SPACES + output_text + "<br>")
+        write_detail_box_html(globals.HTML_3_SPACES + output_text + "<br>")"""
 
 
 def __document_table_print_html_table(table):
@@ -431,22 +453,18 @@ def __document_table_print_html_table(table):
     </tr>
   </table>"""
 
-def __iter_block_items(parent,searched_paragraph_level):
+"""def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, _Document):
         parent_elm = parent.element.body
-    """elif isinstance(parent, _Cell):
-        parent_elm = parent._tc
-    elif isinstance(parent, _Row):
-        parent_elm = parent._tr
-    else:
-        raise ValueError("something's not right")"""
 
     for child in parent_elm.iterchildren():
         if isinstance(child, CT_P):
             yield Paragraph(child, parent)
         elif isinstance(child, CT_Tbl):
-            yield Table(child, parent)
+            yield Table(child, parent)"""
 
+##############################################
+### 2do: förenkla och parameterisera koden ###
 def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
     result = False
     if globals.docx_document == globals.IS:
@@ -527,7 +545,10 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
     return result, antal_brister_tomma_tabellceller
+##############################################
 
+
+### Funktionen borde kunna arbetas bort, den används bara som fallback i IS då bepreppstabell inte hittas ###
 def DOCX_get_tableno_for_first_column_title(title, all_tables):
     table_number = 0
     index = 0
@@ -540,21 +561,19 @@ def DOCX_get_tableno_for_first_column_title(title, all_tables):
     return table_number
 
 
-#########################################
-########## 2DO 2DO 2DO 2DO 2DO ##########
-#########################################
 def DOCX_init_dict_paragraph_title_and_tableno(document):
     """
-        Fungerar för de infospecar som testats hittills
-        TKB-tabeller med samma rubrik, exempelvis "fältregler" lagrar bara en post i dictionaryt
-            Åtgärdat genom att konkatenera nyckeln med tabellnumret
-        TKB- och AB-dokumenten har i regel en tabell på sida 1. Tabellen anger domän, version och datum, men har ingen rubrik
+        Tabeller som har likadana rubriker, exempelvis "fältregler", lagrar bara en post i dictionaryt i funktionens grundutförande
+            Detta är åtgärdat genom att konkatenera nyckeln med tabellnumret
+        TKB- och AB-dokumenten innehåller oftast en tabell på sida 1. Tabellen anger domän, version och datum, men har ingen rubrik
             Dessa tabeller sparas inte i dictionaryt pga att de saknar rubrik
+
+        Key: rubrik
+        Value: tabellnummer
     """
 
     global paragraph_title_tableno_dict
 
-    #print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
     paragraph_text = ""
     table_index = 0
     for block in __document_block_items(document):
@@ -573,13 +592,19 @@ def DOCX_init_dict_paragraph_title_and_tableno(document):
                     paragraph_title_tableno_dict[paragraph_text] = table_index
                 paragraph_text = ""
 
-    """print("\nparagraph_title_tableno_dict:")
+    ### Stöd vid utveckling och felsökning ###
+    """print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
+    print("paragraph_title_tableno_dict:")
     for key, value in paragraph_title_tableno_dict.items():
         print("\t",value,key)"""
 
     return paragraph_title_tableno_dict
 
 def __document_block_items(document):
+    """
+    Returnerar ett generatorobjekt med paragrafer och tabeller
+    Generatorn kan användas vid iteration av dokumentets innehåll
+    """
     if isinstance(document, _Document):
         document_element = document.element.body
 
@@ -599,8 +624,7 @@ def DOCX_get_tableno_for_paragraph_title(title):
     global paragraph_title_tableno_dict
     if title.lower() in paragraph_title_tableno_dict:
         table_number = paragraph_title_tableno_dict[title]
-    #if table_number == None:
-    #    return -1
+
     return table_number
 
 
