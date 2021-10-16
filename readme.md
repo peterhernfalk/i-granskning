@@ -47,7 +47,7 @@ för att installera eller uppdatera Python-version och beroenden.
   - Exponerar REST-endpoint: ('/granskningsinfo')
   - Läser in GET-parametrar från URL-strängen
   - AB-dokumentet
-    - Anropar funktion i granskning_AB.py för att förbereda och genomföra granskning av Infospec
+    - Anropar funktion i granskning_AB.py för att förbereda och genomföra granskning av AB-dokumentet
   - Infospec
     - Anropar funktion i granskning_IS.py för att förbereda och genomföra granskning av Infospec
   - TKB
