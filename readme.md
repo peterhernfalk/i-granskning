@@ -1,17 +1,28 @@
 # I-granskning av tjänstedomäner
 
 ## Beskrivning:
-Granskningsprocedur som läser in Infospec och TKB från Bitbucket-repo.
-Dokumenten läses in i varsin instans av typen DOCX Document-klass. 
-Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py 
-Granskningsfunktioner har i första hand utvecklats för att kunna användas av alla granskade dokument. 
-I de fall där kraven är specifika för ett visst dokument så har granskningsfunktioner utvecklats för just dessa krav.
+Tjänsten är utvecklad för att underlätta informatikgranskning av tjänstedomäner.
+Underlag för implementationen är krav från I-granskare, där fokus har varit att i första hand automatisera 
+sådana krav som ger stor nytta och som kan implementeras med en rimlig arbetsinsats.
+Utmaningar i arbetet är att det dels förekokmmmer olika mallversioner av dokumenten och dels att det framförallt i infospecar
+kan ha skett förändringar som exempelvis att nya kapitel har lagts till eller att det har tillkommit eller tagits bort tabellkolumner.
 
-All kod är skriven i Python, som använder några bibliotek.
-Koden är skriven i form av funktioner som anropas i ett flöde per dokument.
+Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar.
 
-Koden förenklas och renodlas inför slutleverans. 
-Det har påbörjats ett arbete att göra funktionerna mer självständiga
+
+### Implementationen i korthet
+- Tjänsten är utvecklad i Python som använder Flask för att exponera två endpoints och svara på anrop. De enpoints som exponeras är:
+  - / (URL utan parametrar. Returnerar information som förklarar vilka paramterar som ska användas)
+  - /granskningsinfo (tar emot parametrar, anropar granskningsmodulerna samt returnerar HTML som svar på anropet)
+- En granskningsprocedur per dokument, läser in Infospec, TKB eller AB från Bitbucket-repo.
+- Dokumenten läses in ett i taget i en instans av typen DOCX Document-klass
+- Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py 
+- Gemensamma granskningsfunktioenr finns i DOCX_display_document_contents.py 
+- För krav som är specifika för ett visst dokument så finns dessa granskningsfunktioner i respektive dokuments granskningsfil (granskning_*.py)
+
+### Inför överlämning till förvaltning
+- Koden förenklas och renodlas inför slutleverans
+- Det har påbörjats ett arbete att göra funktionerna mer självständiga
 ur ett informationsförsörjningsperspektiv, med ett minskat beroende till globala variabler
 
 ### Runtime-stöd:
