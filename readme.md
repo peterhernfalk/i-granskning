@@ -221,3 +221,8 @@ Exempel på det är DOCX_display_document_contents.py
   - Förenkling av koden ska ske innan överlämning till förvaltning
 - Lösning
 - Användning
+
+### DOCX-biblioteket
+- Biblioteket tillhandahåller funktioner som döljer strukturen i Wordfiler i docx-format
+- Worddokument läses in i en instans av DOCX_bibliotekts klass Document(), vilket sker i Document_management.py
+- Wordfiler består av en struktur av ett antal XML-filer. I de fall där DOCX-biblioteket inte tillhandahåller önskad funktion så har Pythonkoden läst in berörd XML-fil och sökt i den
