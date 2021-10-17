@@ -4,7 +4,7 @@
 Tjänsten är utvecklad för att underlätta informatikgranskning av tjänstedomäner.
 Underlag för implementationen är krav från I-granskare, där fokus har varit att i första hand automatisera 
 sådana krav som ger stor nytta och som kan implementeras med en rimlig arbetsinsats.
-Utmaningar i arbetet är att det dels förekokmmmer olika mallversioner av dokumenten och dels att det framförallt i infospecar
+Utmaningar i implementationsarbetet är att det dels förekokmmmer olika mallversioner av dokumenten och dels att det framförallt i infospecar
 kan ha skett förändringar som exempelvis att nya kapitel har lagts till eller att det har tillkommit eller tagits bort tabellkolumner.
 
 Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar.
@@ -13,34 +13,33 @@ Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar.
 ### Implementationen i korthet
 - Tjänsten är utvecklad i Python som använder Flask för att exponera två endpoints och svara på anrop. De enpoints som exponeras är:
   - / (URL utan parametrar. Returnerar information som förklarar vilka paramterar som ska användas)
-  - /granskningsinfo (tar emot parametrar, anropar granskningsmodulerna samt returnerar HTML som svar på anropet)
-- En granskningsprocedur per dokument, läser in Infospec, TKB eller AB från Bitbucket-repo.
+  - /granskningsinfo (tar emot parametrar, anropar granskningsmodulerna samt returnerar en dashboard i html-format som svar på anropet)
+- Det finns en granskningsprocedur per dokument, vilken efter att ha konstruerat URL till dokumentet läser in Infospec, TKB eller AB från Bitbucket-repo
 - Dokumenten läses in ett i taget i en instans av typen DOCX Document-klass
-- Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py 
+- Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py till granskningsfilerna 
 - Gemensamma granskningsfunktioenr finns i DOCX_display_document_contents.py 
-- För krav som är specifika för ett visst dokument så finns dessa granskningsfunktioner i respektive dokuments granskningsfil (granskning_*.py)
+- Krav som är specifika för ett visst dokument är implementerade genom granskningsfunktioner i respektive dokuments granskningsfil (granskning_*.py)
 
 ### Inför överlämning till förvaltning
 - Koden förenklas och renodlas inför slutleverans
 - Det har påbörjats ett arbete att göra funktionerna mer självständiga
-ur ett informationsförsörjningsperspektiv, med ett minskat beroende till globala variabler
+ur ett informationsförsörjningsperspektiv, med inparametrar istället för beroende till globala variabler
 
 ### Runtime-stöd:
-Filerna requirements.txt och runtime.txt används av Heroku vid deploy 
-för att installera eller uppdatera Python-version och beroenden.
+Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att installera eller uppdatera Python-version och beroenden.
 
 
 ## Målbild för kodstruktur:
 - Renodlad, välstrukturerad kod (separation of concerns)
 - Funktionell stil i form av inparametrar till funktioner med data som används av funktionerna
-- Generaliserade funktioner (återanvändning) för at undvika kopiering av kod
+- Generaliserade funktioner (återanvändning) för att undvika kopiering av kod
 - Struktur
-  - App med endpoint och html-svar på anrop
-  - Granskningsprocedur per dokument (anropas av app)
-  - URL-byggande
+  - App med endpoints och html-svar på anrop
+  - En granskningsprocedur per dokument (anropas av app)
+  - Konstruktion av URL till dokument på Github sker per dokument i samband med förberedelser inför exekvering av granskningsfunktioenr
   - Dokumenthantering och användning av dokumentinnehåll
-  - Html-generering
-  - Globala variabler
+  - Html-generering sker i html_dashboard.py (anropas av app.py)
+  - Globala variabler finns i globals.py
 ### Python-filer som används i förbättrad struktur:
 ```
 - app.py
@@ -105,66 +104,6 @@ för att installera eller uppdatera Python-version och beroenden.
     - Några funktioner som används både vid granskning av Infospec och TKB
 
 ```
-### Utredning innan utveckling:
-- Listningen nedan visar hur många tabeller det faktiskt finns per avsnitt per dokument (för närvarande baserat på Intygsdomänen).
-  - Slutsatsen hittills är att de allra flesta avsnitt inte har mer än en tabell
-- AB
-  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
-    - Tabell 1: revisionshistorik inom projektet
-    - Tabell 2: referenser
-  - Ingår i avsnitt
-    - 1.2: Begrepp
-    - 2.x: Arkitekturellt beslut
-- Infospec
-  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
-    - Tabell 1: revisionshistorik
-    - Tabell 2: referenser
-  - Ingår i avsnitt
-    - 2: Informationssäkerhet
-      - Tabell: beskrivning av informationen
-      - Tabell: lagrum
-      - Tabell: informationsflöde
-      - Tabell: spårbarhet, tillgänglighet och arkivering
-      - Tabell: krav på den som konsumerar informationen
-    - 3: Referensmodellsförteckning (RIM)
-    - 4: Processmodell
-      - 4.1, tabell: Beskrivning av processmodellen
-    - 5: Arbetsflöde
-      - 5.1.1, tabell: Aktörer
-      - 5.1.2, tabell: Användningsfall
-    - 6: Begreppsmodell och beskrivning
-      - 6.2, tabell: Beskrivning av begrepp
-    - 7: Informationsmodell och beskrivning
-      - Inga tabeller
-    - 8: Klasser och attribut
-      - 8.x, tabell: klass
-    - 9: Datatyper i informationsmdoellen
-      - Tabell
-    - 10: Multipliciteter i informationsmodellen
-      - Tabell
-    - 11: Identifierare och kodverk
-      - Tabell
-- TKB
-  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
-    - Tabell 1: revisionshistorik
-    - Tabell 2: referenser
-  - Ingår i avsnitt
-    - 2: Versionsinfomation
-      - 2.1.3: Förändrade tjänstekontrakt
-        - Tabell med kompatibilitetsinformation
-    - 3: Tjänstedomänens arkitektur
-      - 3.7: flöden
-        - Tabell
-    - 4: Tjänstedomänens krav och regler
-      - 4.2.1: SLA krav
-        - Tabell
-    - 6: Tjänstekontrakt
-      - 6.x tjänstekontrakt xyz
-        - 6.x.2: Fältregler
-          - Tabell med begäran och svar
-    - 7: Gemensamma fälttyper (kan även heta Gemensamma datatyper)
-      - Tabeller kan förekomma direkt eller i undernivåer
-
 
 
 ## Driftsättning, konfiguration, beroenden:
@@ -226,3 +165,64 @@ Exempel på det är DOCX_display_document_contents.py
 - Biblioteket tillhandahåller funktioner som döljer strukturen i Wordfiler i docx-format
 - Worddokument läses in i en instans av DOCX_bibliotekts klass Document(), vilket sker i Document_management.py
 - Wordfiler består av en struktur av ett antal XML-filer. I de fall där DOCX-biblioteket inte tillhandahåller önskad funktion så har Pythonkoden läst in berörd XML-fil och sökt i den
+
+
+### Utredning innan utveckling:
+- Listningen nedan visar hur många tabeller det faktiskt finns per avsnitt per dokument (för närvarande baserat på Intygsdomänen).
+  - Slutsatsen hittills är att de allra flesta avsnitt inte har mer än en tabell
+- AB
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik inom projektet
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 1.2: Begrepp
+    - 2.x: Arkitekturellt beslut
+- Infospec
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 2: Informationssäkerhet
+      - Tabell: beskrivning av informationen
+      - Tabell: lagrum
+      - Tabell: informationsflöde
+      - Tabell: spårbarhet, tillgänglighet och arkivering
+      - Tabell: krav på den som konsumerar informationen
+    - 3: Referensmodellsförteckning (RIM)
+    - 4: Processmodell
+      - 4.1, tabell: Beskrivning av processmodellen
+    - 5: Arbetsflöde
+      - 5.1.1, tabell: Aktörer
+      - 5.1.2, tabell: Användningsfall
+    - 6: Begreppsmodell och beskrivning
+      - 6.2, tabell: Beskrivning av begrepp
+    - 7: Informationsmodell och beskrivning
+      - Inga tabeller
+    - 8: Klasser och attribut
+      - 8.x, tabell: klass
+    - 9: Datatyper i informationsmdoellen
+      - Tabell
+    - 10: Multipliciteter i informationsmodellen
+      - Tabell
+    - 11: Identifierare och kodverk
+      - Tabell
+- TKB
+  - Saknar avsnittsrubrik (avvikelser kan förekomma i vissa domäner)
+    - Tabell 1: revisionshistorik
+    - Tabell 2: referenser
+  - Ingår i avsnitt
+    - 2: Versionsinfomation
+      - 2.1.3: Förändrade tjänstekontrakt
+        - Tabell med kompatibilitetsinformation
+    - 3: Tjänstedomänens arkitektur
+      - 3.7: flöden
+        - Tabell
+    - 4: Tjänstedomänens krav och regler
+      - 4.2.1: SLA krav
+        - Tabell
+    - 6: Tjänstekontrakt
+      - 6.x tjänstekontrakt xyz
+        - 6.x.2: Fältregler
+          - Tabell med begäran och svar
+    - 7: Gemensamma fälttyper (kan även heta Gemensamma datatyper)
+      - Tabeller kan förekomma direkt eller i undernivåer

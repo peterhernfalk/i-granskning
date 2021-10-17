@@ -42,7 +42,6 @@ def emptyrequest():
     Returnerar: en sträng med html-innehåll
     """
     ##### PREPARE #####
-    html = ""
     html = "<br><h1>Webbadressen är inte korrekt!</h1>"
     html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
     html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
