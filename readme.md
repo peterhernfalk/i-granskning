@@ -110,12 +110,16 @@ Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att 
 - Push till GitHub-repo
   - Från lokalt repo
 - Deploy till Heroku-app
-  - Deploy sker med Herokus CLI 
+  - Deploy sker med Herokus CLI (git push heroku master)
   - runtime.txt används av Heroku för att se till att önskat Python-version är installerat i appen
   - requirements.txt används av Heroku för att se till att angivna versioner av dependencies är installerade i appen
 
 ## Information riktad till utvecklare:
-Dokumenten som granskas laddas ner till virtuella dokumentinstanser (DOCX Document), som är de som granskas.
+Dokumenten som granskas laddas ner till virtuella dokumentinstanser (DOCX Document), vilka i sin tur är de som granskas.
+### Lokal utveckling och test
+- PyCharm har använts som IDE vid utveckling av tjänsten
+- Lokala tester har gjorts genom att starta app.py från PyCharm och sedan anropa tjänsten via webbläsare med adress http://127.0.0.1:4001/granskningsinfo?domain=[domännamn]&tag=[tagnummer]
+
 ### Komplettera med ytterligare granskningspukt:
 Både granskningsflöde och dokumentspecifika funktioner finns i 
 respektive dokuments granskningsfil (granskning_*.py). 
