@@ -22,6 +22,15 @@ granskningsresultat = ""
 HTML_2_SPACES = "&nbsp;&nbsp;"
 HTML_3_SPACES = "&nbsp;&nbsp;&nbsp;"
 
+TITLE = True
+NO_TITLE = False
+INITIAL_NEWLINE = True
+NO_INITIAL_NEWLINE = False
+TEXT = True
+NO_TEXT = False
+TABLES = True
+NO_TABLES = False
+
 IS = "IS"
 """IS_begreppslista_finns = False
 IS_begreppsmodell_finns = False

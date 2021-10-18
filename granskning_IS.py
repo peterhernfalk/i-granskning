@@ -1,7 +1,6 @@
 import datetime
 
 import DOCX_display_document_contents
-#from DOCX_display_document_contents import *
 import docx
 from docx.table import *
 from docx.oxml.text.paragraph import CT_P
@@ -11,14 +10,7 @@ from docx.api import Document  # noqa
 import document_mangagement
 from utilities import *
 
-TITLE = True
-NO_TITLE = False
-INITIAL_NEWLINE = True
-NO_INITIAL_NEWLINE = False
-TEXT = True
-NO_TEXT = False
-TABLES = True
-NO_TABLES = False
+
 
 ### From globals.py ###
 IS_begreppslista_finns = False
@@ -217,14 +209,14 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
     write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
-    IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
+    IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.TABLES)
     if IS_referensinfomodell_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
-    IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
@@ -238,7 +230,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
-    IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_begreppslista_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Begreppssystem, klassifikationer och kodverk)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
@@ -254,7 +246,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
-    IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_informationsmodell_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
@@ -262,7 +254,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
-    DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("klasser och attribut", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("klasser och attribut", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_display_document_contents.DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ", globals.UPPER_CASE)
     # print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
@@ -288,13 +280,13 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
     search_phrase_kodverk = "Identifikationer och kodverk"
-    IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_kodverkstabell_finns == False:
         search_phrase_kodverk = "Identifierare och kodverk"
-        IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+        IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
         if IS_kodverkstabell_finns == False:
             search_phrase_kodverk = "Begreppssystem, klassifikationer och kodverk"
-            IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+            IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
             if IS_kodverkstabell_finns == False:
                 write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
@@ -304,7 +296,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
     if IS_kodverkstabell_finns == True:
-        DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
+        DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")

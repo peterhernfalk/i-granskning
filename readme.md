@@ -14,7 +14,9 @@ Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar.
 - Tjänsten är utvecklad i Python som använder Flask för att exponera två endpoints och svara på anrop. De enpoints som exponeras är:
   - / (URL utan parametrar. Returnerar information som förklarar vilka paramterar som ska användas)
   - /granskningsinfo (tar emot parametrar, anropar granskningsmodulerna samt returnerar en dashboard i html-format som svar på anropet)
-- Det finns en granskningsprocedur per dokument, vilken efter att ha konstruerat URL till dokumentet läser in Infospec, TKB eller AB från Bitbucket-repo
+- Det finns en granskningsfil per dokument, vilken efter att ha konstruerat URL till dokumentet läser in Infospec, TKB eller AB från Bitbucket-repo
+- Granskningsfilerna innehåller allt som är unikt för granskning av respektive dokument
+  - ATT GÖRA: säkerställ att det itne finns några dokumentspecifika funktioner eller variabler utanför granskningsfilerna
 - Dokumenten läses in ett i taget i en instans av typen DOCX Document-klass
 - Granskningsflödet exekveras i sekvens per dokument genom anrop från app.py till granskningsfilerna 
 - Gemensamma granskningsfunktioenr finns i DOCX_display_document_contents.py 

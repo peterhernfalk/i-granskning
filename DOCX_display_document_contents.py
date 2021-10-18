@@ -14,7 +14,18 @@ import granskning_AB
 import granskning_IS
 import granskning_TKB
 
+### From granskning_IS.py ###
+INITIAL_NEWLINE = True
+NO_INITIAL_NEWLINE = False
+NO_TABLES = False
+NO_TEXT = False
+NO_TITLE = False
 NOT_FOUND = "Not found"
+TABLES = True
+TEXT = True
+TITLE = True
+#############################
+
 STYLE_FAMILY_HEADING = "Heading"
 STYLE_FAMILY_RUBRIK = "Rubrik"
 STYLE_FAMILY_SUBTLE_EMPHASIS = "Subtle Emphasis"
