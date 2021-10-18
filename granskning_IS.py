@@ -1,12 +1,14 @@
+import datetime
+
 import DOCX_display_document_contents
-from DOCX_display_document_contents import *
+#from DOCX_display_document_contents import *
 import docx
 from docx.table import *
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import *
 from docx.oxml.table import *
 from docx.api import Document  # noqa
-import Document_mangagement
+import document_mangagement
 from utilities import *
 
 TITLE = True
@@ -18,11 +20,35 @@ NO_TEXT = False
 TABLES = True
 NO_TABLES = False
 
+### From globals.py ###
+IS_begreppslista_finns = False
+IS_begreppsmodell_finns = False
+IS_antal_brister_attributnamn = 0
+IS_antal_brister_datatyper = 0
+IS_antal_brister_klassbeskrivning = 0
+IS_antal_brister_multiplicitet = 0
+IS_antal_brister_referensinfomodell = 0
+IS_antal_brister_referenslänkar = 0
+IS_antal_brister_revisionshistorik = 0
+IS_antal_brister_tomma_begreppsbeskrivningstabellceller = 0
+IS_antal_brister_tomma_referenstabellceller = 0
+IS_antal_brister_tomma_revisionshistoriktabellceller = 0
+IS_antal_brister_tomma_tabellceller = 0
+IS_detail_box_contents = ""
+IS_document_exists = False
+IS_document_name = ""
+IS_exists = False
+IS_felmeddelande = ""
+IS_informationsmodell_finns = False
+IS_kodverkstabell_finns = False
+IS_referensinfomodell_finns = False
+#######################
 
 ##############################
 ##### Publika funktioner #####
 ##############################
 def prepare_IS_inspection(domain, tag, alt_document_name):
+    print("IS-init påbörjas",datetime.datetime.now())
     """
     Beräknar url till infospecdokumentet för angiven domain och tag.
 
@@ -33,26 +59,72 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     """
     2do: Förenkla och snygga till koden
     """
+
+    ### From globals.py ###
+    global IS_begreppslista_finns
+    global IS_begreppsmodell_finns
+    global IS_antal_brister_attributnamn
+    global IS_antal_brister_datatyper
+    global IS_antal_brister_klassbeskrivning
+    global IS_antal_brister_multiplicitet
+    global IS_antal_brister_referensinfomodell
+    global IS_antal_brister_referenslänkar
+    global IS_antal_brister_revisionshistorik
+    global IS_antal_brister_tomma_begreppsbeskrivningstabellceller
+    global IS_antal_brister_tomma_referenstabellceller
+    global IS_antal_brister_tomma_revisionshistoriktabellceller
+    global IS_antal_brister_tomma_tabellceller
+    global IS_detail_box_contents
+    global IS_document_exists
+    global IS_document_name
+    global IS_exists
+    global IS_felmeddelande
+    global IS_informationsmodell_finns
+    global IS_kodverkstabell_finns
+    global IS_referensinfomodell_finns
+    IS_begreppslista_finns = False
+    IS_begreppsmodell_finns = False
+    IS_antal_brister_attributnamn = 0
+    IS_antal_brister_datatyper = 0
+    IS_antal_brister_klassbeskrivning = 0
+    IS_antal_brister_multiplicitet = 0
+    IS_antal_brister_referensinfomodell = 0
+    IS_antal_brister_referenslänkar = 0
+    IS_antal_brister_revisionshistorik = 0
+    IS_antal_brister_tomma_begreppsbeskrivningstabellceller = 0
+    IS_antal_brister_tomma_referenstabellceller = 0
+    IS_antal_brister_tomma_revisionshistoriktabellceller = 0
+    IS_antal_brister_tomma_tabellceller = 0
+    IS_detail_box_contents = ""
+    IS_document_exists = False
+    IS_document_name = ""
+    IS_exists = False
+    IS_informationsmodell_finns = False
+    IS_kodverkstabell_finns = False
+    IS_referensinfomodell_finns = False
+    IS_felmeddelande = ""
+    #######################
+
     global IS_page_link
     global IS_document_paragraphs
-    IS_page_link = Document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
-    downloaded_IS_page = Document_mangagement.DOC_get_downloaded_document(IS_page_link)
+    IS_page_link = document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
+    downloaded_IS_page = document_mangagement.DOC_get_downloaded_document(IS_page_link)
 
     IS_document_paragraphs = ""
 
-    IS_head_hash = Document_mangagement.DOC_get_head_hash(downloaded_IS_page)
-    IS_document_link = Document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
-    downloaded_IS_document = Document_mangagement.DOC_get_downloaded_document(IS_document_link)
+    IS_head_hash = document_mangagement.DOC_get_head_hash(downloaded_IS_page)
+    IS_document_link = document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
+    downloaded_IS_document = document_mangagement.DOC_get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
         ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
         ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
         #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
-        globals.IS_exists = False
-        docx_IS_document = ""
+        IS_exists = False
+        #docx_IS_document = ""
     else:
-        globals.docx_IS_document = Document_mangagement.DOC_get_docx_document(downloaded_IS_document)
-        globals.IS_document_exists = True
-        globals.IS_exists = True
+        globals.docx_IS_document = document_mangagement.DOC_get_docx_document(downloaded_IS_document)
+        IS_document_exists = True
+        IS_exists = True
         ### dev test ###
         for paragraph in globals.docx_IS_document.paragraphs:
             if paragraph.text.strip() != "":
@@ -64,8 +136,34 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
 
 
 def perform_IS_inspection(domain, tag, alt_document_name):
+    print("IS-granskning påbörjas",datetime.datetime.now())
     prepare_IS_inspection(domain, tag, alt_document_name)
-    if globals.IS_exists == False:
+
+    ### From globals.py ###
+    global IS_begreppslista_finns
+    global IS_begreppsmodell_finns
+    global IS_antal_brister_attributnamn
+    global IS_antal_brister_datatyper
+    global IS_antal_brister_klassbeskrivning
+    global IS_antal_brister_multiplicitet
+    global IS_antal_brister_referensinfomodell
+    global IS_antal_brister_referenslänkar
+    global IS_antal_brister_revisionshistorik
+    global IS_antal_brister_tomma_begreppsbeskrivningstabellceller
+    global IS_antal_brister_tomma_referenstabellceller
+    global IS_antal_brister_tomma_revisionshistoriktabellceller
+    global IS_antal_brister_tomma_tabellceller
+    global IS_detail_box_contents
+    global IS_document_exists
+    global IS_document_name
+    global IS_exists
+    global IS_felmeddelande
+    global IS_informationsmodell_finns
+    global IS_kodverkstabell_finns
+    global IS_referensinfomodell_finns
+    #######################
+
+    if IS_exists == False:
         return
 
     write_detail_box_content(
@@ -90,43 +188,43 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
     if used_table_no > 0:
-        globals.IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,used_table_no)
+        IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,used_table_no)
     else:
-        globals.IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,globals.TABLE_NUM_REVISION)
+        IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,globals.TABLE_NUM_REVISION)
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
-        result, globals.IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
+        result, IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
-        result, globals.IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+        result, IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
     if used_table_no > 0:
-        globals.IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
+        IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
     else:
-        globals.IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
+        IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
-        result, globals.IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
+        result, IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
     else:
-        result, globals.IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
+        result, IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
     write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
-    globals.IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
-    if globals.IS_referensinfomodell_finns == False:
+    IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
+    if IS_referensinfomodell_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
-    globals.IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
@@ -136,12 +234,12 @@ def perform_IS_inspection(domain, tag, alt_document_name):
         begreppsbeskrivning_tabell = used_table_no
     else:
         begreppsbeskrivning_tabell = DOCX_display_document_contents.DOCX_get_tableno_for_first_column_title("begrepp", document.tables)
-    result, globals.IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
+    result, IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
-    globals.IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-    if globals.IS_begreppslista_finns == False:
+    IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if IS_begreppslista_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Begreppssystem, klassifikationer och kodverk)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
@@ -149,15 +247,15 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     # tolkning: jämför begreppskolumnen med beskrivningskolumnen i begreppsbeskrivningstabellen
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
-    if begreppsbeskrivning_tabell > 0 and globals.IS_begreppslista_finns == True:
+    if begreppsbeskrivning_tabell > 0 and IS_begreppslista_finns == True:
         write_detail_box_content("<b>Resultat:</b> kontrollen är inte utvecklad än, så för närvarande kan inget resultat visas!")
     else:
         write_detail_box_content("<b>Resultat:</b> kravet är inte uppfyllt eftersom inte både begreppsbeskrivningstabellen och begreppslistan finns i dokumentet")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
-    globals.IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-    if globals.IS_informationsmodell_finns == False:
+    IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if IS_informationsmodell_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
@@ -172,32 +270,32 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Infomodellklassernas attributnamn ska ha liten begynnelsebokstav")
-    globals.IS_antal_brister_attributnamn = IS_inspect_attribute_case()
+    IS_antal_brister_attributnamn = IS_inspect_attribute_case()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
-    globals.IS_antal_brister_klassbeskrivning = IS_inspect_class_description()
+    IS_antal_brister_klassbeskrivning = IS_inspect_class_description()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
-    globals.IS_antal_brister_multiplicitet = IS_inspect_attribute_multiplicity()
+    IS_antal_brister_multiplicitet = IS_inspect_attribute_multiplicity()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
-    globals.IS_antal_brister_datatyper = IS_inspect_usage_of_defined_datatypes()
+    IS_antal_brister_datatyper = IS_inspect_usage_of_defined_datatypes()
 
     ### 2do ### Anropa DOCX_get_tableno_for_paragraph_title för att få reda på om kodverkstabell finns
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
     search_phrase_kodverk = "Identifikationer och kodverk"
-    globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-    if globals.IS_kodverkstabell_finns == False:
+    IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+    if IS_kodverkstabell_finns == False:
         search_phrase_kodverk = "Identifierare och kodverk"
-        globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-        if globals.IS_kodverkstabell_finns == False:
+        IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+        if IS_kodverkstabell_finns == False:
             search_phrase_kodverk = "Begreppssystem, klassifikationer och kodverk"
-            globals.IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
-            if globals.IS_kodverkstabell_finns == False:
+            IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
+            if IS_kodverkstabell_finns == False:
                 write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     # 2do: jämför klasstabellernas med dokumentets kodverkstabell
@@ -205,13 +303,13 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
-    if globals.IS_kodverkstabell_finns == True:
+    if IS_kodverkstabell_finns == True:
         DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, TITLE, NO_INITIAL_NEWLINE, NO_TEXT, TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
-    globals.IS_antal_brister_referensinfomodell = IS_inspect_usage_of_reference_infomodel()
+    IS_antal_brister_referensinfomodell = IS_inspect_usage_of_reference_infomodel()
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
@@ -228,7 +326,9 @@ def perform_IS_inspection(domain, tag, alt_document_name):
         write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
         write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
-    globals.IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
+    IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
+    print("IS-granskning klar",datetime.datetime.now())
+
 
 
 #####################################################
@@ -407,7 +507,7 @@ def __set_document_name():
     """os.chdir(globals.document_path)
     for word_document in glob.glob("IS_*.doc*"):
         document_name = r""+globals.document_path+"/"+word_document"""
-    document_name = globals.IS_document_name
+    document_name = IS_document_name
 
 ### Find all tables with infomodel class information ###
 def __find_all_document_tables():

@@ -52,7 +52,7 @@ Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att 
   - TKB
     - Anropar funktion i granskning_TKB.py för att förbereda och genomföra granskning av TKB
  
- - Document_management.py
+ - document_management.py
     - Funktioner för att beräkna URL till angivet dokument
     
 - DOCX_display_document_contents.py
@@ -167,7 +167,7 @@ Exempel på det är DOCX_display_document_contents.py
 
 ### DOCX-biblioteket
 - Biblioteket tillhandahåller funktioner som döljer strukturen i Wordfiler i docx-format
-- Worddokument läses in i en instans av DOCX_bibliotekts klass Document(), vilket sker i Document_management.py
+- Worddokument läses in i en instans av DOCX_bibliotekts klass Document(), vilket sker i document_management.py
 - Wordfiler består av en struktur av ett antal XML-filer. I de fall där DOCX-biblioteket inte tillhandahåller önskad funktion så har Pythonkoden läst in berörd XML-fil och sökt i den
 
 

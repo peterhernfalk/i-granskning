@@ -44,21 +44,19 @@ def DOC_get_document_link(domainname, tag, document, head_hash, alt_document_nam
 
     return document_link
 
-def DOC_document_name(search_phrase):
+#def DOC_document_name(search_phrase):
     """
     Sätter den globala variabeln 'document' till namnet på angivet dokument
     """
-    global document
+    """global document
     global document_name
 
     if "IS_*" in search_phrase:
         document = globals.docx_IS_document
     elif "TKB_*" in search_phrase:
-        document = globals.docx_TKB_document
+        document = globals.docx_TKB_document"""
 
-
-def DOC_load_doacument():
-    ##########
+"""def DOC_load_document():
     if document == globals.IS:
         global IS_page_link
         global IS_document_paragraphs
@@ -79,8 +77,7 @@ def DOC_load_doacument():
             for paragraph in globals.docx_IS_document.paragraphs:
                 if paragraph.text.strip() != "":
                     IS_document_paragraphs += paragraph.text + "<br>"
-            ### dev test ###
-        ##########
+            ### dev test ### """
 
 def DOC_get_downloaded_document(document_link):
     """

@@ -10,6 +10,9 @@ from docx.oxml.table import CT_Tbl
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import Paragraph
 
+import granskning_AB
+import granskning_IS
+import granskning_TKB
 
 NOT_FOUND = "Not found"
 STYLE_FAMILY_HEADING = "Heading"
@@ -32,13 +35,13 @@ def DOCX_prepare_inspection(document_search_phrase):
     """
     __set_document_name(document_search_phrase)
 
-    if globals.IS_document_exists == True:
+    if granskning_IS.IS_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
-    elif globals.TKB_document_exists == True:
+    elif granskning_TKB.TKB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
-    elif globals.AB_document_exists == True:
+    elif granskning_AB.AB_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
 

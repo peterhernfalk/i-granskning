@@ -1,12 +1,12 @@
 
-from docx import Document
-import Document_mangagement
+#from docx import Document
+#import Document_mangagement
 from flask import Flask, request    # jsonify
 from flask_cors import CORS
 
 import granskning_AB
 import granskning_TKB
-from granskning_TKB import *
+#from granskning_TKB import *
 import granskning_IS
 import html_dashboard
 #from html_dashboard import *
@@ -61,10 +61,6 @@ def reponse2request():
     Returnerar: en sträng med html-innehåll
     """
 
-    ###########################
-    ### 2do: förenkla koden ###
-    ###########################
-
     ##### PREPARE #####
     globals.GLOBALS_init()
     domain = request.args.get('domain', default="")
@@ -102,9 +98,7 @@ def reponse2request():
         ##### CREATE HTML #####
         html = html_dashboard.get_page_html()
     else:
-        html = "<br><h1>Webbadressen är inte korrekt!</h1>"
-        html += "<br>Någon av de obligatoriska url-parametrarna <i>domain</i> eller <i>tag</i> <b>saknas i anropet!</b>"
-        html += "<br><br>Ange dem i adressraden enligt följande format: <i>url...</i><b>/granskningsinfo?domain=</b><i>[domännamn utan riv-prefix]</i><b>&tag=</b><i>[tag]</i>"
+        html = emptyrequest()
 
     ##### REPLY #####
     return html

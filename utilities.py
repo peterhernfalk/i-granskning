@@ -1,6 +1,8 @@
 
 import glob
-
+import granskning_AB
+import granskning_IS
+import granskning_TKB
 import requests.exceptions
 #from requests import exceptions
 from requests.exceptions import MissingSchema
@@ -72,19 +74,19 @@ def write_output(text):
 def write_detail_box_content(text):
     detail_box_content = "<li>" + text + "</li>"
     if globals.docx_document == globals.IS:
-        globals.IS_detail_box_contents += detail_box_content
+        granskning_IS.IS_detail_box_contents += detail_box_content
     elif globals.docx_document == globals.TKB:
-        globals.TKB_detail_box_contents += detail_box_content
+        granskning_TKB.TKB_detail_box_contents += detail_box_content
     elif globals.docx_document == globals.AB:
-        globals.AB_detail_box_contents += detail_box_content
+        granskning_AB.AB_detail_box_contents += detail_box_content
 
 def write_detail_box_html(html_text):
     if globals.docx_document == globals.IS:
-        globals.IS_detail_box_contents += html_text
+        granskning_IS.IS_detail_box_contents += html_text
     elif globals.docx_document == globals.TKB:
-        globals.TKB_detail_box_contents += html_text
+        granskning_TKB.TKB_detail_box_contents += html_text
     elif globals.docx_document == globals.AB:
-        globals.AB_detail_box_contents += html_text
+        granskning_AB.AB_detail_box_contents += html_text
 
 
 def write_output_without_newline(text):
