@@ -1,3 +1,5 @@
+import datetime
+
 import DOCX_display_document_contents
 from DOCX_display_document_contents import *
 #import docx
@@ -45,6 +47,7 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
     """
     2do: Förenkla och snygga till koden
     """
+    print("AB-init påbörjas",datetime.datetime.now())
 
     global AB_page_link
 
@@ -92,6 +95,7 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
 
 def perform_AB_inspection(domain, tag, alt_document_name):
     prepare_AB_inspection(domain, tag, alt_document_name)
+    print("AB-granskning påbörjas",datetime.datetime.now())
 
     global AB_antal_brister_referenslänkar
     global AB_antal_brister_revisionshistorik
@@ -147,3 +151,4 @@ def perform_AB_inspection(domain, tag, alt_document_name):
     write_detail_box_content("<b>Krav:</b> dokumentet ska innehålla rimliga arkitekturbeslut")
     DOCX_display_paragraph_text_and_tables("arkitekturella beslut",TITLE,NO_INITIAL_NEWLINE,NO_TEXT,NO_TABLES)
     write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    print("AB-granskning klar",datetime.datetime.now())

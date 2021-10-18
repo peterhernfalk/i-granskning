@@ -136,8 +136,8 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
 
 
 def perform_IS_inspection(domain, tag, alt_document_name):
-    print("IS-granskning påbörjas",datetime.datetime.now())
     prepare_IS_inspection(domain, tag, alt_document_name)
+    print("IS-granskning påbörjas",datetime.datetime.now())
 
     ### From globals.py ###
     global IS_begreppslista_finns

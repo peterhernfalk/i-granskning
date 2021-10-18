@@ -2,6 +2,8 @@
 #from TKB_inspection import *
 #from utilities import write_output, write_detail_box_content, verify_url_exists, check_if_file_exists
 from utilities import *"""
+import datetime
+
 import DOCX_display_document_contents
 #import html_dashboard
 from DOCX_display_document_contents import *
@@ -52,6 +54,7 @@ def prepare_TKB_inspection(domain, tag, alt_document_name):
     """
     2do: Förenkla och snygga till koden
     """
+    print("TKB-init påbörjas",datetime.datetime.now())
     ### From globals.py ###
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
@@ -106,6 +109,7 @@ def prepare_TKB_inspection(domain, tag, alt_document_name):
 
 def perform_TKB_inspection(domain, tag, alt_document_name):
     prepare_TKB_inspection(domain, tag, alt_document_name)
+    print("TKB-granskning påbörjas",datetime.datetime.now())
 
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
@@ -179,6 +183,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     if TKB_meddelandemodeller_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Tjänstedomänens meddelandemodeller)")
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
+    print("TKB-granskning klar",datetime.datetime.now())
 
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
