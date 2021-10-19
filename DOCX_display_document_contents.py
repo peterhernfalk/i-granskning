@@ -1,4 +1,6 @@
 #from notinuse import IS_inspection
+import datetime
+
 import globals
 import granskning_IS
 from utilities import *
@@ -482,11 +484,11 @@ def __document_table_print_html_table(table):
 def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
     result = False
     if globals.docx_document == globals.IS:
-        globals.IS_antal_brister_tomma_tabellceller = 0
+        granskning_IS.IS_antal_brister_tomma_tabellceller = 0
     elif globals.docx_document == globals.TKB:
-        globals.TKB_antal_brister_tomma_tabellceller = 0
+        granskning_TKB.TKB_antal_brister_tomma_tabellceller = 0
     elif globals.docx_document == globals.AB:
-        globals.AB_antal_brister_tomma_tabellceller = 0
+        granskning_AB.AB_antal_brister_tomma_tabellceller = 0
     antal_brister_tomma_tabellceller = 0
 
     html_table = ""
@@ -557,6 +559,91 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
             write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
+
+    return result, antal_brister_tomma_tabellceller
+
+def DOCX_empty_table_cells_exists_new(table_number, display_result, display_type):
+    #print("\tBegin DOCX_empty_table_cells_exists_new",datetime.datetime.now())
+    result = False
+    if globals.docx_document == globals.IS:
+        granskning_IS.IS_antal_brister_tomma_tabellceller = 0
+    elif globals.docx_document == globals.TKB:
+        granskning_TKB.TKB_antal_brister_tomma_tabellceller = 0
+    elif globals.docx_document == globals.AB:
+        granskning_AB.AB_antal_brister_tomma_tabellceller = 0
+    antal_brister_tomma_tabellceller = 0
+
+    html_table = ""
+    if display_type == globals.DISPLAY_TYPE_TABLE:
+        html_table += "<table>"
+
+    table = document.tables[table_number]
+
+    #print("\t\tBegin for row in enumerate",datetime.datetime.now())
+    row_number = 0
+    for i,row in enumerate(table.rows):
+        row_number += 1
+        column_count = len(table.row_cells(0))
+        cells_missing_content = ""
+        cell_contents_html = ""
+        table_title = ""
+        celltext = tuple(cell.text for cell in row.cells)
+        cell_number = 0
+        for element in celltext:
+            cell_has_contents = False
+            if row_number == 1:
+                html_table += "<th>" + element + "</th>"
+            cell_number += 1
+            if element != "":
+                cell_has_contents = True
+                if cell_contents_html == "":
+                    cell_contents_html += "<tr>"
+                cell_contents_html += "<td>" + element + "&nbsp;</td>"
+            else:
+                if cell_contents_html == "":
+                    cell_contents_html += "<tr>"
+                cell_contents_html += "<td>" + element + "&nbsp;</td>"
+                #for paragraph in table.cell(row, column).paragraphs:
+                #    xml_str = str(paragraph.paragraph_format.element.xml)
+                #    if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
+                #        cell_has_contents = True
+            if cell_has_contents == False:
+                result = True
+                if globals.docx_document == globals.IS:
+                    table_title = granskning_IS.IS_get_infomodel_classname_from_table_number(table_number, True)
+                    antal_brister_tomma_tabellceller += 1
+                elif globals.docx_document == globals.TKB:
+                    table_title = "TKB-tabell nummer " + str(table_number)
+                    antal_brister_tomma_tabellceller += 1
+                elif globals.docx_document == globals.AB:
+                    table_title = "AB-tabell nummer " + str(table_number)
+                    antal_brister_tomma_tabellceller += 1
+                if cells_missing_content == "":
+                    cells_missing_content += str(cell_number+1)  #column
+                else:
+                    cells_missing_content += ", " + str(cell_number+1)   #column
+            #write_detail_box_content(globals.HTML_3_SPACES + "Tabellcell utan innehåll funnen!  Tabell: " + str(table_title) + ", Rad: " + str(row) + ", Kolumn: " + str(column+1))
+        cell_contents_html += "</tr>"
+        if cells_missing_content != "":
+            if display_type == globals.DISPLAY_TYPE_TEXT:
+                write_detail_box_content(
+                    globals.HTML_3_SPACES + "Tabellceller utan innehåll!  Tabell: " + table_title + ", Rad: " + str(
+                        row) + ", Kolumn: " + cells_missing_content)
+            elif display_type == globals.DISPLAY_TYPE_TABLE and result == True:
+                # html_table += "<tr><td>"+table_title + "</td><td>Rad/kolumn" + str(row) + " " + cells_missing_content + "</td>" + cell_contents_html + "</tr>"
+                html_table += cell_contents_html
+    #print("\t\tEnd",datetime.datetime.now())
+
+    if display_result == True:
+        if result == True:
+            if display_type == globals.DISPLAY_TYPE_TABLE:
+                html_table += "</table>"
+                write_detail_box_html(html_table)
+            write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
+        else:
+            write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
+
+    #print("\tEnd DOCX_empty_table_cells_exists_new",datetime.datetime.now())
 
     return result, antal_brister_tomma_tabellceller
 ##############################################
