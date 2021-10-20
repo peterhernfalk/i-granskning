@@ -54,7 +54,7 @@ def prepare_TKB_inspection(domain, tag, alt_document_name):
     """
     2do: Förenkla och snygga till koden
     """
-    print("TKB-init påbörjas",datetime.datetime.now())
+    print("TKB-init påbörjas",datetime.datetime.now().replace(microsecond=0))
     ### From globals.py ###
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
@@ -109,7 +109,7 @@ def prepare_TKB_inspection(domain, tag, alt_document_name):
 
 def perform_TKB_inspection(domain, tag, alt_document_name):
     prepare_TKB_inspection(domain, tag, alt_document_name)
-    print("TKB-granskning påbörjas",datetime.datetime.now())
+    print("TKB-granskning påbörjas",datetime.datetime.now().replace(microsecond=0))
 
     global TKB_antal_brister_referenslänkar
     global TKB_antal_brister_revisionshistorik
@@ -135,7 +135,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     # 2do: kontrollera versionsnummer på dokumentets första sida
     utilities.write_detail_box_content("<b>Granskningsstöd:</b> alla interaktioner ska vara beskrivna i TKB")
 
-    print("\tTKB: revisionshistorik, version",datetime.datetime.now())
+    print("\tTKB: revisionshistorik, version",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     utilities.write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
@@ -147,7 +147,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         TKB_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.TKB,TABLE_NUM_REVISION)
         #globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history_new(globals.TKB,globals.docx_TKB_document.tables[used_table_no])
 
-    print("\tTKB: revisionshistorik, tomma celler",datetime.datetime.now())
+    print("\tTKB: revisionshistorik, tomma celler",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
@@ -155,10 +155,10 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists_new(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
         ###result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
-        print("\tTKB: revisionshistorik, tomma celler, avslutad kontroll", datetime.datetime.now())
+        print("\tTKB: revisionshistorik, tomma celler, avslutad kontroll", datetime.datetime.now().replace(microsecond=0))
         result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists_new(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
-    print("\tTKB: referenstabell",datetime.datetime.now())
+    print("\tTKB: referenstabell, länkar",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
@@ -167,6 +167,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     else:
         TKB_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(TABLE_NUM_REF)
 
+    print("\tTKB: referenstabell, tomma celler",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
@@ -177,21 +178,21 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     # 2do: kontrollera om domännamnet nämns i inledningsparagrafen (det ska vara på engelska)
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
 
-    print("\tTKB: versionskontroll",datetime.datetime.now())
+    print("\tTKB: versionskontroll",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     utilities.write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
     DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
-    print("\tTKB: meddelandemodeller",datetime.datetime.now())
+    print("\tTKB: meddelandemodeller",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> TKB ska innehålla ett avsnitt för meddelandemodeller")
     TKB_meddelandemodeller_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     if TKB_meddelandemodeller_finns == False:
         write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Tjänstedomänens meddelandemodeller)")
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
-    print("TKB-granskning klar",datetime.datetime.now())
+    print("TKB-granskning klar",datetime.datetime.now().replace(microsecond=0))
 
     # 2do (senare): kontrollera att det finns V-MIM-tabeller (en gemensam eller en per tjänstekontrakt)
     # 2do (senare): kontrollera att meddelandemodelltabellens attribut mappar mot motsvarande i xsd-schemas
