@@ -172,6 +172,13 @@ Exempel på det är DOCX_display_document_contents.py
 - Worddokument läses in i en instans av DOCX_bibliotekts klass Document(), vilket sker i document_management.py
 - Wordfiler består av en struktur av ett antal XML-filer. I de fall där DOCX-biblioteket inte tillhandahåller önskad funktion så har Pythonkoden läst in berörd XML-fil och sökt i den
 
+### Optimering av exekveringstid
+Det visade sig att funktionen som kollar om det finns tomma tabellceller tog oväntat lång tid för kontroll av cellinnehållet. 
+Detta märktes tydligt för en domän som hade en ovanligt stor revisionshistorik (> 90 tabellrader).
+Funktionen skrevs om så att den läser in varje tabellrad i en Tuple, som sedan kontrolleras element för element. 
+Tidsåtgången för den berörda domänen sänktes från 17 till 3 sekunder. 
+Tuple känner inte igen hyperlänkar i tabeller, utan betraktar hyperlänkar som tomt innehåll. 
+En extra kontroll görs därför av tomma tabellcellers underliggande XML-innehåll.
 
 ### Utredning innan utveckling:
 - Listningen nedan visar hur många tabeller det faktiskt finns per avsnitt per dokument (för närvarande baserat på Intygsdomänen).
