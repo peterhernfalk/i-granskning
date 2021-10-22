@@ -481,7 +481,7 @@ def __document_table_print_html_table(table):
 
 ##############################################
 ### 2do: förenkla och parameterisera koden ###
-def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
+"""def DOCX_empty_table_cells_exists_linksupport(table_number, display_result, display_type):
     result = False
     if globals.docx_document == globals.IS:
         granskning_IS.IS_antal_brister_tomma_tabellceller = 0
@@ -560,9 +560,9 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
-    return result, antal_brister_tomma_tabellceller
+    return result, antal_brister_tomma_tabellceller"""
 
-def DOCX_empty_table_cells_exists_new(table_number, display_result, display_type):
+def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
     #print("\tBegin DOCX_empty_table_cells_exists_new",datetime.datetime.now())
     result = False
     if globals.docx_document == globals.IS:
@@ -588,6 +588,7 @@ def DOCX_empty_table_cells_exists_new(table_number, display_result, display_type
         cell_contents_html = ""
         table_title = ""
         celltext = tuple(cell.text for cell in row.cells)
+        #print(table_number,celltext)
         cell_number = 0
         for element in celltext:
             cell_has_contents = False
@@ -603,10 +604,11 @@ def DOCX_empty_table_cells_exists_new(table_number, display_result, display_type
                 if cell_contents_html == "":
                     cell_contents_html += "<tr>"
                 cell_contents_html += "<td>" + element + "&nbsp;</td>"
-                #for paragraph in table.cell(row, column).paragraphs:
-                #    xml_str = str(paragraph.paragraph_format.element.xml)
-                #    if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
-                #        cell_has_contents = True
+                # Hyperlinks are represented as empty in tuples. Check for hyperlink in paragraph XML
+                for paragraph in table.cell(row_number-1,cell_number-1).paragraphs:
+                    xml_str = str(paragraph.paragraph_format.element.xml)
+                    if "<w:t>" in xml_str or "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
+                        cell_has_contents = True
             if cell_has_contents == False:
                 result = True
                 if globals.docx_document == globals.IS:

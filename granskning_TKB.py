@@ -152,11 +152,11 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     utilities.write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
         #result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
-        result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists_new(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
+        result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
         ###result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
         print("\tTKB: revisionshistorik, tomma celler, avslutad kontroll", datetime.datetime.now().replace(microsecond=0))
-        result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists_new(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+        result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     print("\tTKB: referenstabell, länkar",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
