@@ -219,7 +219,12 @@ def DOCX_inspect_reference_links(table_num):
         write_output("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
         write_detail_box_content("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
     for link in links:
+        begin = datetime.datetime.now()
         status_code = verify_url_exists(link)
+        end = datetime.datetime.now()
+        diff = end-begin
+        if diff.seconds > 0:
+            print("\t\tverify_url_exists, exceeding 0 seconds:", diff, link)
         if status_code == 400:
             write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)

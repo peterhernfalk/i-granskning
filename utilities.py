@@ -12,9 +12,9 @@ import os
 import os.path
 import re
 from requests import head
+import urllib3
 
 local_test = False
-
 
 ### Not in use yet ###
 def check_if_file_exists(path, search_pattern):
@@ -32,6 +32,9 @@ def check_if_file_exists(path, search_pattern):
     return file_exist
 
 def extract_urls_from_table(document, table_number):
+    """
+        2do: extract embedded url from a link with another display text than the url address
+    """
     table = document.tables[table_number]
     links = []
     for row in table.rows:
@@ -98,8 +101,9 @@ def write_output_without_newline(text):
 
 def verify_url_exists(searched_url):
     status_code = 200
+    urllib3.disable_warnings()
     try:
-        response = head(searched_url.strip())
+        response = head(searched_url.strip(), allow_redirects=True, timeout=2, verify=False)
         status_code = response.status_code
     except requests.exceptions.ConnectionError:
         status_code = 400  # http status code, meaning bad request
@@ -111,7 +115,17 @@ def verify_url_exists(searched_url):
     #    status_code = 400  # http status code, meaning bad request
     return status_code
 
+#print("begin")
+#url_address = "http://termbank.socialstyrelsen.se/"
+#url_address = "www.inera.se/hsa/dokument"
+#url_address = "http://www.inera.se/hsa/dokument"
+#response_code = verify_url_exists(url_address)
+#print("response code from call",response_code)
+#print("end")
+
 if local_test == True:
+    #print("call")
+    #verify_url_exists("http://termbank.socialstyrelsen.se/")
     searched_url_arrray = []
 
     # Various URL:s
