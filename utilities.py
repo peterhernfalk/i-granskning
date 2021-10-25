@@ -35,12 +35,24 @@ def extract_urls_from_table(document, table_number):
     """
         2do: extract embedded url from a link with another display text than the url address
     """
+    """from docx.opc.constants import RELATIONSHIP_TYPE as RT
+    rels = document.part.rels
+    for rel in rels:
+        if rels[rel].reltype == RT.HYPERLINK:
+            print("Link id:", rel, "has URL: ", rels[rel]._target)"""
+
+    """elements = document.element.getiterator()
+    for element in elements:
+        print(element)"""
+
     table = document.tables[table_number]
     links = []
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:
+                #print(paragraph.part)
                 xml_str = str(paragraph.paragraph_format.element.xml)
+                #print("Ärendehantering" in xml_str, "<w:hyperlink" in xml_str, xml_str)
                 if "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
                     wt_list = re.findall('<w:t[\S\s]*?</w:t>', xml_str)
                     if "<w:t xml:" not in str(wt_list[0]):

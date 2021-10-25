@@ -180,6 +180,47 @@ Tidsåtgången för den berörda domänen sänktes från 17 till 3 sekunder.
 Tuple känner inte igen hyperlänkar i tabeller, utan betraktar hyperlänkar som tomt innehåll. 
 En extra kontroll görs därför av tomma tabellcellers underliggande XML-innehåll.
 
+### Ett Worddokuments beståndsdelar
+Worddokument består av ett antal filer (främst XML) som tillsammans beskriver dokumentets innehåll och dess formatering.
+I fall där DOCX-biblioteket saknar stöd för att tillhandahålla önskad information från dokumentet så söker Pythonkoden i en XML-fils innehåll
+
+Nedan listas ett exempel på vilka filer som ingår i ett dokument (TKB_clinicalprocess_healthcond_actoutcome.docx)
+- [Content_Types].xml
+- _rels/.rels 
+- word/_rels/document.xml.rels
+- word/document.xml
+- word/footnotes.xml
+- word/endnotes.xml
+- word/header1.xml
+- word/footer1.xml
+- word/header2.xml
+- word/footer2.xml
+- word/_rels/header1.xml.rels
+- word/_rels/header2.xml.rels
+- word/media/image1.png
+- word/media/image2.png
+- word/media/image3.png
+- word/media/image4.png
+- word/media/image5.jpeg
+- word/media/image7.png
+- word/media/image8.png
+- word/media/image9.png
+- word/media/image10.png
+- word/theme/theme1.xml
+- word/media/image6.png
+- word/settings.xml
+- word/_rels/settings.xml.rels
+- customXml/item1.xml
+- customXml/itemProps1.xml
+- word/numbering.xml
+- word/styles.xml
+- word/webSettings.xml
+- word/fontTable.xml
+- docProps/core.xml
+- docProps/app.xml
+- docProps/custom.xml
+- customXml/_rels/item1.xml.rels
+
 ### Utredning innan utveckling:
 - Listningen nedan visar hur många tabeller det faktiskt finns per avsnitt per dokument (för närvarande baserat på Intygsdomänen).
   - Slutsatsen hittills är att de allra flesta avsnitt inte har mer än en tabell

@@ -48,7 +48,9 @@ def DOCX_prepare_inspection(document_search_phrase):
     """
     __set_document_name(document_search_phrase)
 
-    if granskning_IS.IS_document_exists == True:
+    __set_document_name(document_search_phrase)
+    __document_structure_2_dict(__style_family(document_search_phrase))
+    """if granskning_IS.IS_document_exists == True:
         __set_document_name(document_search_phrase)
         __document_structure_2_dict(__style_family(document_search_phrase))
     elif granskning_TKB.TKB_document_exists == True:
@@ -56,7 +58,7 @@ def DOCX_prepare_inspection(document_search_phrase):
         __document_structure_2_dict(__style_family(document_search_phrase))
     elif granskning_AB.AB_document_exists == True:
         __set_document_name(document_search_phrase)
-        __document_structure_2_dict(__style_family(document_search_phrase))
+        __document_structure_2_dict(__style_family(document_search_phrase))"""
 
     DOCX_init_dict_paragraph_title_and_tableno(document)
 
