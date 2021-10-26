@@ -74,8 +74,13 @@ def extract_urls_from_table(document, table_number):
                 xml_str = str(paragraph.paragraph_format.element.xml)
                 if "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
                     wt_list = re.findall('<w:t[\S\s]*?</w:t>', xml_str)
+                    #if "supportproc" in wt_list[0]:
+                    #    print(xml_str,"\n",wt_list)
                     if "<w:t xml:" not in str(wt_list[0]):
                         hyperlink = str(wt_list[0]).replace("<w:t>","").replace("</w:t>","")
+                        #print("hyperlink", hyperlink)
+                        if hyperlink.endswith("%20"):
+                            hyperlink = hyperlink.removesuffix("%20")
                         if "http" not in hyperlink:
                             ### Workaround for w:t that contains disply text instead of url ###
                             relation_id = re.findall('r:id="[\S\s]*?"', xml_str)

@@ -50,15 +50,6 @@ def DOCX_prepare_inspection(document_search_phrase):
 
     __set_document_name(document_search_phrase)
     __document_structure_2_dict(__style_family(document_search_phrase))
-    """if granskning_IS.IS_document_exists == True:
-        __set_document_name(document_search_phrase)
-        __document_structure_2_dict(__style_family(document_search_phrase))
-    elif granskning_TKB.TKB_document_exists == True:
-        __set_document_name(document_search_phrase)
-        __document_structure_2_dict(__style_family(document_search_phrase))
-    elif granskning_AB.AB_document_exists == True:
-        __set_document_name(document_search_phrase)
-        __document_structure_2_dict(__style_family(document_search_phrase))"""
 
     DOCX_init_dict_paragraph_title_and_tableno(document)
 
@@ -80,10 +71,8 @@ def DOCX_inspect_revision_history(docx_document, table_num):
         write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         if docx_document == globals.IS:
-            #globals.IS_antal_brister_revisionshistorik = 1
             antal_brister_revisionshistorik = 1
         elif docx_document == globals.TKB:
-            #globals.TKB_antal_brister_revisionshistorik = 1
             antal_brister_revisionshistorik = 1
         elif docx_document == globals.AB:
             antal_brister_revisionshistorik = 1
@@ -225,28 +214,19 @@ def DOCX_inspect_reference_links(table_num):
         status_code = verify_url_exists(link)
         end = datetime.datetime.now()
         diff = end-begin
-        if diff.seconds > 0:
-            print("\t\tverify_url_exists, exceeding 0 seconds:", diff, link)
+        #if diff.seconds > 0:
+        #    print("\t\tverify_url_exists, response time >= 1 second:", diff, link)
         if status_code == 400:
             write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
-            if globals.docx_document == globals.IS:
-                #globals.IS_antal_brister_referenslänkar += 1
-                antal_brister_referenslänkar += 1
-            elif globals.docx_document == globals.TKB:
-                #globals.TKB_antal_brister_referenslänkar += 1
-                antal_brister_referenslänkar += 1
-            elif globals.docx_document == globals.AB:
-                antal_brister_referenslänkar += 1
+            antal_brister_referenslänkar += 1
         elif status_code < 404:
             write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
             write_detail_box_content("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
         else:
             if globals.docx_document == globals.IS:
-                #globals.IS_antal_brister_referenslänkar += 1
                 antal_brister_referenslänkar += 1
             elif globals.docx_document == globals.TKB:
-                #globals.TKB_antal_brister_referenslänkar += 1
                 antal_brister_referenslänkar += 1
             elif globals.docx_document == globals.AB:
                 antal_brister_referenslänkar += 1
