@@ -33,13 +33,34 @@ def check_if_file_exists(path, search_pattern):
 
 def extract_urls_from_table(document, table_number):
     """
-        2do: extract embedded url from a link with another display text than the url address
+    Utredning inför kodning:
+        "Ärendehantering" in xml_str, "<w:hyperlink" in xml_str
+
+        Länk som innehåller url:
+            False True
+            <w:hyperlink r:id="rId15" w:history="1">
+                <w:r w:rsidR="003441E4" w:rsidRPr="00394169">
+                    <w:t>http://rivta.se/documents/ARK_0040/</w:t>
+
+        Länk som innehåller display text, men ingen url:
+            True True
+            <w:hyperlink r:id="rId14" w:history="1">
+                <w:r w:rsidR="00D35DA5">
+                    <w:t>Ärendehantering</w:t>
+            I document.part.rels:
+                Länk-id rId14 innehåller url i rels[rel]._target
     """
-    """from docx.opc.constants import RELATIONSHIP_TYPE as RT
+
+    from docx.opc.constants import RELATIONSHIP_TYPE as RT
+
     rels = document.part.rels
+    document_relations = {}
     for rel in rels:
         if rels[rel].reltype == RT.HYPERLINK:
-            print("Link id:", rel, "has URL: ", rels[rel]._target)"""
+            document_relations[rel] = rels[rel]._target
+
+    #for key, value in document_relations.items():
+    #    print(key,value)
 
     """elements = document.element.getiterator()
     for element in elements:
@@ -50,13 +71,17 @@ def extract_urls_from_table(document, table_number):
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:
-                #print(paragraph.part)
                 xml_str = str(paragraph.paragraph_format.element.xml)
-                #print("Ärendehantering" in xml_str, "<w:hyperlink" in xml_str, xml_str)
                 if "<w:hyperlink" in xml_str or 'w:val="Hyperlink"' in xml_str:
                     wt_list = re.findall('<w:t[\S\s]*?</w:t>', xml_str)
                     if "<w:t xml:" not in str(wt_list[0]):
                         hyperlink = str(wt_list[0]).replace("<w:t>","").replace("</w:t>","")
+                        if "http" not in hyperlink:
+                            ### Workaround for w:t that contains disply text instead of url ###
+                            relation_id = re.findall('r:id="[\S\s]*?"', xml_str)
+                            if len(relation_id) > 0:
+                                relation_id_key = str(relation_id[0]).replace('r:id=','').replace('"','')
+                                hyperlink = document_relations[relation_id_key]
                         links.append(hyperlink)
                 elif paragraph.text.lower().find("http") >= 0:
                     paragraph_links = paragraph.text.split("\n")
@@ -64,7 +89,6 @@ def extract_urls_from_table(document, table_number):
                         if paragraph_link.lower().find("http") >= 0:
                             if paragraph_link.strip() != "":
                                 links.append(paragraph_link)
-                                #print("extract_urls_from_table, link", paragraph_link)
 
     return links
 
@@ -115,7 +139,7 @@ def verify_url_exists(searched_url):
     status_code = 200
     urllib3.disable_warnings()
     try:
-        response = head(searched_url.strip(), allow_redirects=True, timeout=2, verify=False)
+        response = head(searched_url.strip(), allow_redirects=True, verify=False)    #timeout=2
         status_code = response.status_code
     except requests.exceptions.ConnectionError:
         status_code = 400  # http status code, meaning bad request
