@@ -197,10 +197,19 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
+    links_excist = False
     if used_table_no > 0:
-        IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
+        links_excist, IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
     else:
-        IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
+        links_excist, IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
+    if IS_antal_brister_referenslänkar > 0:
+        write_detail_box_content("<b>Resultat:</b> en eller flera länkar är felaktiga, eller kan inte tolkas korrekt av granskningsfunktionen.")
+        write_detail_box_content("<b>Granskningsstöd:</b> gör manuell kontroll i dokumentet av de länkar som rapporteras som felaktiga")
+    else:
+        if links_excist == True:
+            write_detail_box_content("<b>Resultat:</b> alla kontrollerade länkar fungerar")
+        else:
+            write_detail_box_content("<b>Resultat:</b> inga länkar har kontrollerats")
 
     print("\tIS: referenstabell, tomma celler",datetime.datetime.now().replace(microsecond=0))
     write_detail_box_html("<br>")

@@ -205,10 +205,13 @@ def DOCX_inspect_reference_links(table_num):
     Kollar om länkarna i dokumentets referenstabell fungerar eller ej.
     """
     antal_brister_referenslänkar = 0
+    links_excist = False
     links = extract_urls_from_table(document, table_num)
     if len(links) == 0:
         write_output("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
         write_detail_box_content("Det finns inga länkar i referenstabellen. Obs att det ändå kan förekomma länkar med annat format (text istället för hyperlänk).")
+    else:
+        links_excist = True
     for link in links:
         begin = datetime.datetime.now()
         status_code = verify_url_exists(link)
@@ -217,23 +220,18 @@ def DOCX_inspect_reference_links(table_num):
         #if diff.seconds > 0:
         #    print("\t\tverify_url_exists, response time >= 1 second:", diff, link)
         if status_code == 400:
-            write_output("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
+            write_output(globals.HTML_3_SPACES + "<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             write_detail_box_content("<b>Länken är felaktig eller kan inte tolkas!</b> (statuskod: " + str(status_code) + ") för: " + link)
             antal_brister_referenslänkar += 1
         elif status_code < 404:
-            write_output("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
-            write_detail_box_content("<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
+            write_output(globals.HTML_3_SPACES + "<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
+            write_detail_box_content(globals.HTML_3_SPACES + "<b>OK</b> (statuskod: " + str(status_code) + ") för: <a href='" + link + "' target = '_blank'>" + link + "</a>")
         else:
-            if globals.docx_document == globals.IS:
-                antal_brister_referenslänkar += 1
-            elif globals.docx_document == globals.TKB:
-                antal_brister_referenslänkar += 1
-            elif globals.docx_document == globals.AB:
-                antal_brister_referenslänkar += 1
-            write_output("Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
-            write_detail_box_content("<b>Sidan saknas!</b> (statuskod: " + str(status_code) + ") för: " + link)
+            antal_brister_referenslänkar += 1
+            write_output(globals.HTML_3_SPACES + "Sidan saknas! (statuskod: " + str(status_code) + ") för: " + link)
+            write_detail_box_content(globals.HTML_3_SPACES + "<b>Sidan saknas!</b> (statuskod: " + str(status_code) + ") för: " + link)
 
-    return antal_brister_referenslänkar
+    return links_excist, antal_brister_referenslänkar
 
 #def DOCX_display_paragragh_title(searched_title_name):
     """

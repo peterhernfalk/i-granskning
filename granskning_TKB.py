@@ -162,12 +162,20 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
+    links_excist = False
     if used_table_no > 0:
-        TKB_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
+        links_excist, TKB_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(used_table_no)
     else:
-        TKB_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(TABLE_NUM_REF)
+        links_excist, TKB_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(TABLE_NUM_REF)
+    if TKB_antal_brister_referenslänkar > 0:
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera länkar är felaktiga, eller kan inte tolkas korrekt av granskningsfunktionen.")
+        utilities.write_detail_box_content("<b>Granskningsstöd:</b> gör manuell kontroll i dokumentet av de länkar som rapporteras som felaktiga")
+    else:
+        if links_excist == True:
+            utilities.write_detail_box_content("<b>Resultat:</b> alla kontrollerade länkar fungerar")
+        else:
+            utilities.write_detail_box_content("<b>Resultat:</b> inga länkar har kontrollerats")
 
-    print("\tTKB: referenstabell, tomma celler",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_html("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
