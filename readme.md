@@ -18,7 +18,7 @@ Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar frå
 - Svar:
   - Efter avslutat granskningsflöde
     - Uppbyggnad av struktur i html-dashboarden, inklusive länkar till detaljavsnitten
-    - Innehåll i html-dashboarden fylls med hjälp av underlag från information som sparats i sessionen
+    - Innehåll i html-dashboarden fylls med hjälp av information som sparats i sessionen
       - Sammanställning och summering i sammanfattningsrutor
       - Detaljerad information i detaljrutor i form av krav, granskningsstöd och granskningsresultat
     - Uppbyggd html skickas från tjänstens endpoint till webbläsaren som svar på anropet
