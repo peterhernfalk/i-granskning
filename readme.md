@@ -9,17 +9,19 @@ kan ha skett förändringar som exempelvis att nya kapitel har lagts till eller 
 
 Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar från webbläsare till tjänstens endpoint
 - Anrop:
-  - Webbläsare --> Tjänstens endpoint --> Granskningsflöde
+  - Webbläsare gör anrop till tjänstens endpoint
+  - Tjänstens endpoint startar granskningsflöde
     - Per dokument i granskningsflödet: 
       - Nerladdning av dokumentet från domänens repo 
       - Exekvera ganskningsfunktioner
       - Logga resultat
 - Svar:
-  - Bygg upp html-dashboard med hjälp av underlag från granskningskontroller
-    - Uppbyggnad av dashboardstruktur, inklusive länkar till detaljavsnitten
-    - Sammanställning och summering i sammanfattningsrutor
-    - Detaljerad information i detaljrutor i form av krav, granskningsstöd och granskningsresultat
-  - Returnera html från tjänstens endpoint till webbläsaren
+  - Efter avslutat granskningsflöde
+    - Bygg upp html-dashboard med hjälp av underlag från granskningskontroller
+      - Uppbyggnad av dashboardstruktur, inklusive länkar till detaljavsnitten
+      - Sammanställning och summering i sammanfattningsrutor
+      - Detaljerad information i detaljrutor i form av krav, granskningsstöd och granskningsresultat
+    - Returnera html från tjänstens endpoint till webbläsaren
 
 
 ### Implementationen i korthet
@@ -38,6 +40,8 @@ Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar frå
 - Koden förenklas och renodlas inför slutleverans
 - Det har påbörjats ett arbete att göra funktionerna mer självständiga
 ur ett informationsförsörjningsperspektiv, med inparametrar istället för beroende till globala variabler
+- Det finns ett antal repos för RIVTA-verktyg på Bitbucket. På sikt bör även detta kodprojekt flyttas dit
+  - En första snabbkoll visar att det finns en Bitbucket plugin för Pycharm samt stöd för att göra deploy från Bitbucket till Heroku
 
 ### Runtime-stöd:
 Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att installera eller uppdatera Python-version och beroenden.
