@@ -1,17 +1,11 @@
-import datetime
 
+import datetime
 import DOCX_display_document_contents
 from DOCX_display_document_contents import *
-#import docx
-#from docx.table import *
-#from docx.oxml.text.paragraph import CT_P
-#from docx.text.paragraph import *
-#from docx.oxml.table import *
 from docx.api import Document  # noqa
 import document_mangagement
 from utilities import *
 
-### From globals.py ###
 AB_antal_brister_referenslänkar = 0
 AB_antal_brister_revisionshistorik = 0
 AB_antal_brister_tomma_referenstabellceller = 0
@@ -20,8 +14,6 @@ AB_antal_brister_tomma_tabellceller = 0
 AB_detail_box_contents = ""
 AB_document_exists = False
 AB_exists = False
-#######################
-
 
 TITLE = True
 NO_TITLE = False
@@ -31,9 +23,6 @@ TEXT = True
 NO_TEXT = False
 TABLES = True
 NO_TABLES = False
-#TABLE_NUM_REVISION = 1   #Hard coded, assuming that the reference table is number 1 in the document
-#TABLE_NUM_REF = 2   #Hard coded, assuming that the reference table is number 2 in the document
-
 
 
 def prepare_AB_inspection(domain, tag, alt_document_name):
@@ -51,7 +40,6 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
 
     global AB_page_link
 
-    ### From globals.py ###
     global AB_antal_brister_referenslänkar
     global AB_antal_brister_revisionshistorik
     global AB_antal_brister_tomma_referenstabellceller
@@ -68,13 +56,9 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
     AB_detail_box_contents = ""
     AB_document_exists = False
     AB_exists = False
-    #######################
 
-    #global AB_document_paragraphs
     AB_page_link = document_mangagement.DOC_get_document_page_link(domain, tag, globals.AB)
     downloaded_AB_page = document_mangagement.DOC_get_downloaded_document(AB_page_link)
-
-    AB_document_paragraphs = ""
 
     AB_head_hash = document_mangagement.DOC_get_head_hash(downloaded_AB_page)
     AB_document_link = document_mangagement.DOC_get_document_link(domain, tag, globals.AB, AB_head_hash, alt_document_name)
@@ -83,13 +67,8 @@ def prepare_AB_inspection(domain, tag, alt_document_name):
         AB_exists = False
     else:
         globals.docx_AB_document = document_mangagement.DOC_get_docx_document(downloaded_AB_document)
-        granskning_AB.AB_document_exists = True
-        granskning_AB.AB_exists = True
-        ### dev test ###
-        """for paragraph in globals.docx_AB_document.paragraphs:
-            if paragraph.text.strip() != "":
-                AB_document_paragraphs += paragraph.text + "<br>" """
-        ### dev test ###
+        AB_document_exists = True
+        AB_exists = True
 
         DOCX_prepare_inspection("AB_*.doc*")
 
@@ -117,25 +96,25 @@ def perform_AB_inspection(domain, tag, alt_document_name):
     write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
     if used_table_no > 0:
-        granskning_AB.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB, used_table_no)
+        AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB, used_table_no)
     else:
-        granskning_AB.AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB,globals.TABLE_NUM_REVISION)
+        AB_antal_brister_revisionshistorik = DOCX_inspect_revision_history(globals.AB,globals.TABLE_NUM_REVISION)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
-        result, granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
+        result, AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
-        result, granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
+        result, AB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
     links_excist = False
     if used_table_no > 0:
-        links_excist, granskning_AB.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(used_table_no)
+        links_excist, AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(used_table_no)
     else:
-        links_excist, granskning_AB.AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
+        links_excist, AB_antal_brister_referenslänkar = DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
     if AB_antal_brister_referenslänkar > 0:
         write_detail_box_content("<b>Resultat:</b> en eller flera länkar är felaktiga, eller kan inte tolkas korrekt av granskningsfunktionen.")
         write_detail_box_content("<b>Granskningsstöd:</b> gör manuell kontroll i dokumentet av de länkar som rapporteras som felaktiga")
@@ -148,9 +127,9 @@ def perform_AB_inspection(domain, tag, alt_document_name):
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
-        result, granskning_AB.AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
+        result, AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
     else:
-        result, granskning_AB.AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
+        result, AB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
 
     write_detail_box_html("<br>")
     write_detail_box_content("<b>Krav:</b> alla AB ska ha minst två alternativ och motivering till det valda alternativet. Kontrolleras manuellt")

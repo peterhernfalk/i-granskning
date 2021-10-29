@@ -1,20 +1,11 @@
 
-#from docx import Document
-#import Document_mangagement
-from flask import Flask, request    # jsonify
+from flask import Flask, request
 from flask_cors import CORS
-
 import granskning_AB
-import granskning_TKB
-#from granskning_TKB import *
 import granskning_IS
+import granskning_TKB
 import html_dashboard
-#from html_dashboard import *
-
-#import globals
-#import io
 from repo import *
-#import requests
 
 ##############################
 # Startup settings
@@ -23,7 +14,6 @@ from repo import *
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
-#pip install -U flask-cors
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 

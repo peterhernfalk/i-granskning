@@ -1,20 +1,16 @@
-import datetime
 
-import DOCX_display_document_contents
+import datetime
+import document_mangagement
 import docx
 from docx.table import *
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import *
 from docx.oxml.table import *
 from docx.api import Document  # noqa
-import document_mangagement
+import DOCX_display_document_contents
 from utilities import *
 
 
-
-### From globals.py ###
-IS_begreppslista_finns = False
-IS_begreppsmodell_finns = False
 IS_antal_brister_attributnamn = 0
 IS_antal_brister_datatyper = 0
 IS_antal_brister_klassbeskrivning = 0
@@ -26,6 +22,8 @@ IS_antal_brister_tomma_begreppsbeskrivningstabellceller = 0
 IS_antal_brister_tomma_referenstabellceller = 0
 IS_antal_brister_tomma_revisionshistoriktabellceller = 0
 IS_antal_brister_tomma_tabellceller = 0
+IS_begreppslista_finns = False
+IS_begreppsmodell_finns = False
 IS_detail_box_contents = ""
 IS_document_exists = False
 IS_document_name = ""
@@ -34,11 +32,7 @@ IS_felmeddelande = ""
 IS_informationsmodell_finns = False
 IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
-#######################
 
-##############################
-##### Publika funktioner #####
-##############################
 def prepare_IS_inspection(domain, tag, alt_document_name):
     print("IS-init påbörjas",datetime.datetime.now().replace(microsecond=0))
     """
@@ -52,9 +46,6 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     2do: Förenkla och snygga till koden
     """
 
-    ### From globals.py ###
-    global IS_begreppslista_finns
-    global IS_begreppsmodell_finns
     global IS_antal_brister_attributnamn
     global IS_antal_brister_datatyper
     global IS_antal_brister_klassbeskrivning
@@ -66,6 +57,8 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     global IS_antal_brister_tomma_referenstabellceller
     global IS_antal_brister_tomma_revisionshistoriktabellceller
     global IS_antal_brister_tomma_tabellceller
+    global IS_begreppslista_finns
+    global IS_begreppsmodell_finns
     global IS_detail_box_contents
     global IS_document_exists
     global IS_document_name
@@ -74,8 +67,6 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     global IS_informationsmodell_finns
     global IS_kodverkstabell_finns
     global IS_referensinfomodell_finns
-    IS_begreppslista_finns = False
-    IS_begreppsmodell_finns = False
     IS_antal_brister_attributnamn = 0
     IS_antal_brister_datatyper = 0
     IS_antal_brister_klassbeskrivning = 0
@@ -87,6 +78,8 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     IS_antal_brister_tomma_referenstabellceller = 0
     IS_antal_brister_tomma_revisionshistoriktabellceller = 0
     IS_antal_brister_tomma_tabellceller = 0
+    IS_begreppslista_finns = False
+    IS_begreppsmodell_finns = False
     IS_detail_box_contents = ""
     IS_document_exists = False
     IS_document_name = ""
@@ -95,33 +88,20 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     IS_kodverkstabell_finns = False
     IS_referensinfomodell_finns = False
     IS_felmeddelande = ""
-    #######################
 
     global IS_page_link
-    global IS_document_paragraphs
     IS_page_link = document_mangagement.DOC_get_document_page_link(domain, tag, globals.IS)
     downloaded_IS_page = document_mangagement.DOC_get_downloaded_document(IS_page_link)
-
-    IS_document_paragraphs = ""
 
     IS_head_hash = document_mangagement.DOC_get_head_hash(downloaded_IS_page)
     IS_document_link = document_mangagement.DOC_get_document_link(domain, tag, globals.IS, IS_head_hash, alt_document_name)
     downloaded_IS_document = document_mangagement.DOC_get_downloaded_document(IS_document_link)
     if downloaded_IS_document.status_code == 404:
-        ###IS_document_paragraphs = APP_text_document_not_found(globals.IS, domain, tag)
-        ###globals.granskningsresultat += "<br><h2>Infospec</h2>" + APP_text_document_not_found(globals.IS, domain, tag)
-        #globals.IS_felmeddelande = APP_text_document_not_found(globals.IS, domain, tag)
         IS_exists = False
-        #docx_IS_document = ""
     else:
         globals.docx_IS_document = document_mangagement.DOC_get_docx_document(downloaded_IS_document)
         IS_document_exists = True
         IS_exists = True
-        ### dev test ###
-        for paragraph in globals.docx_IS_document.paragraphs:
-            if paragraph.text.strip() != "":
-                IS_document_paragraphs += paragraph.text + "<br>"
-        ### dev test ###
 
         DOCX_display_document_contents.DOCX_prepare_inspection("IS_*.doc*")
         IS_init_infomodel_classes_list()
@@ -131,9 +111,6 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     prepare_IS_inspection(domain, tag, alt_document_name)
     print("IS-granskning påbörjas",datetime.datetime.now().replace(microsecond=0))
 
-    ### From globals.py ###
-    global IS_begreppslista_finns
-    global IS_begreppsmodell_finns
     global IS_antal_brister_attributnamn
     global IS_antal_brister_datatyper
     global IS_antal_brister_klassbeskrivning
@@ -145,6 +122,8 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     global IS_antal_brister_tomma_referenstabellceller
     global IS_antal_brister_tomma_revisionshistoriktabellceller
     global IS_antal_brister_tomma_tabellceller
+    global IS_begreppslista_finns
+    global IS_begreppsmodell_finns
     global IS_detail_box_contents
     global IS_document_exists
     global IS_document_name
@@ -153,13 +132,11 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     global IS_informationsmodell_finns
     global IS_kodverkstabell_finns
     global IS_referensinfomodell_finns
-    #######################
 
     if IS_exists == False:
         return
 
-    write_detail_box_content(
-        "<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
     """
         Exempel på Core properties:
@@ -352,9 +329,6 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
 
 
-#####################################################
-##### Privata funktioner (från IS_inspection.py #####
-#####################################################
 class infomodel_classes:
     def __init__(self, classtitle, document_level, classtable_number):
         self.classtitle = classtitle
@@ -392,6 +366,7 @@ def IS_inspect_class_description():
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
     return IS_antal_brister_klassbeskrivning
 
+### 2do: generalisera funktionen ###
 def IS_inspect_attribute_case():
     all_attributes_approved = True
     IS_antal_brister_attributnamn = 0
@@ -500,7 +475,6 @@ def IS_inspect_usage_of_reference_infomodel():
     return IS_antal_brister_referensinfomodell
 
 
-################################################## local methods
 def IS_get_infomodel_classname_from_table_number(table_number, include_level):
     global infomodel_classes_list
     result_classtitle = ""
@@ -512,16 +486,6 @@ def IS_get_infomodel_classname_from_table_number(table_number, include_level):
                 result_classtitle = obj.classtitle
             break
     return result_classtitle
-
-"""def __get_infomodel_table_number_from_classname(classtitle):
-    global infomodel_classes_list
-    result_table_number = ""
-    for obj in infomodel_classes_list:
-        classtitle_without_level = obj.classtitle.strip().lower()
-        if classtitle.strip().lower() == classtitle_without_level:
-            result_table_number = obj.classtable_number
-            break
-    return result_table_number"""
 
 def __set_document_name():
     global document_name
@@ -551,19 +515,6 @@ def __find_all_document_tables():
         elif table.cell(0,0).text.strip().lower() == "benämning":
             datatype_definitions_table.append(index)
         index += 1
-
-"""def IS_get_tableno_for_first_title_cell(title):
-    global document
-    global all_tables   # equals to document.tables
-    table_number = 0
-    index = 0
-    for table in all_tables:
-        if table.cell(0,0).text.strip().lower() == title:
-            table_number = index
-            break
-        index += 1
-
-    return table_number"""
 
 ### Find and save a list of the paragraphs ###
 def __find_all_document_paragraphs():
@@ -679,10 +630,6 @@ def __inspect_classname_format():
     write_output("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     return result
-
-def __inspect_class_order():
-    ### 2do ###
-    result = True
 
 def __infomodel_classes_verify_attribute_case(table_number):
     table = document.tables[table_number]
@@ -806,12 +753,6 @@ def IS_init_all_tables_list():
     #print("Infomodellklass för tabell 12:", __get_infomodel_classname_from_table_number(12,False))
 
 
-"""def __document_structure_get_key(searched_value):
-    for key, value in document_structure_dict.items():
-        if searched_value == value:
-            return key
-    return NOT_FOUND"""
-
 def __iter_block_items(parent,searched_paragraph_level):
     if isinstance(parent, docx.document.Document):   #_Document
         parent_elm = parent.element.body
@@ -821,3 +762,37 @@ def __iter_block_items(parent,searched_paragraph_level):
             yield Paragraph(child, parent)
         elif isinstance(child, CT_Tbl):
             yield Table(child, parent)
+
+
+
+"""def __get_infomodel_table_number_from_classname(classtitle):
+    global infomodel_classes_list
+    result_table_number = ""
+    for obj in infomodel_classes_list:
+        classtitle_without_level = obj.classtitle.strip().lower()
+        if classtitle.strip().lower() == classtitle_without_level:
+            result_table_number = obj.classtable_number
+            break
+    return result_table_number"""
+
+"""def IS_get_tableno_for_first_title_cell(title):
+    global document
+    global all_tables   # equals to document.tables
+    table_number = 0
+    index = 0
+    for table in all_tables:
+        if table.cell(0,0).text.strip().lower() == title:
+            table_number = index
+            break
+        index += 1
+    return table_number"""
+
+"""def __inspect_class_order():
+    ### 2do ###
+    result = True"""
+
+"""def __document_structure_get_key(searched_value):
+    for key, value in document_structure_dict.items():
+        if searched_value == value:
+            return key
+    return NOT_FOUND"""

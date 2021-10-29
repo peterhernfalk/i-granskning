@@ -7,7 +7,19 @@ sådana krav som ger stor nytta och som kan implementeras med en rimlig arbetsin
 Utmaningar i implementationsarbetet är att det dels förekokmmmer olika mallversioner av dokumenten och dels att det framförallt i infospecar
 kan ha skett förändringar som exempelvis att nya kapitel har lagts till eller att det har tillkommit eller tagits bort tabellkolumner.
 
-Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar.
+Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar från webbläsare till tjänstens endpoint
+- Anrop:
+  - Webbläsare --> Tjänstens endpoint --> Granskningsflöde
+    - Per dokument i granskningsflödet: 
+      - Nerladdning av dokumentet från domänens repo 
+      - Exekvera ganskningsfunktioner
+      - Logga resultat
+- Svar:
+  - Bygg upp html-dashboard med hjälp av underlag från granskningskontroller
+    - Uppbyggnad av dashboardstruktur, inklusive länkar till detaljavsnitten
+    - Sammanställning och summering i sammanfattningsrutor
+    - Detaljerad information i detaljrutor i form av krav, granskningsstöd och granskningsresultat
+  - Returnera html från tjänstens endpoint till webbläsaren
 
 
 ### Implementationen i korthet
@@ -121,6 +133,8 @@ Dokumenten som granskas laddas ner till virtuella dokumentinstanser (DOCX Docume
 ### Lokal utveckling och test
 - PyCharm har använts som IDE vid utveckling av tjänsten
 - Lokala tester har gjorts genom att starta app.py från PyCharm och sedan anropa tjänsten via webbläsare med adress http://127.0.0.1:4001/granskningsinfo?domain=[domännamn]&tag=[tagnummer]
+- Dependencies (installed packages)
+  - 2do: lista packages som används...
 
 ### Komplettera med ytterligare granskningspukt:
 Både granskningsflöde och dokumentspecifika funktioner finns i 
