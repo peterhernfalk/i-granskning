@@ -125,18 +125,18 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         return
 
 
-    #write_detail_box_html("<br>")
+    #write_detail_box_content("<br>")
     #write_detail_box_content("<b>Krav:</b> ResultCode ska inte förekomma i läsande tjänster (kollas av RIVTA:s verifieringsscript)")
     #write_detail_box_content("<b>Krav:</b> för uppdaterande tjänster som kan returnera returkoder ska det finnas beskrivning av hur ResultCode ska hanteras")
 
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer
     # 2do: kontrollera versionsnummer på dokumentets första sida
     utilities.write_detail_box_content("<b>Granskningsstöd:</b> alla interaktioner ska vara beskrivna i TKB")
 
     print("\tTKB: revisionshistorik, version",datetime.datetime.now().replace(microsecond=0))
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
     utilities.write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
@@ -148,7 +148,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         #globals.TKB_antal_brister_revisionshistorik = DOCX_inspect_revision_history_new(globals.TKB,globals.docx_TKB_document.tables[used_table_no])
 
     print("\tTKB: revisionshistorik, tomma celler",datetime.datetime.now().replace(microsecond=0))
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
         #result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
@@ -159,7 +159,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         result, TKB_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     print("\tTKB: referenstabell, länkar",datetime.datetime.now().replace(microsecond=0))
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
     links_excist = False
@@ -176,7 +176,7 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
         else:
             utilities.write_detail_box_content("<b>Resultat:</b> inga länkar har kontrollerats")
 
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
         result, TKB_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
@@ -187,14 +187,14 @@ def perform_TKB_inspection(domain, tag, alt_document_name):
     # 2do: visa innehåll i inledningens underparagraf (Svenskt namn), för manuell kontroll av svenskt namn och svenskt kortnamn
 
     print("\tTKB: versionskontroll",datetime.datetime.now().replace(microsecond=0))
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> versionsnumret ska vara uppdaterat för samma version som domänen")
     utilities.write_detail_box_content("<b>Krav:</b> ändringsstatus för tjänstekontrakt ska överensstämma med granskningsbeställningen")
     DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("versionsinformation",TITLE,NO_INITIAL_NEWLINE,TEXT,NO_TABLES)
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     print("\tTKB: meddelandemodeller",datetime.datetime.now().replace(microsecond=0))
-    utilities.write_detail_box_html("<br>")
+    utilities.write_detail_box_content("<br>")
     utilities.write_detail_box_content("<b>Krav:</b> TKB ska innehålla ett avsnitt för meddelandemodeller")
     TKB_meddelandemodeller_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Tjänstedomänens meddelandemodeller", TITLE, NO_INITIAL_NEWLINE, NO_TEXT, NO_TABLES)
     if TKB_meddelandemodeller_finns == False:

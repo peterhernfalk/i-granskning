@@ -201,6 +201,7 @@ En extra kontroll görs därför av tomma tabellcellers underliggande XML-inneh�
 ### Ett Worddokuments beståndsdelar
 Worddokument består av ett antal filer (främst XML) som tillsammans beskriver dokumentets innehåll och dess formatering.
 I fall där DOCX-biblioteket saknar stöd för att tillhandahålla önskad information från dokumentet så söker Pythonkoden i en XML-fils innehåll
+Läs mer om docx-formatet på: http://officeopenxml.com/anatomyofOOXML.php
 
 Nedan listas ett exempel på vilka filer som ingår i ett dokument (TKB_clinicalprocess_healthcond_actoutcome.docx)
 - [Content_Types].xml

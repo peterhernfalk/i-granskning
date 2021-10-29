@@ -118,7 +118,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
 
     if display_paragraph_title == True and display_tables == False:
         if display_initial_newline == True:
-            write_detail_box_html("<br>")
+            write_detail_box_content("<br>")
         paragraph_displayed = __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
         if paragraph_displayed == True:
             paragraph_or_table_found = True
@@ -136,7 +136,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
                 if searched_paragraph_found == True:
                     if display_tables == True:
                         if display_paragraph_title == False:
-                            write_detail_box_html("<br>")
+                            write_detail_box_content("<br>")
                         __document_table_print_html_table(block)
                         paragraph_or_table_found = True
                     searched_paragraph_found = False     # Bug: supports only one table per paragraph
@@ -337,7 +337,7 @@ def __document_table_print_html_table(table):
                 html_table += "<td>" + cell.text.strip() + "</td>"
         html_table += "</tr>"
     html_table += "</table>"
-    write_detail_box_html(html_table)
+    write_detail_box_content(html_table)
 
 
 def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
@@ -410,7 +410,7 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         if result == True:
             if display_type == globals.DISPLAY_TYPE_TABLE:
                 html_table += "</table>"
-                write_detail_box_html(html_table)
+                write_detail_box_content(html_table)
             write_detail_box_content("<b>Resultat:</b> det finns granskade tabell(er) med en eller flera celler utan innehåll")
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
