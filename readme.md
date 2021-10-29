@@ -9,19 +9,19 @@ kan ha skett förändringar som exempelvis att nya kapitel har lagts till eller 
 
 Tjänsten anropas från en webbläsare med ett GET-anrop med URL-parametrar från webbläsare till tjänstens endpoint
 - Anrop:
-  - Webbläsare gör anrop till tjänstens endpoint
-  - Tjänstens endpoint startar granskningsflöde
+  - Webbläsare gör ett anrop till tjänstens endpoint (/granskningsinfo)
+  - Tjänstens endpoint exekverar granskningsflödet
     - Per dokument i granskningsflödet: 
       - Nerladdning av dokumentet från domänens repo 
-      - Exekvera ganskningsfunktioner
-      - Logga resultat
+      - Ganskningsfunktioner exekveras
+      - Krav och granskningsresultat sparas i sessionen
 - Svar:
   - Efter avslutat granskningsflöde
-    - Bygg upp html-dashboard med hjälp av underlag från granskningskontroller
-      - Uppbyggnad av dashboardstruktur, inklusive länkar till detaljavsnitten
+    - Uppbyggnad av struktur i html-dashboarden, inklusive länkar till detaljavsnitten
+    - Innehåll i html-dashboarden fylls med hjälp av underlag från information som sparats i sessionen
       - Sammanställning och summering i sammanfattningsrutor
       - Detaljerad information i detaljrutor i form av krav, granskningsstöd och granskningsresultat
-    - Returnera html från tjänstens endpoint till webbläsaren
+    - Uppbyggd html skickas från tjänstens endpoint till webbläsaren som svar på anropet
 
 
 ### Implementationen i korthet
