@@ -8,7 +8,9 @@ from docx.text.paragraph import *
 from docx.oxml.table import *
 from docx.api import Document  # noqa
 import DOCX_display_document_contents
-from utilities import *
+import globals
+#from utilities import *
+import utilities
 
 
 IS_antal_brister_attributnamn = 0
@@ -136,7 +138,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     if IS_exists == False:
         return
 
-    write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
+    utilities.write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html
     """
         Exempel på Core properties:
@@ -152,9 +154,9 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     # 2do: kontrollera versionsnummer på dokumentets första sida: förekomst av "Version" med efterföljande versionsnummer
 
     print("\tIS: revisionshistorik, version",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
-    write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> revisionshistoriken ska vara uppdaterad för samma version som domänen")
+    utilities.write_detail_box_content("<b>Granskningsstöd:</b> om revisionshistoriken inte är uppdaterad, kontakta beställaren eller skriv en granskningskommentar")
 
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("revisionshistorik")
     if used_table_no > 0:
@@ -163,16 +165,16 @@ def perform_IS_inspection(domain, tag, alt_document_name):
         IS_antal_brister_revisionshistorik = DOCX_display_document_contents.DOCX_inspect_revision_history(globals.IS,globals.TABLE_NUM_REVISION)
 
     print("\tIS: revisionshistorik, tomma celler",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> revisionshistorikens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
         result, IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TABLE)
     else:
         result, IS_antal_brister_tomma_revisionshistoriktabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REVISION, True, globals.DISPLAY_TYPE_TABLE)
 
     print("\tIS: referenstabellslänkar",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> länkarna i referenstabellen ska fungera")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("referenser")
     links_excist = False
     if used_table_no > 0:
@@ -180,41 +182,41 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     else:
         links_excist, IS_antal_brister_referenslänkar = DOCX_display_document_contents.DOCX_inspect_reference_links(globals.TABLE_NUM_REF)
     if IS_antal_brister_referenslänkar > 0:
-        write_detail_box_content("<b>Resultat:</b> en eller flera länkar är felaktiga, eller kan inte tolkas korrekt av granskningsfunktionen.")
-        write_detail_box_content("<b>Granskningsstöd:</b> gör manuell kontroll i dokumentet av de länkar som rapporteras som felaktiga")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera länkar är felaktiga, eller kan inte tolkas korrekt av granskningsfunktionen.")
+        utilities.write_detail_box_content("<b>Granskningsstöd:</b> gör manuell kontroll i dokumentet av de länkar som rapporteras som felaktiga")
     else:
         if links_excist == True:
-            write_detail_box_content("<b>Resultat:</b> alla kontrollerade länkar fungerar")
+            utilities.write_detail_box_content("<b>Resultat:</b> alla kontrollerade länkar fungerar")
         else:
-            write_detail_box_content("<b>Resultat:</b> inga länkar har kontrollerats")
+            utilities.write_detail_box_content("<b>Resultat:</b> inga länkar har kontrollerats")
 
     print("\tIS: referenstabell, tomma celler",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> referenstabellens alla tabellceller ska ha innehåll")
     if used_table_no > 0:
         result, IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(used_table_no, True, globals.DISPLAY_TYPE_TEXT)
     else:
         result, IS_antal_brister_tomma_referenstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(globals.TABLE_NUM_REF, True, globals.DISPLAY_TYPE_TEXT)
 
     print("\tIS: referensmodell, förekomst och innehåll",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
-    write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> Referensmodellsförteckning ska finnas och ha innehåll")
+    utilities.write_detail_box_content("<b>Krav:</b> Versionskolumnen ska finnas och ha innehåll")
     # 2do: kontrollera att det finns innehåll i referensmodelltabellens versionskolumn, Kolumnrubrik: "Version"
     IS_referensinfomodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Referensmodellsförteckning (RIM)", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.TABLES)
     if IS_referensinfomodell_finns == False:
-        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+        utilities.write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Referensmodellsförteckning (RIM))")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     print("\tIS: begreppsmodell ska finnas",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för begreppsmodell och beskrivning av begrepp")
     IS_begreppsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppsmodell och beskrivning", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     print("\tIS: begreppsbeskrivningstabell ska ha innehåll",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> begreppsmodellens tabell med begreppsbeskrivningar ska finnas och ha innehåll")
     used_table_no = DOCX_display_document_contents.DOCX_get_tableno_for_paragraph_title("begreppsmodell och beskrivning")
     if used_table_no > 0:
         begreppsbeskrivning_tabell = used_table_no
@@ -223,65 +225,65 @@ def perform_IS_inspection(domain, tag, alt_document_name):
     result, IS_antal_brister_tomma_begreppsbeskrivningstabellceller = DOCX_display_document_contents.DOCX_empty_table_cells_exists(begreppsbeskrivning_tabell, True, globals.DISPLAY_TYPE_TABLE)
 
     print("\tIS: begreppslista ska finnas",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en begreppslista")
     IS_begreppslista_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Begreppssystem, klassifikationer och kodverk", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_begreppslista_finns == False:
-        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Begreppssystem, klassifikationer och kodverk)")
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
+        utilities.write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Begreppssystem, klassifikationer och kodverk)")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående avsnittsinnehåll som underlag")
 
     # 2do: kontrollera att begrepp i begreppbeskrivningstabellen finns definierade i dokumentets begreppslista
     # tolkning: jämför begreppskolumnen med beskrivningskolumnen i begreppsbeskrivningstabellen
     print("\tIS: begrepp ska finas definierade i begreppslistan",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> begrepp i begreppsbeskrivningstabellen ska finnas definierade i dokumentets begreppslista")
     if begreppsbeskrivning_tabell > 0 and IS_begreppslista_finns == True:
-        write_detail_box_content("<b>Resultat:</b> kontrollen är inte utvecklad än, så för närvarande kan inget resultat visas!")
+        utilities.write_detail_box_content("<b>Resultat:</b> kontrollen är inte utvecklad än, så för närvarande kan inget resultat visas!")
     else:
-        write_detail_box_content("<b>Resultat:</b> kravet är inte uppfyllt eftersom inte både begreppsbeskrivningstabellen och begreppslistan finns i dokumentet")
+        utilities.write_detail_box_content("<b>Resultat:</b> kravet är inte uppfyllt eftersom inte både begreppsbeskrivningstabellen och begreppslistan finns i dokumentet")
 
     print("\tIS: infomodell ska finnas",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infospecen ska innehålla ett avsnitt för Informationsmodell")
     IS_informationsmodell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("Informationsmodell och beskrivning", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_informationsmodell_finns == False:
-        write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+        utilities.write_detail_box_content("<b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     print("\tIS: lista infomodellklasser",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
-    write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
-    write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
+    utilities.write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
+    utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
+    utilities.write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
     DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("klasser och attribut", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_display_document_contents.DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ", globals.UPPER_CASE)
     # print("antal_klasser_liten_begynnelsebokstav",antal_klasser_liten_begynnelsebokstav,"\nparagraph_title_list",paragraph_title_list)
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     ##IS_inspect_document_contents()
 
     print("\tIS: infomodellklasser, attributnamn",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> Infomodellklassernas attributnamn ska ha liten begynnelsebokstav")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> Infomodellklassernas attributnamn ska ha liten begynnelsebokstav")
     IS_antal_brister_attributnamn = IS_inspect_attribute_case()
 
     print("\tIS: infomodellklasser, beskrivning",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska ha beskrivning i anslutning till rubriken")
     IS_antal_brister_klassbeskrivning = IS_inspect_class_description()
 
     print("\tIS: infomodellklasser, multiplicitet",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> multiplicitet ska vara ifyllt i infomodellklassernas tabeller")
     IS_antal_brister_multiplicitet = IS_inspect_attribute_multiplicity()
 
     print("\tIS: infomodellklasser, definierade datatyper",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska använda definierade datatyper")
     IS_antal_brister_datatyper = IS_inspect_usage_of_defined_datatypes()
 
     ### 2do ### Anropa DOCX_get_tableno_for_paragraph_title för att få reda på om kodverkstabell finns
     print("\tIS: kodverkstabell ska finnas",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infospecen ska innehålla en tabell med användna kodverk")
     search_phrase_kodverk = "Identifikationer och kodverk"
     IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     if IS_kodverkstabell_finns == False:
@@ -291,26 +293,26 @@ def perform_IS_inspection(domain, tag, alt_document_name):
             search_phrase_kodverk = "Begreppssystem, klassifikationer och kodverk"
             IS_kodverkstabell_finns = DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
             if IS_kodverkstabell_finns == False:
-                write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+                utilities.write_detail_box_content("<b>Granskningsstöd:</b> inget av avsnitten 'Identifikationer och kodverk' eller 'Begreppssystem, klassifikationer och kodverk' hittades i infospecen")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
     # 2do: jämför klasstabellernas med dokumentets kodverkstabell
     # Kolumner: data, kodverk/format/regler, kodverk
 
     print("\tIS: kodverkstabellens innehåll",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> Kodverkstabellen ska ha relevant innehåll")
     if IS_kodverkstabell_finns == True:
         DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables(search_phrase_kodverk, globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.TABLES)
-    write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     print("\tIS: infomodellklasser, mappning till RIM",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas attribut ska vara mappade till referensinformationsmodellen")
     IS_antal_brister_referensinfomodell = IS_inspect_usage_of_reference_infomodel()
 
     print("\tIS: infomodellklasser, tomma celler",datetime.datetime.now().replace(microsecond=0))
-    write_detail_box_content("<br>")
-    write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
+    utilities.write_detail_box_content("<br>")
+    utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas alla celler ska innehålla värde")
     empty_cells_found = False
     antal_tomma_klasstabellceller = 0
     for table_index in range(len(infomodel_table_indexes)):
@@ -321,9 +323,9 @@ def perform_IS_inspection(domain, tag, alt_document_name):
             # antal_tomma_klasstabellceller += globals.IS_antal_brister_tomma_tabellceller
             antal_tomma_klasstabellceller += antal
     if empty_cells_found == True:
-        write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
+        utilities.write_detail_box_content("<b>Resultat:</b> det finns infomodellklass(er) med en eller flera celler utan innehåll")
     else:
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla celler har innehåll")
     IS_antal_brister_tomma_tabellceller = antal_tomma_klasstabellceller
     print("IS-granskning klar",datetime.datetime.now().replace(microsecond=0))
 
@@ -360,10 +362,10 @@ def IS_inspect_class_description():
 
     if result == True:
         #write_output("<b>Resultat:</b> alla infomodellklasser har beskrivning")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har beskrivning")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har beskrivning")
     else:
         #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
     return IS_antal_brister_klassbeskrivning
 
 ### 2do: generalisera funktionen ###
@@ -376,16 +378,16 @@ def IS_inspect_attribute_case():
         for row in table.rows[1:]:
             if row.cells[0].text[0:1] != row.cells[0].text[0:1].lower():
                 table_title = IS_get_infomodel_classname_from_table_number(table_num, True)
-                write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " +
+                utilities.write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " +
                         table_title + ": har fel skiftläge på attributnamn" +
                         ". Attribut: " + row.cells[0].text.strip())
                 all_attributes_approved = False
                 #globals.IS_antal_brister_attributnamn += 1
                 IS_antal_brister_attributnamn += 1
     if all_attributes_approved == True:
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla attributnamn har liten begynnelsebokstav")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklassers alla attributnamn har liten begynnelsebokstav")
     else:
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har attributnamn med stor begynnelsebokstav")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har attributnamn med stor begynnelsebokstav")
     return IS_antal_brister_attributnamn
 
 
@@ -403,15 +405,15 @@ def IS_inspect_attribute_multiplicity():
             tbl_no = index + infomodel_table_indexes[0]
             table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
             #write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
-            write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
+            utilities.write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             IS_antal_brister_multiplicitet += 1
             all_results = False
     if all_results == True:
         #write_output("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
     else:
         #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
 
     return IS_antal_brister_multiplicitet
 
@@ -437,17 +439,17 @@ def IS_inspect_usage_of_defined_datatypes():
                 #write_output(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
                 #        table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
                 #        table.cell(i, table_column_index).text.strip().lower())
-                write_detail_box_content(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
+                utilities.write_detail_box_content(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
                         table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
                         table.cell(i, table_column_index).text.strip().lower())
                 IS_antal_brister_datatyper += 1
                 all_results = False
     if all_results == True:
         #write_output("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
     else:
         #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
     return IS_antal_brister_datatyper
 
 def IS_inspect_usage_of_reference_infomodel():
@@ -463,15 +465,15 @@ def IS_inspect_usage_of_reference_infomodel():
                 tbl_no = index+infomodel_table_indexes[0]
                 table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
                 #write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
-                write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
+                utilities.write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 IS_antal_brister_referensinfomodell += 1
                 all_results = False
     if all_results == True:
         #write_output("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
     else:
         #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
     return IS_antal_brister_referensinfomodell
 
 
@@ -613,12 +615,12 @@ def __inspect_revision_history():
 
     if str(table.cell(i, 0).text) != globals.tag:
         #write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
-        write_detail_box_content("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        utilities.write_detail_box_content("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
     else:
         #write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
-        write_detail_box_content("Revisionshistoriken är uppdaterad för denna version av domänen")
+        utilities.write_detail_box_content("Revisionshistoriken är uppdaterad för denna version av domänen")
     #write_output("Revisionshistorikens sista rad: " + str(text))
-    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
+    utilities.write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
 
 def __format_levels(current_level):
     levels = [str(level) for level in current_level if level != 0]
@@ -629,12 +631,12 @@ def __inspect_classname_format():
 
     ### 2do: check that the class name begins with UPPERCASE ###
     #write_output("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
-    write_detail_box_content("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
+    utilities.write_detail_box_content("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
     for paragraph in range(0, len(class_paragraphs_title)):
         #write_output(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
-        write_detail_box_content(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
+        utilities.write_detail_box_content(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
     #write_output("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
-    write_detail_box_content("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    utilities.write_detail_box_content("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     return result
 
@@ -644,14 +646,14 @@ def __infomodel_classes_verify_attribute_case(table_number):
     for i in range(1,len(table.rows)):
         if table.cell(i, 0).text[0:1].islower() == False:
             #write_output(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
-            write_detail_box_content(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
+            utilities.write_detail_box_content(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
             result = False
     return result
 
 def __inspect_attribut_name_case():
     all_results = True
     #write_output("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
-    write_detail_box_content("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
+    utilities.write_detail_box_content("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
     for index in range(len(infomodel_table_indexes)):
         table_num = infomodel_table_indexes[index]
         result = __infomodel_classes_verify_attribute_case(table_num)
@@ -660,14 +662,14 @@ def __inspect_attribut_name_case():
         # 2do
         if result == False:
             #write_output(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
-            write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
+            utilities.write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
             all_results = False
     if all_results == True:
         #write_output("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
-        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
+        utilities.write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
     else:
         #write_output("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
-        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
+        utilities.write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
 
 def IS_init_infomodel_classes_list():
     global document

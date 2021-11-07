@@ -14,6 +14,7 @@ from docx.text.paragraph import *
 from docx.oxml.table import *
 from docx.api import Document  # noqa
 import document_mangagement
+import globals
 ###from utilities import *
 import utilities
 

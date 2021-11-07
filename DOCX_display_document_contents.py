@@ -4,10 +4,10 @@ from docx.table import Table
 from docx.oxml.table import CT_Tbl
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import Paragraph
-import globals
-import granskning_AB
-import granskning_IS
-import granskning_TKB
+#import globals
+#import granskning_AB
+#import granskning_IS
+#import granskning_TKB
 from utilities import *
 
 
