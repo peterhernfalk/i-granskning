@@ -38,7 +38,6 @@ def DOCX_prepare_inspection(document_search_phrase):
     """
     Anropar metoder som förbereder granskning av ett Worddokument
     """
-    #__set_document_name(document_search_phrase)
     __set_document_name(document_search_phrase)
     __document_structure_2_dict(__style_family(document_search_phrase))
 
@@ -60,12 +59,7 @@ def DOCX_inspect_revision_history(docx_document, table_num):
 
     if str(table.cell(i, 0).text) != globals.tag:
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
-        if docx_document == globals.IS:
-            antal_brister_revisionshistorik = 1
-        elif docx_document == globals.TKB:
-            antal_brister_revisionshistorik = 1
-        elif docx_document == globals.AB:
-            antal_brister_revisionshistorik = 1
+        antal_brister_revisionshistorik = 1
     else:
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
     write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
