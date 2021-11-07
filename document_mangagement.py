@@ -39,6 +39,8 @@ def DOC_get_document_link(domainname, tag, document, head_hash, alt_document_nam
 
     if document == globals.IS:
         globals.IS_document_name = url_doc
+    elif document == globals.AB:
+        globals.AB_document_name = url_doc
     elif document == globals.TKB:
         globals.TKB_document_name = url_doc
 

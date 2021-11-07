@@ -359,10 +359,10 @@ def IS_inspect_class_description():
                 IS_antal_brister_klassbeskrivning += 1
 
     if result == True:
-        write_output("<b>Resultat:</b> alla infomodellklasser har beskrivning")
+        #write_output("<b>Resultat:</b> alla infomodellklasser har beskrivning")
         write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har beskrivning")
     else:
-        write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
+        #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar beskrivning")
     return IS_antal_brister_klassbeskrivning
 
@@ -402,15 +402,15 @@ def IS_inspect_attribute_multiplicity():
         if result == False:
             tbl_no = index + infomodel_table_indexes[0]
             table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
-            write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
+            #write_output(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + table_title + ": saknar multiplicitet")
             IS_antal_brister_multiplicitet += 1
             all_results = False
     if all_results == True:
-        write_output("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
+        #write_output("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
         write_detail_box_content("<b>Resultat:</b> alla infomodellklasser har multiplicitet i datatypskolumnen")
     else:
-        write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
+        #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar multiplicitet i datatypskolumnen")
 
     return IS_antal_brister_multiplicitet
@@ -434,19 +434,19 @@ def IS_inspect_usage_of_defined_datatypes():
         for i in range(1, len(table.rows)):
             if any(x in table.cell(i, table_column_index).text.strip().lower() for x in defined_datatypes) == False:
                 table_title = __get_title_by_table_number(index)
-                write_output(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
-                        table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
-                        table.cell(i, table_column_index).text.strip().lower())
+                #write_output(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
+                #        table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
+                #        table.cell(i, table_column_index).text.strip().lower())
                 write_detail_box_content(globals.HTML_3_SPACES + "Datatypen är ej definierad!  Tabell: " +
                         table_title + ". Attribut: " + table.cell(i, 0).text + ". Datatyp: " +
                         table.cell(i, table_column_index).text.strip().lower())
                 IS_antal_brister_datatyper += 1
                 all_results = False
     if all_results == True:
-        write_output("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
+        #write_output("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
         write_detail_box_content("<b>Resultat:</b> alla infomodellklasser använder definierade datatyper")
     else:
-        write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
+        #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar eller använder icke definierad datatyp")
     return IS_antal_brister_datatyper
 
@@ -462,15 +462,15 @@ def IS_inspect_usage_of_reference_infomodel():
             if table.cell(i, 1).text.strip() == "":
                 tbl_no = index+infomodel_table_indexes[0]
                 table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
-                write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
+                #write_output(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 write_detail_box_content(globals.HTML_3_SPACES + "Mappning saknas till RIM!  Tabell: " + table_title + ". Attribut: " + table.cell(i, 0).text)
                 IS_antal_brister_referensinfomodell += 1
                 all_results = False
     if all_results == True:
-        write_output("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
+        #write_output("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
         write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är mappade till referensinformationsmodellen")
     else:
-        write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
+        #write_output("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
         write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser saknar mappning till referensinformationsmodellen")
     return IS_antal_brister_referensinfomodell
 
@@ -596,7 +596,8 @@ def __infomodel_classes_verify_multiplicity(table_number):
         if any(cell_multiplicity in table.cell(i, table_column_index).text for cell_multiplicity in allowed_multiplicities) == False:
             tbl_no = table_number #+ infomodel_table_indexes[0]
             table_title = IS_get_infomodel_classname_from_table_number(tbl_no, True)
-            write_output(globals.HTML_3_SPACES + globals.HTML_3_SPACES + "Klass: " + table_title + " saknar multiplicitet för: " + table.cell(i, 0).text)
+            #write_output(globals.HTML_3_SPACES + globals.HTML_3_SPACES + "Klass: " + table_title + " saknar multiplicitet för: " + table.cell(i, 0).text)
+            #write_detail_box_content(globals.HTML_3_SPACES + globals.HTML_3_SPACES + "Klass: " + table_title + " saknar multiplicitet för: " + table.cell(i, 0).text)
             result = False
     return result
 
@@ -611,10 +612,13 @@ def __inspect_revision_history():
         text = tuple(cell.text for cell in row.cells)
 
     if str(table.cell(i, 0).text) != globals.tag:
-        write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        #write_output("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
+        write_detail_box_content("OBS! Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
     else:
-        write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
-    write_output("Revisionshistorikens sista rad: " + str(text))
+        #write_output("Revisionshistoriken är uppdaterad för denna version av domänen")
+        write_detail_box_content("Revisionshistoriken är uppdaterad för denna version av domänen")
+    #write_output("Revisionshistorikens sista rad: " + str(text))
+    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
 
 def __format_levels(current_level):
     levels = [str(level) for level in current_level if level != 0]
@@ -624,10 +628,13 @@ def __inspect_classname_format():
     result = True
 
     ### 2do: check that the class name begins with UPPERCASE ###
-    write_output("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
+    #write_output("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
+    write_detail_box_content("<br>Kontroll att infomodellklassernas rubriker är i alfabetisk ordning och börjar med stor bokstav")
     for paragraph in range(0, len(class_paragraphs_title)):
-        write_output(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
-    write_output("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+        #write_output(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
+        write_detail_box_content(globals.HTML_3_SPACES + class_paragraphs_title[paragraph])
+    #write_output("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    write_detail_box_content("För närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
     return result
 
@@ -636,13 +643,15 @@ def __infomodel_classes_verify_attribute_case(table_number):
     result = True
     for i in range(1,len(table.rows)):
         if table.cell(i, 0).text[0:1].islower() == False:
-            write_output(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
+            #write_output(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
+            write_detail_box_content(globals.HTML_3_SPACES + "Fel skiftläge för första bokstaven i: " + table.cell(i, 0).text)
             result = False
     return result
 
 def __inspect_attribut_name_case():
     all_results = True
-    write_output("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
+    #write_output("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
+    write_detail_box_content("\nKontroll att attributnamn inleds med liten bokstav i infomodellklassernas tabeller")
     for index in range(len(infomodel_table_indexes)):
         table_num = infomodel_table_indexes[index]
         result = __infomodel_classes_verify_attribute_case(table_num)
@@ -650,12 +659,15 @@ def __inspect_attribut_name_case():
         # Insert code from __infomodel_classes_verify_attribute_case
         # 2do
         if result == False:
-            write_output(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
+            #write_output(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
+            write_detail_box_content(globals.HTML_3_SPACES + "Infomodellklass " + str(index+1) + ": innehåller attributnamn med fel skiftläge för första bokstaven\n")
             all_results = False
     if all_results == True:
-        write_output("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
+        #write_output("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
+        write_detail_box_content("<b>Resultat:</b> alla infomodellklasser är OK avseende skiftläge på attributnamnens första bokstav")
     else:
-        write_output("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
+        #write_output("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
+        write_detail_box_content("<b>Resultat:</b> en eller flera infomodellklasser har fel skiftläge för första bokstaven i attribut")
 
 def IS_init_infomodel_classes_list():
     global document

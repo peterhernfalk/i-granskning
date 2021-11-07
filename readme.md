@@ -69,6 +69,7 @@ Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att 
     - Anropar funktion i granskning_IS.py för att förbereda och genomföra granskning av Infospec
   - TKB
     - Anropar funktion i granskning_TKB.py för att förbereda och genomföra granskning av TKB
+  - Anropar html_dashboard.get_page_html() för att få en ifylld dashboard i htmlformat
  
  - document_management.py
     - Funktioner för att beräkna URL till angivet dokument

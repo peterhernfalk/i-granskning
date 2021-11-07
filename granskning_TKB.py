@@ -242,7 +242,9 @@ def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display
                 this_key_level = key.strip()[0:key_level_length]
                 if this_key_level == previous_key:
                     if display_keylevel_text == True:
-                        write_output("\t" + key.strip()[key_level_length+1:])
+                        #write_output("\t" + key.strip()[key_level_length+1:])
+                        write_detail_box_content("\t" + key.strip()[key_level_length+1:])
                 else:
-                    write_output(key)
+                    #write_output(key)
+                    write_detail_box_content(key)
                 previous_key = key.strip()[0:key_level_length]

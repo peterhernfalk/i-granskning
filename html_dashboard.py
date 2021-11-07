@@ -1,5 +1,5 @@
-import app
-import globals
+#import app
+#import globals
 import granskning_AB
 import granskning_IS
 import granskning_TKB
@@ -11,6 +11,8 @@ TKB_antal_brister = 0
 
 def get_page_html():
     """
+    Funktionen anropas av app.py för att få en ifylld dashboard i html-format
+
     2do: lägg till dessa inparametrar:
     - globals.domain_name
     - globals.tag
@@ -746,4 +748,4 @@ def __box_content_end():
     '''
     return html
 
-get_page_html()
+#get_page_html()

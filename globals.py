@@ -49,6 +49,7 @@ def GLOBALS_init():
     alt_document_name = ""
     COMMENTS_detail_box_contents = ""
     docx_document = ""
+    docx_AB_document = ""
     docx_IS_document = ""
     docx_TKB_document = ""
     domain_name = ""

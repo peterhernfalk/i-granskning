@@ -72,9 +72,8 @@ def extract_urls_from_table(document, table_number):
     return links
 
 
-def write_output(text):
-    #print(text)
-    globals.granskningsresultat += "<br>" + text
+"""def write_output(text):
+    globals.granskningsresultat += "<br>" + text"""
 
 def write_detail_box_content(text):
     detail_box_content = "<li>" + text + "</li>"
@@ -104,27 +103,3 @@ def verify_url_exists(searched_url):
     #else:
     #    status_code = 400  # http status code, meaning bad request
     return status_code
-
-
-### Not in use yet ###
-#def check_if_file_exists(path, search_pattern):
-#    file_exist = False
-"""if os.path.exists(path):
-    os.chdir(path)
-    for file in glob.glob(search_pattern):
-        file_exist = True"""
-
-"""if search_pattern == globals.IS:
-    file_exist = globals.IS_exists
-elif search_pattern == globals.TKB:
-    file_exist = globals.TKB_exists
-
-return file_exist"""
-
-"""def write_detail_box_html(html_text):
-    if globals.docx_document == globals.IS:
-        granskning_IS.IS_detail_box_contents += html_text
-    elif globals.docx_document == globals.TKB:
-        granskning_TKB.TKB_detail_box_contents += html_text
-    elif globals.docx_document == globals.AB:
-        granskning_AB.AB_detail_box_contents += html_text"""
