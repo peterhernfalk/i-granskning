@@ -38,8 +38,7 @@ def DOCX_prepare_inspection(document_search_phrase):
     """
     Anropar metoder som förbereder granskning av ett Worddokument
     """
-    __set_document_name(document_search_phrase)
-
+    #__set_document_name(document_search_phrase)
     __set_document_name(document_search_phrase)
     __document_structure_2_dict(__style_family(document_search_phrase))
 
