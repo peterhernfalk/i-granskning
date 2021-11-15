@@ -36,7 +36,6 @@ IS_kodverkstabell_finns = False
 IS_referensinfomodell_finns = False
 
 def prepare_IS_inspection(domain, tag, alt_document_name):
-    print("IS-init påbörjas",datetime.datetime.now().replace(microsecond=0))
     """
     Beräknar url till infospecdokumentet för angiven domain och tag.
 
@@ -101,6 +100,7 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
     if downloaded_IS_document.status_code == 404:
         IS_exists = False
     else:
+        print("IS-init påbörjas", datetime.datetime.now().replace(microsecond=0))
         globals.docx_IS_document = document_mangagement.DOC_get_docx_document(downloaded_IS_document)
         IS_document_exists = True
         IS_exists = True
@@ -111,7 +111,6 @@ def prepare_IS_inspection(domain, tag, alt_document_name):
 
 def perform_IS_inspection(domain, tag, alt_document_name):
     prepare_IS_inspection(domain, tag, alt_document_name)
-    print("IS-granskning påbörjas",datetime.datetime.now().replace(microsecond=0))
 
     global IS_antal_brister_attributnamn
     global IS_antal_brister_datatyper
@@ -137,6 +136,7 @@ def perform_IS_inspection(domain, tag, alt_document_name):
 
     if IS_exists == False:
         return
+    print("IS-granskning påbörjas",datetime.datetime.now().replace(microsecond=0))
 
     utilities.write_detail_box_content("<b>Krav:</b> om dokumentegenskaper finns ska version och ändringsdatum stämma överens med granskad version")
     # 2do: kontrollera dokumentegenskaper avseende versionsnummer   https://python-docx.readthedocs.io/en/latest/dev/analysis/features/coreprops.html

@@ -57,12 +57,12 @@ def DOCX_inspect_revision_history(docx_document, table_num):
     for i, row in enumerate(table.rows):
         text = tuple(cell.text for cell in row.cells)
 
+    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
     if str(table.cell(i, 0).text) != globals.tag:
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken behöver uppdateras. (hittade: "+str(table.cell(i, 0).text)+" men förväntade: "+globals.tag+")")
         antal_brister_revisionshistorik = 1
     else:
         write_detail_box_content("<b>Resultat:</b> Revisionshistoriken är uppdaterad för denna version av domänen")
-    write_detail_box_content("Revisionshistorikens sista rad: " + str(text))
     #print(document.core_properties.author)
 
     # 2do: kolla om dokumentet har eftersökta custom properties
@@ -116,7 +116,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
         if paragraph_displayed == True:
             paragraph_or_table_found = True
     else:
-        for block in __document_block_items(document):      #__iter_block_items(document,searched_paragraph_level)
+        for block in __document_block_items(document):
             if isinstance(block, Paragraph):
                 this_paragraph_title = block.text.strip().lower()
                 if this_paragraph_title == searched_paragraph_title.strip().lower():
@@ -196,12 +196,12 @@ def DOCX_inspect_reference_links(table_num):
     return links_excist, antal_brister_referenslänkar
 
 #def DOCX_display_paragragh_title(searched_title_name):
-    """
+"""
     Söker efter angiven paragraf i lagrad dokumentstruktur. Skriver ut paragrafens titel.
 
     Returnerar: True om sökt paragraf hittades och False om paragrafen inte hittades
-    """
-    """result = True
+"""
+"""result = True
     searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(searched_title_name)
     if searched_paragraph_level != "":
         #write_output("OK. (" + searched_title_name + ") avsnitt " + searched_paragraph_level + " i TKB")
@@ -382,10 +382,12 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
                 antal_brister_tomma_tabellceller += 1
                 if globals.docx_document == globals.IS:
                     table_title = granskning_IS.IS_get_infomodel_classname_from_table_number(table_number, True)
-                elif globals.docx_document == globals.TKB:
-                    table_title = "TKB-tabell nummer " + str(table_number)
-                elif globals.docx_document == globals.AB:
-                    table_title = "AB-tabell nummer " + str(table_number)
+                else:
+                    table_title = globals.docx_document + "-tabell nummer " + str(table_number)
+                #elif globals.docx_document == globals.TKB:
+                #    table_title = "TKB-tabell nummer " + str(table_number)
+                #elif globals.docx_document == globals.AB:
+                #    table_title = "AB-tabell nummer " + str(table_number)
                 if cells_missing_content == "":
                     cells_missing_content += str(cell_number+1)
                 else:
@@ -408,6 +410,7 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
+    #print(html_table)
     return result, antal_brister_tomma_tabellceller
 
 
