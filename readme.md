@@ -135,6 +135,7 @@ Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att 
 
 ## Information riktad till utvecklare:
 Dokumenten som granskas laddas ner till virtuella dokumentinstanser (DOCX Document), vilka i sin tur är de som granskas.
+
 ### Lokal utveckling och test
 - PyCharm har använts som IDE vid utveckling av tjänsten
 - Lokala tester har gjorts genom att starta app.py från PyCharm och sedan anropa tjänsten via webbläsare med adress http://127.0.0.1:4001/granskningsinfo?domain=[domännamn]&tag=[tagnummer]
