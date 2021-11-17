@@ -561,7 +561,8 @@ def __html_summary_TKB_box():
 
     html += '''
         <br><hr><br><div class="box-topic">Sammanfattning: granskningskommentarer</div>
-        <div><li><b>0  &nbsp;</b>förslag till granskningskommentarer</div></li>
+        <div><li>Detta är <b> inte implementerat</b></li></div>
+        <!--div><li><b>0  &nbsp;</b>förslag till granskningskommentarer</div></li-->
     '''
 
 

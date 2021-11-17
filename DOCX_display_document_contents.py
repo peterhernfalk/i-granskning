@@ -228,14 +228,13 @@ def __set_document_name(search_phrase):
 
 def __document_structure_2_dict(style_family):
     """
-    Lagrar dokumentet struktur i ett globalt dictionary.
-        Key = rubriktext
-        Value = rubriknivå (exempelvis 2.1)
+    Lagrar dokumentet struktur i ett globalt dictionary (document_structure_dict)
+        Key = rubriktext (exempelvis: nya tjänstekontrakt)
+        Value = rubriknivå (exempelvis: 3.1.2)
 
-    Lagrar även index till dokumentets paragrafer i ett globalt dictionary.
-        Key = rubriknivå (exempelvis 2.1) + " " + rubriktext
-        Value = indexnummer
-
+    Lagrar index till dokumentets paragrafer i ett globalt (dictionary document_paragraph_index_dict)
+        Key = rubriknivå (exempelvis: 2.1 remisshantering)
+        Value = indexnummer (exempelvis 39)
     """
     if style_family == STYLE_FAMILY_HEADING:
         level_from_style_name = {f'Heading {i}': i for i in range(10)}
@@ -245,7 +244,7 @@ def __document_structure_2_dict(style_family):
         #2do: try other alternatives to make this style work as title
         level_from_style_name = {i for i in range(2)}
     current_levels = [0] * 10
-    global document_structure_dict  #key = kapitelnamn, value = kapitelnummer
+    global document_structure_dict
     document_structure_dict = {}
     global document_paragraph_index_dict
     document_paragraph_index_dict = {}
@@ -268,6 +267,10 @@ def DOCX_document_structure_get_levelvalue(searched_key):
     """
     Söker efter angivet rubrikvärde i dictionaryt med dokumentstruktur.
 
+    document_structure_dict:
+        Key = rubriktext (exempelvis: nya tjänstekontrakt)
+        Value = rubriknivå (exempelvis: 3.1.2)
+
     Returnerar: Om rubrikvärdet hittades så returneras dess nyckel (rubrikens titel), annars returneras NOT_FOUND
     """
     for key, value in document_structure_dict.items():
@@ -279,6 +282,10 @@ def DOCX_document_structure_get_levelvalue(searched_key):
 def __display_paragraph_text_by_paragraph_level(searched_paragraph_level,display_keylevel_text):
     """
     Hämtar paragraftext från dokumentstruktur-dictionaryt med rubriknivå som nyckel, och visar den funna texten
+
+    dictionary document_paragraph_index_dict:
+        Key = rubriknivå (exempelvis: 2.1 remisshantering)
+        Value = indexnummer (exempelvis 39)
     """
     paragraph_displayed = False
     previous_key = ""
