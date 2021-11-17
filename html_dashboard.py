@@ -1,5 +1,3 @@
-#import app
-#import globals
 import granskning_AB
 import granskning_IS
 import granskning_TKB
