@@ -4,10 +4,6 @@ from docx.table import Table
 from docx.oxml.table import CT_Tbl
 from docx.oxml.text.paragraph import CT_P
 from docx.text.paragraph import Paragraph
-#import globals
-#import granskning_AB
-#import granskning_IS
-#import granskning_TKB
 from utilities import *
 
 
@@ -66,7 +62,7 @@ def DOCX_inspect_revision_history(docx_document, table_num):
     #print(document.core_properties.author)
 
     # 2do: kolla om dokumentet har eftersökta custom properties
-    # Custom properties finns i custom.xml i Wordfilen
+    # Custom properties finns i Worddokumentets fil: custom.xml
     """try:
         print(document.custom_properties)
         #print("Version",document.CustomDocumentProperties('Version').value)
@@ -195,22 +191,6 @@ def DOCX_inspect_reference_links(table_num):
 
     return links_excist, antal_brister_referenslänkar
 
-#def DOCX_display_paragragh_title(searched_title_name):
-"""
-    Söker efter angiven paragraf i lagrad dokumentstruktur. Skriver ut paragrafens titel.
-
-    Returnerar: True om sökt paragraf hittades och False om paragrafen inte hittades
-"""
-"""result = True
-    searched_paragraph_level = DOCX_document_structure_get_exact_levelvalue(searched_title_name)
-    if searched_paragraph_level != "":
-        #write_output("OK. (" + searched_title_name + ") avsnitt " + searched_paragraph_level + " i TKB")
-        write_output("OK. Dokument-rubrik (" + searched_paragraph_level + "):  \t" + searched_title_name)
-    else:
-        write_output("FEL! " + searched_title_name + " verkar inte vara beskrivet i dokumentet!")
-        result = False
-    return result"""
-
 
 def __set_document_name(search_phrase):
     """
@@ -325,7 +305,7 @@ def DOCX_document_structure_get_key(searched_value):
 def __document_table_print_html_table(table):
     html_table = "<style> table, th, td { border:1px solid gray; empty-cells: show; } </style>"
     html_table += "<table>"
-    #html_table += "<caption>"+title+"</caption>"
+    #Possible improvement: html_table += "<caption>"+title+"</caption>"
     row_number = 0
     for row in table.rows:
         row_number += 1
@@ -391,10 +371,6 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
                     table_title = granskning_IS.IS_get_infomodel_classname_from_table_number(table_number, True)
                 else:
                     table_title = globals.docx_document + "-tabell nummer " + str(table_number)
-                #elif globals.docx_document == globals.TKB:
-                #    table_title = "TKB-tabell nummer " + str(table_number)
-                #elif globals.docx_document == globals.AB:
-                #    table_title = "AB-tabell nummer " + str(table_number)
                 if cells_missing_content == "":
                     cells_missing_content += str(cell_number+1)
                 else:
@@ -417,11 +393,10 @@ def DOCX_empty_table_cells_exists(table_number, display_result, display_type):
         else:
             write_detail_box_content("<b>Resultat:</b> alla granskade celler har innehåll")
 
-    #print(html_table)
     return result, antal_brister_tomma_tabellceller
 
 
-### Funktionen borde kunna arbetas bort, den används bara som fallback i IS då bepreppstabell inte hittas ###
+### Funktionen borde kunna arbetas bort, den används bara som fallback vid IS-granskning då bepreppstabell inte hittas ###
 def DOCX_get_tableno_for_first_column_title(title, all_tables):
     table_number = 0
     index = 0
@@ -463,12 +438,6 @@ def DOCX_init_dict_paragraph_title_and_tableno(document):
                 else:
                     paragraph_title_tableno_dict[paragraph_text] = table_index
                 paragraph_text = ""
-
-    ### Stöd vid utveckling och felsökning ###
-    """print("\n"+globals.docx_document+"\t("+globals.domain_name+", "+globals.tag+")")
-    print("paragraph_title_tableno_dict:")
-    for key, value in paragraph_title_tableno_dict.items():
-        print("\t",value,key)"""
 
     return paragraph_title_tableno_dict
 
