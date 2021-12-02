@@ -11,7 +11,7 @@ def get_page_html():
     """
     Funktionen anropas av app.py för att få en ifylld dashboard i html-format
 
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.domain_name
     - globals.tag
     - globals.IS_detail_box_contents
@@ -25,7 +25,6 @@ def get_page_html():
     TKB_antal_brister = 0
 
     html = __html_start() + __html_head() + __html_body_start() + __html_sidebar() + __html_overview_start(globals.domain_name, globals.tag)
-    #html += __html_summary_infospec() + __html_summary_TKB_box() + __html_summary_AB() + __html_section_end()
     html += __html_summary_infospec() + __html_summary_TKB_box() + __html_section_end()
 
     html += __html_detail_section_begin("Infospec")
@@ -33,7 +32,6 @@ def get_page_html():
 
     html += __html_br() + __html_detail_box_begin_TKB() + granskning_TKB.TKB_detail_box_contents + __box_content_end()
 
-    #globals.AB_detail_box_contents = "Här ska krav och granskningsresultat visas för automatiserad granskning av AB-dokumentet"
     html += __html_br() + __html_detail_box_begin_AB() + granskning_AB.AB_detail_box_contents + __box_content_end()
 
     globals.COMMENTS_detail_box_contents = "Här ska förslag till granskningskommentarer visas, inklusive färgkodning och i samma struktur som granskningsrapporten"
@@ -50,10 +48,11 @@ def __html_start():
     return html
 
 def __html_end():
-    html = '''
+    """html = '''
     </html>
     '''
-    return html
+    return html"""
+    return "</html>"
 
 def __html_head():
     html = '''
@@ -107,14 +106,12 @@ def __html_style():
       transition: all 0.4s ease;
     }
     .sidebar .nav-links li a.active{
-      //background: #081D45;
       background: #505050;
     }
     .sidebar .nav-links li a:hover{
       background: #081D45;
     }
     .sidebar .nav-links li i{
-      //min-width: 60px;
       padding-left: 20px;
       text-align: center;
       font-size: 18px;
@@ -172,15 +169,12 @@ def __html_style():
     }
     .home-content .overview-boxes{
       display: flex;
-      //align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       padding: 0 20px;
-      //margin-bottom: 26px;
     }
     .overview-boxes .box{
       display: flex;
-      //align-items: center;
       justify-content: center;
       width: calc(100% / 2 - 55px);
       background: #fff;
@@ -204,14 +198,12 @@ def __html_style():
     .detail-boxes .box .title{
       font-size: 24px;
       font-weight: 500;
-      /* margin-bottom: 10px; */
     }
     .detail-boxes .inspection-details li{
       list-style: none;
       margin: 8px 0;
     }
     
-    /* Responsive Media Query */
     @media (max-width: 1240px) {
       .sidebar{
         width: 60px;
@@ -284,22 +276,25 @@ def __html_style():
     return html
 
 def __html_br():
-    html = '''
+    """html = '''
     <br>
     '''
-    return html
+    return html"""
+    return "<br> "
 
 def __html_body_start():
-    html = '''
+    """html = '''
     <body>
     '''
-    return html
+    return html"""
+    return "<body>"
 
 def __html_body_end():
-    html = '''
+    """html = '''
     </body>
     '''
-    return html
+    return html"""
+    return "</body>"
 
 def __html_sidebar():
     html = '''
@@ -358,7 +353,7 @@ def __html_overview_start(domain_name, tag):
 
 def __html_summary_infospec():
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.IS_exists
     - globals.IS
     - globals.domain_name
@@ -390,12 +385,8 @@ def __html_summary_infospec():
         html += '<div><li>' + __get_infospec_summary("referensinfomodell") + '</li></div>'
         html += '<div><li>' + __get_infospec_summary("tabellcellinnehåll") + '</li></div>'
         html += "<br>"
-        #html += "<h4>Antal brister i Infospec: " + str(IS_antal_brister) + "</h4>"
-        #html += "<h4>" + str(IS_antal_brister) + " brister i Infospec upptäckta av automatiserad granskning</h4>"
         html += "<b>" + str(IS_antal_brister) + " &nbsp;brister i Infospec</b> upptäckta av automatiserad granskning<br>"
     else:
-        #html = globals.IS_felmeddelande
-        #html += "<br><i><b>Infospec saknas.</b> <br>Här ska det kompletteras med information som kan underlätta för granskaren.</i>"
         html += __text_document_not_found(globals.IS, globals.domain_name, globals.tag)
     html += '''
     </div>
@@ -410,7 +401,7 @@ def __text_document_not_found(doc, domain, tag):
     Returenar: information i html-format
     """
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.IS
     - globals.TKB
     - globals.AB
@@ -443,7 +434,7 @@ def __text_document_not_found(doc, domain, tag):
 
 def __get_infospec_summary(topic):
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.IS_antal_brister_revisionshistorik
     - globals.IS_antal_brister_tomma_revisionshistoriktabellceller
     - globals.IS_antal_brister_referenslänkar
@@ -532,7 +523,7 @@ def __get_infospec_summary(topic):
 
 def __html_summary_TKB_box():
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.TKB_exists
     - globals.TKB
     - globals.domain_name
@@ -559,8 +550,6 @@ def __html_summary_TKB_box():
 
     html += '<br><hr><br><div class="box-topic">Sammanfattning: granskningskommentarer</div>'
     html += "<div><li>Detta är <b> inte implementerat</b></li></div>"
-    #<--div><li><b>0  &nbsp;</b>förslag till granskningskommentarer</div></li>
-
 
     html += '''
     </div>
@@ -571,7 +560,7 @@ def __html_summary_TKB_box():
 
 def __get_TKB_summary():
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.TKB_antal_brister_revisionshistorik
     - globals.TKB_antal_brister_tomma_revisionshistoriktabellceller
     - globals.TKB_antal_brister_referenslänkar
@@ -605,7 +594,7 @@ def __get_TKB_summary():
 
 def __html_summary_AB():
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.AB_exists
     - globals.AB
     - globals.domain_name
@@ -637,7 +626,7 @@ def __html_summary_AB():
 
 def __get_AB_summary():
     """
-    2do: lägg till dessa inparametrar:
+    Tänkbar förbättring: lägg till dessa inparametrar:
     - globals.AB_antal_brister_revisionshistorik
     - globals.AB_antal_brister_tomma_revisionshistoriktabellceller
     """
@@ -651,7 +640,6 @@ def __get_AB_summary():
     html += "<div><li><b>" + str(granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
     AB_antal_brister += granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller
 
-    #html += "<br>"
     html += "<div><li><b>" + str(granskning_AB.AB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     AB_antal_brister += granskning_AB.AB_antal_brister_referenslänkar
 
@@ -662,8 +650,9 @@ def __get_AB_summary():
     return html
 
 def __html_section_end():
-    html = "</section>"
-    return html
+    """html = "</section>"
+    return html"""
+    return "</section>"
 
 def __html_detail_section_begin(id):
     if id.strip() != "":
@@ -681,10 +670,11 @@ def __html_detail_section_begin(id):
     return html
 
 def __html_section_end():
-    html = '''
+    """html = '''
     </section>
     '''
-    return html
+    return html"""
+    return "</section>"
 
 def __html_recent_inspection_box_begin(title):
     html = ""
@@ -744,5 +734,3 @@ def __box_content_end():
     </div>
     '''
     return html
-
-#get_page_html()

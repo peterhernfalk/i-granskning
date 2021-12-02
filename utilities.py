@@ -1,4 +1,5 @@
 
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 import globals
 import granskning_AB
 import granskning_IS
@@ -10,27 +11,6 @@ from requests.exceptions import MissingSchema
 import urllib3
 
 def extract_urls_from_table(document, table_number):
-    """
-    Utredning inför kodning:
-        "Ärendehantering" in xml_str, "<w:hyperlink" in xml_str
-
-        Länk som innehåller url:
-            False True
-            <w:hyperlink r:id="rId15" w:history="1">
-                <w:r w:rsidR="003441E4" w:rsidRPr="00394169">
-                    <w:t>http://rivta.se/documents/ARK_0040/</w:t>
-
-        Länk som innehåller display text, men ingen url:
-            True True
-            <w:hyperlink r:id="rId14" w:history="1">
-                <w:r w:rsidR="00D35DA5">
-                    <w:t>Ärendehantering</w:t>
-            I document.part.rels:
-                Länk-id rId14 innehåller url i rels[rel]._target
-    """
-
-    from docx.opc.constants import RELATIONSHIP_TYPE as RT
-
     rels = document.part.rels
     document_relations = {}
     for rel in rels:
@@ -72,9 +52,6 @@ def extract_urls_from_table(document, table_number):
     return links
 
 
-"""def write_output(text):
-    globals.granskningsresultat += "<br>" + text"""
-
 def write_detail_box_content(text):
     detail_box_content = "<li>" + text + "</li>"
     if globals.docx_document == globals.IS:
@@ -92,7 +69,7 @@ def verify_url_exists(searched_url):
     status_code = 200
     urllib3.disable_warnings()
     try:
-        response = head(searched_url.strip(), allow_redirects=True, verify=False)    #timeout=2
+        response = head(searched_url.strip(), allow_redirects=True, verify=False)    #If needed, this can be added: timeout=2
         status_code = response.status_code
     except requests.exceptions.ConnectionError:
         status_code = 400  # http status code, meaning bad request
