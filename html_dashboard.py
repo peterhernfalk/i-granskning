@@ -455,69 +455,81 @@ def __get_infospec_summary(topic):
     html = ""
     if topic == "revisionshistorik":
         if granskning_IS.IS_antal_brister_revisionshistorik == 0:
-            html += "Revisionshistoriken har <b>korrekt</b> version angiven"
+            html += "&#9989; Revisionshistoriken har <b>korrekt</b> version angiven"
         else:
-            html += "<b>Fel versionsnummer</b> angivet i revisionshistoriken"
+            html += "&#10060; <b>Fel versionsnummer</b> angivet i revisionshistoriken"
             IS_antal_brister += 1
     elif topic == "revisionshistorik_cellinnehåll":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_tomma_revisionshistoriktabellceller) + \
+                str(granskning_IS.IS_antal_brister_tomma_revisionshistoriktabellceller) + \
+                " &nbsp;</b>tomma celler i revisionshistoriken"
         IS_antal_brister += granskning_IS.IS_antal_brister_tomma_revisionshistoriktabellceller
     elif topic == "referenslänkar":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_referenslänkar) + \
+                str(granskning_IS.IS_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen"
         IS_antal_brister += granskning_IS.IS_antal_brister_referenslänkar
     elif topic == "referenslänkar_cellinnehåll":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_tomma_referenstabellceller) + \
+                str(granskning_IS.IS_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen"
         IS_antal_brister += granskning_IS.IS_antal_brister_tomma_referenstabellceller
     elif topic == "referensinfomodell_finns":
         if granskning_IS.IS_referensinfomodell_finns == True:
-            html += "Referensinformationsmodell (RIM) <b>finns</b>"
+            html += "&#9989; Referensinformationsmodell (RIM) <b>finns</b>"
         else:
-            html += "Referensinformationsmodell (RIM) <b>saknas</b>"
+            html += "&#10060; Referensinformationsmodell (RIM) <b>saknas</b>"
             IS_antal_brister += 1
     elif topic == "begreppsmodell_finns":
           if granskning_IS.IS_begreppsmodell_finns == True:
-                html += "Begreppsmodell <b>finns</b>"
+                html += "&#9989; Begreppsmodell <b>finns</b>"
           else:
-                html += "Begreppsmodell <b>saknas</b>"
+                html += "&#10060; Begreppsmodell <b>saknas</b>"
                 IS_antal_brister += 1
     elif topic == "begreppsmodellr_cellinnehåll":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + " &nbsp;</b>tomma celler i begreppsbeskrivningstabellen"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + \
+                str(granskning_IS.IS_antal_brister_tomma_begreppsbeskrivningstabellceller) + \
+                " &nbsp;</b>tomma celler i begreppsbeskrivningstabellen"
         IS_antal_brister += granskning_IS.IS_antal_brister_tomma_begreppsbeskrivningstabellceller
     elif topic == "begreppslista_finns":
         if granskning_IS.IS_begreppslista_finns == True:
-            html += "Begreppslista <b>finns</b>"
+            html += "&#9989; Begreppslista <b>finns</b>"
         else:
-            html += "Begreppslista <b>saknas</b>"
+            html += "&#10060; Begreppslista <b>saknas</b>"
             IS_antal_brister += 1
     elif topic == "informationsmodell_finns":
         if granskning_IS.IS_informationsmodell_finns == True:
-            html += "Informationsmodell <b>finns</b>"
+            html += "&#9989; Informationsmodell <b>finns</b>"
         else:
-            html += "Informationsmodell <b>saknas</b>"
+            html += "&#10060; Informationsmodell <b>saknas</b>"
             IS_antal_brister += 1
     elif topic == "kodverkstabell_finns":
         if granskning_IS.IS_kodverkstabell_finns == True:
-            html += "Kodverkstabell <b>finns</b>"
+            html += "&#9989; Kodverkstabell <b>finns</b>"
         else:
-            html += "Kodverkstabell <b>saknas</b>"
+            html += "&#10060; Kodverkstabell <b>saknas</b>"
             IS_antal_brister += 1
     elif topic == "klassbeskrivning":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_klassbeskrivning) + " &nbsp;</b>saknade klassbeskrivningar"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_klassbeskrivning) + \
+                str(granskning_IS.IS_antal_brister_klassbeskrivning) + " &nbsp;</b>saknade klassbeskrivningar"
         IS_antal_brister += granskning_IS.IS_antal_brister_klassbeskrivning
     elif topic == "attributnamn":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_attributnamn) + " &nbsp;</b>klassattribut med fel skiftläge"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_attributnamn) + \
+                str(granskning_IS.IS_antal_brister_attributnamn) + " &nbsp;</b>klassattribut med fel skiftläge"
         IS_antal_brister += granskning_IS.IS_antal_brister_attributnamn
     elif topic == "multiplicitet":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_multiplicitet) + " &nbsp;</b>saknade multipliciteter i klasstabeller"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_multiplicitet) + \
+                str(granskning_IS.IS_antal_brister_multiplicitet) + " &nbsp;</b>saknade multipliciteter i klasstabeller"
         IS_antal_brister += granskning_IS.IS_antal_brister_multiplicitet
     elif topic == "datatyper":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_datatyper) + " &nbsp;</b>odefinierade datatyper"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_datatyper) + \
+                str(granskning_IS.IS_antal_brister_datatyper) + " &nbsp;</b>odefinierade datatyper"
         IS_antal_brister += granskning_IS.IS_antal_brister_datatyper
     elif topic == "referensinfomodell":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_referensinfomodell) + " &nbsp;</b>saknade referenser till RIM i klasstabeller"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_referensinfomodell) + \
+                str(granskning_IS.IS_antal_brister_referensinfomodell) + " &nbsp;</b>saknade referenser till RIM i klasstabeller"
         IS_antal_brister += granskning_IS.IS_antal_brister_referensinfomodell
     elif topic == "tabellcellinnehåll":
-        html += "<b>" + str(granskning_IS.IS_antal_brister_tomma_tabellceller) + " &nbsp;</b>tomma celler i klasstabeller"
+        html += "<b>" + get_html_checkmark(granskning_IS.IS_antal_brister_tomma_tabellceller) + \
+                str(granskning_IS.IS_antal_brister_tomma_tabellceller) + " &nbsp;</b>tomma celler i klasstabeller"
         IS_antal_brister += granskning_IS.IS_antal_brister_tomma_tabellceller
     return html
 
@@ -569,25 +581,32 @@ def __get_TKB_summary():
     global TKB_antal_brister
     html = ""
     if granskning_TKB.TKB_antal_brister_revisionshistorik == 0:
-        html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
+        html += "<div><li>&#9989; Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
     else:
-        html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
+        html += "<div><li><b>&#10060; Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         TKB_antal_brister += 1
-    html += "<div><li><b>" + str(granskning_TKB.TKB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
+
+    html += "<div><li><b>" + get_html_checkmark(granskning_TKB.TKB_antal_brister_tomma_revisionshistoriktabellceller) + \
+            str(granskning_TKB.TKB_antal_brister_tomma_revisionshistoriktabellceller) + \
+            " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
     TKB_antal_brister += granskning_TKB.TKB_antal_brister_tomma_revisionshistoriktabellceller
+
     html += "<br>"
-    html += "<div><li><b>" + str(granskning_TKB.TKB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
+    html += "<div><li><b>" + get_html_checkmark(granskning_TKB.TKB_antal_brister_referenslänkar) + \
+            str(granskning_TKB.TKB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     TKB_antal_brister += granskning_TKB.TKB_antal_brister_referenslänkar
-    html += "<div><li><b>" + str(granskning_TKB.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
+
+    html += "<div><li><b>" + get_html_checkmark(granskning_TKB.TKB_antal_brister_tomma_referenstabellceller) + \
+            str(granskning_TKB.TKB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
     TKB_antal_brister += granskning_TKB.TKB_antal_brister_tomma_referenstabellceller
     html += "<br>"
     if granskning_TKB.TKB_meddelandemodeller_finns == True:
-        html += "<div><li>Meddelandemodeller <b>finns</b></li></div>"
+        html += "<div><li>&#9989; Meddelandemodeller <b>finns</b></li></div>"
     else:
-        html += "<div><li>Meddelandemodeller <b>saknas</b></li></div>"
+        html += "<div><li>&#10060; Meddelandemodeller <b>saknas</b></li></div>"
         TKB_antal_brister += 1
+
     html += "<br>"
-    #html += "<h4>Antal brister i TKB: " + str(TKB_antal_brister) + "</h4>"
     html += "<b>" + str(TKB_antal_brister) + " &nbsp;brister i TKB</b> upptäckta av automatiserad granskning<br>"
 
     return html
@@ -633,21 +652,34 @@ def __get_AB_summary():
     global AB_antal_brister
     html = ""
     if granskning_AB.AB_antal_brister_revisionshistorik == 0:
-        html += "<div><li>Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
+        html += "<div><li>&#9989; Revisionshistoriken har <b>korrekt</b> version angiven</li></div>"
     else:
-        html += "<div><li><b>Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
+        html += "<div><li><b>&#10060; Fel versionsnummer</b> angivet i revisionshistoriken</li></div>"
         AB_antal_brister += 1
-    html += "<div><li><b>" + str(granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller) + " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
+
+    html += "<div><li><b>" + get_html_checkmark(granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller) + \
+            str(granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller) + \
+            " &nbsp;</b>tomma celler i revisionshistoriken</li></div>"
     AB_antal_brister += granskning_AB.AB_antal_brister_tomma_revisionshistoriktabellceller
 
-    html += "<div><li><b>" + str(granskning_AB.AB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
+    html += "<div><li><b>" + get_html_checkmark(granskning_AB.AB_antal_brister_referenslänkar) + \
+            str(granskning_AB.AB_antal_brister_referenslänkar) + " &nbsp;</b>felaktiga länkar i referenstabellen</li></div>"
     AB_antal_brister += granskning_AB.AB_antal_brister_referenslänkar
 
-    html += "<div><li><b>" + str(granskning_AB.AB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
+    html += "<div><li><b>" + get_html_checkmark(granskning_AB.AB_antal_brister_tomma_referenstabellceller) + \
+            str(granskning_AB.AB_antal_brister_tomma_referenstabellceller) + " &nbsp;</b>tomma celler i referenstabellen</li></div>"
     AB_antal_brister += granskning_AB.AB_antal_brister_tomma_referenstabellceller
+
     html += "<br><b>" + str(AB_antal_brister) + " &nbsp;brister i AB</b> upptäckta av automatiserad granskning<br>"
 
     return html
+
+def get_html_checkmark(counter):
+    checkmark = "&#9989; "
+    if counter > 0:
+        checkmark = "&#10060; "
+    return checkmark
+
 
 def __html_section_end():
     """html = "</section>"
