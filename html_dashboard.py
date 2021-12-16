@@ -674,9 +674,9 @@ def __get_AB_summary():
 
     return html
 
-def __get_html_checkmark(counter):
+def __get_html_checkmark(error_counter):
     checkmark = "&#9989; "  # Green check mark
-    if counter > 0:
+    if error_counter > 0:
         checkmark = "&#10060; " # Red cross
     return checkmark
 
