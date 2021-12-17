@@ -43,6 +43,9 @@ ur ett informationsförsörjningsperspektiv, med inparametrar istället för ber
 - Det finns ett antal repos för RIVTA-verktyg på Bitbucket. På sikt bör även detta kodprojekt flyttas dit
   - En första snabbkoll visar att det finns en Bitbucket plugin för Pycharm samt stöd för att göra deploy från Bitbucket till Heroku
 
+### Önskemål om vidareutveckling
+- Det finns önskemål om att tjänsten ska kunna startas från en webbsida där domän och version väljs och att den här tjänsten sedan enkelt kan startas. Det skulle förenkla användandet av tjänsten genom att användare inte behöver ange domän och version som url-parametrar
+
 ### Runtime-stöd:
 Filerna requirements.txt och runtime.txt används av Heroku vid deploy för att installera eller uppdatera Python-version och beroenden.
 
