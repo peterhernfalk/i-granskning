@@ -144,8 +144,8 @@ def reponse2request():
     return html
 
 
-#if __name__ == '__main__':
-#    port = 4001
-#    usedHost = '127.0.0.1'
-#    app.run(host=usedHost, port=port)
+if __name__ == '__main__':
+    port = 4002 #4001
+    usedHost = '127.0.0.1'
+    app.run(host=usedHost, port=port)
 
