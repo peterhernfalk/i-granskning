@@ -249,13 +249,16 @@ def perform_IS_inspection(domain, tag, alt_document_name):
         utilities.write_detail_box_content("&#10060; <b>Granskningsstöd:</b> inget innehåll visas, vilket kan bero på att avsnittsrubriken saknas eller är annan än den förväntade (Informationsmodell och beskrivning)")
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
 
-    print("\tIS: lista infomodellklasser",datetime.datetime.now().replace(microsecond=0))
+    print("\tISxx: lista infomodellklasser",datetime.datetime.now().replace(microsecond=0))
     utilities.write_detail_box_content("<br><b>Krav:</b> infomodellklasserna ska komma i alfabetisk ordning")
     utilities.write_detail_box_content("<b>Krav:</b> infomodellklassernas rubriker ska börja med stor bokstav")
     utilities.write_detail_box_content("<b>Granskningsstöd:</b> kontrollera att infomodellklassernas rubriker är i alfabetisk ordning")
     DOCX_display_document_contents.DOCX_display_paragraph_text_and_tables("klasser och attribut", globals.TITLE, globals.NO_INITIAL_NEWLINE, globals.NO_TEXT, globals.NO_TABLES)
     paragraph_title_list, antal_klasser_liten_begynnelsebokstav = DOCX_display_document_contents.DOCX_list_searched_paragraph_titles_wrong_case("klasser och attribut", "Klass ", globals.UPPER_CASE)
     utilities.write_detail_box_content("<b>Resultat:</b> för närvarande sker kontrollen manuellt, med ovanstående listning som underlag")
+    #print("DEBUG: " + searched_paragraph_level + " " + display_keylevel_text)
+    #print("DEBUG: " + DOCX_document_structure_get_levelvalue(searched_paragraph_title))
+
 
     ##IS_inspect_document_contents()
 

@@ -102,6 +102,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
     Förbättringsförslag: lägg till en inparameter för att kunna välja om searched_paragraph_title ska matchas exakt eller ingå i hittad titel
     """
     searched_paragraph_level = DOCX_document_structure_get_levelvalue(searched_paragraph_title)
+
     searched_paragraph_found = False
     paragraph_or_table_found = False
 
@@ -109,6 +110,7 @@ def DOCX_display_paragraph_text_and_tables(searched_paragraph_title, display_par
         if display_initial_newline == True:
             write_detail_box_content("<br>")
         paragraph_displayed = __display_paragraph_text_by_paragraph_level(searched_paragraph_level, display_keylevel_text)
+
         if paragraph_displayed == True:
             paragraph_or_table_found = True
     else:
